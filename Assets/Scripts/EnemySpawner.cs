@@ -12,18 +12,16 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private Transform spawnLocation;
     private List<IEnemy> enemies;
     [SerializeField] private int spawnAmount=10;
+    [SerializeField] private int spawnAtIndex = 0;
+
+    private Action<string> onShooting;
 
     public void Init()
     {
-        
-    }
-    private void Start()
-    {
         enemies = new List<IEnemy>();
-         generateEnemy();
+        generateEnemy();
     }
-
-    private void Update()
+    public void ActiveEnemies()
     {
         foreach (var _enemy in enemies)
         {
@@ -31,14 +29,24 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    public void AssignEvent(Action<string> _onShooting)
+    {
+        onShooting = _onShooting;
+    }
+
     private void generateEnemy()
     {
         for (int i = 0; i < spawnAmount; i++)
         {
             
-            GameObject _ememyObject = Instantiate(enemyVariationPrefab[0], spawnLocation);
+            GameObject _ememyObject = Instantiate(enemyVariationPrefab[spawnAtIndex], spawnLocation);
             var _ememy = _ememyObject.GetComponent<IEnemy>();
-            enemies.Add(_ememy);
+            if (_ememy is ShootingEnemy shootingEnemy)
+            {
+                shootingEnemy.AssignEvent(onShooting);
+            }
+            if(_ememy != null)
+                enemies.Add(_ememy);
         }
     }
 }

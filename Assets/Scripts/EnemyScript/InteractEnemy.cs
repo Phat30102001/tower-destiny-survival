@@ -9,12 +9,8 @@ public class InteractEnemy: MonoBehaviour,IEnemy
     {
         if (_target != null)
         {
-            Debug.Log($"[phat] {_target.name} is active");
             transform.position = Vector3.MoveTowards(transform.position, _target.position, speed * Time.deltaTime);
-            
-
         }
     }
     
 }
-
