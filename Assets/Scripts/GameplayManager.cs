@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameplayManager : MonoBehaviour
 {
     [SerializeField] private EnemySpawner enemySpawner;
+    [SerializeField] private Player player;
     [SerializeField] private ProjectilePoolingManager projectilePoolingManager;
 
 
@@ -12,13 +13,30 @@ public class GameplayManager : MonoBehaviour
     private void Start()
     {
         projectilePoolingManager.Init();
-        enemySpawner.AssignEvent(projectilePoolingManager.GenerateProjectilePool);
+        player.Init();
         enemySpawner.Init();
-        
+
+        AssignEvent();
+
+        enemySpawner.SetData(player.transform);
+        player.SetData(new PlayerData
+        {
+            health = 100
+        });
+        enemySpawner.ActiveEnemies();
+
+
+    }
+    private void AssignEvent()
+    {
+        enemySpawner.AssignEvent(projectilePoolingManager.GenerateProjectilePool);
+        player.AssignEvent(activeGameOver);
     }
 
-    private void Update()
+
+
+    private void activeGameOver()
     {
-        enemySpawner.ActiveEnemies();
+
     }
 }

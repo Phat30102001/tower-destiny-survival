@@ -93,7 +93,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 100
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -104,7 +104,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &5379529685420031518
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -163,6 +163,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 500
-  shootingDistance: 300
+  attackDistance: 50
   projectilePrefab: {fileID: 7330347648388806743, guid: e47ca1e5e51464c44ad93b1386a2a8e4, type: 3}
   shootForce: 1000

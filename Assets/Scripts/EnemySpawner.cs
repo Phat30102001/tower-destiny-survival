@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EnemySpawner : MonoBehaviour
 { 
-    public Transform target;
+    private Transform target;
     [SerializeField] private List<GameObject> enemyVariationPrefab;
     [SerializeField] private Transform spawnLocation;
     private List<IEnemy> enemies;
@@ -18,7 +19,12 @@ public class EnemySpawner : MonoBehaviour
     public void Init()
     {
         enemies = new List<IEnemy>();
+    }
+    public void SetData(Transform _playerTransform)
+    {
+        target= _playerTransform;
         generateEnemy();
+
     }
     public void ActiveEnemies()
     {
@@ -39,8 +45,12 @@ public class EnemySpawner : MonoBehaviour
     {
         for (int i = 0; i < spawnAmount; i++)
         {
-
-            GameObject _ememyObject = Instantiate(enemyVariationPrefab[spawnAtIndex], spawnLocation);
+            int _index = spawnAtIndex;
+            if (spawnAtIndex < 0 || spawnAtIndex > enemyVariationPrefab.Count)
+            {
+                _index = UnityEngine.Random.Range(0, enemyVariationPrefab.Count);
+            }
+            GameObject _ememyObject = Instantiate(enemyVariationPrefab[_index], spawnLocation);
             var _ememy = _ememyObject.GetComponent<IEnemy>();
             if (_ememy is ShootingEnemy shootingEnemy)
             {

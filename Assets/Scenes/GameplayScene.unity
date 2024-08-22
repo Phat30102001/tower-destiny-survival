@@ -314,6 +314,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4461360675318024549, guid: 53fbea622f8138e4b86bac28bbc3d79f, type: 3}
+      propertyPath: m_BodyType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5023409170975036667, guid: 53fbea622f8138e4b86bac28bbc3d79f, type: 3}
       propertyPath: m_Name
       value: Player
@@ -328,6 +332,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3228694066447608804, guid: 53fbea622f8138e4b86bac28bbc3d79f, type: 3}
   m_PrefabInstance: {fileID: 480557582}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &480557589 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2130105741777705415, guid: 53fbea622f8138e4b86bac28bbc3d79f, type: 3}
+  m_PrefabInstance: {fileID: 480557582}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46d7a0cc14c5d0f43842fc413bcf6cd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,6 +614,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySpawner: {fileID: 2062181501}
+  player: {fileID: 480557589}
   projectilePoolingManager: {fileID: 1852070375}
 --- !u!1 &847048849
 GameObject:
@@ -678,7 +694,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.02520752, y: -0.9478111}
+  m_Offset: {x: 0.025146484, y: -549.20544}
   m_SpriteTilingProperty:
     border: {x: 0.049999997, y: 0.049999997, z: 0.049999997, w: 0.049999997}
     pivot: {x: 0.5, y: 0.5}
@@ -689,7 +705,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2285.2808, y: 98.83738}
+  m_Size: {x: 2285.2808, y: 1195.3525}
   m_EdgeRadius: 0
 --- !u!114 &847048855
 MonoBehaviour:
@@ -882,6 +898,7 @@ MonoBehaviour:
   projectilePrefabList:
   - {fileID: 7330347648388806743, guid: e47ca1e5e51464c44ad93b1386a2a8e4, type: 3}
   parentTransform: {fileID: 1852070374}
+  stopSpawning: 0
   poolSize: 10
 --- !u!1 &1940242176
 GameObject:
@@ -1000,13 +1017,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bab95824db0cd94b8e3ff87aa227afc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 480557583}
   enemyVariationPrefab:
   - {fileID: 1932788120106721710, guid: 7e35dea09fde80d4f93d7ebafde7e78f, type: 3}
   - {fileID: 1932788120106721710, guid: 58fccb720d6a24e4fb2642d338c38e83, type: 3}
   spawnLocation: {fileID: 1222079201}
-  spawnAmount: 1
-  spawnAtIndex: 1
+  spawnAmount: 10
+  spawnAtIndex: -1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour, IProjectile
     {
+        [SerializeField] private DamageSender damageSender;
+
+
         [SerializeField] private Rigidbody2D rigidbody;
         private ProjectileData cachedProjectileData;
         private Action onDisable;

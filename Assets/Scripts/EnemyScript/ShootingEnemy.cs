@@ -8,7 +8,7 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
     [SerializeField] private float speed = 500f;
     private Transform objectTransform;
     private int state = 0;
-    [SerializeField] private float shootingDistance=50;
+    [SerializeField] private float attackDistance=50;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private float shootForce=1000;
     private string projectileName="LinearBullet";
@@ -16,13 +16,10 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
     private Action<string, Vector2, Vector2, float> onShoot;
     CoroutineHandle handle;
 
-    private void Start()
-    {
-        objectTransform = transform;
-    }
 
     public void ActiveAction(Transform _target)
     {
+        if(!objectTransform) objectTransform = transform;
         Timing.KillCoroutines(handle);
         switch (state)
         {
@@ -40,7 +37,7 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
     {
         while (state == 0)
         {
-            if (Vector3.Distance(objectTransform.position, _target.position) <= shootingDistance)
+            if (Vector3.Distance(objectTransform.position, _target.position) <= attackDistance)
             {
                 state++;
             }

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1535764610100293431}
   - component: {fileID: 1994015406695169616}
+  - component: {fileID: 7225627703793821624}
   - component: {fileID: 933057180932995438}
   - component: {fileID: -2179718295333620639}
   - component: {fileID: 6962916978082793951}
@@ -48,6 +49,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7330347648388806743}
   m_CullTransparentMesh: 1
+--- !u!114 &7225627703793821624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7330347648388806743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2a58d04a09a63e42a470b83fa9005a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageAmount: 10
 --- !u!114 &933057180932995438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,6 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdafd3950d1f47a690c8a26bc9fbbb07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageSender: {fileID: 7225627703793821624}
   rigidbody: {fileID: 6962916978082793951}
   ProjectileId: LinearBullet
 --- !u!50 &6962916978082793951
@@ -118,7 +133,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &2782919661700323324
 BoxCollider2D:
   m_ObjectHideFlags: 0
