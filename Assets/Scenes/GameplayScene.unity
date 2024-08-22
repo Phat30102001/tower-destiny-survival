@@ -864,7 +864,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 1800}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1852070375
@@ -879,6 +879,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f405904f9976649499225e3e527843d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectilePrefabList:
+  - {fileID: 7330347648388806743, guid: e47ca1e5e51464c44ad93b1386a2a8e4, type: 3}
+  parentTransform: {fileID: 1852070374}
   poolSize: 10
 --- !u!1 &1940242176
 GameObject:

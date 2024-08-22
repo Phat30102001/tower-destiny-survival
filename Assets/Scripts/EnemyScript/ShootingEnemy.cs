@@ -1,4 +1,6 @@
+using MEC;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ShootingEnemy : MonoBehaviour, IEnemy
@@ -8,10 +10,11 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
     private int state = 0;
     [SerializeField] private float shootingDistance=50;
     [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private float shootForce=10;
-    private string projectileName="linearBullet";
+    [SerializeField] private float shootForce=1000;
+    private string projectileName="LinearBullet";
 
-    private Action<string> onShoot;
+    private Action<string, Vector2, Vector2, float> onShoot;
+    CoroutineHandle handle;
 
     private void Start()
     {
@@ -20,43 +23,46 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
 
     public void ActiveAction(Transform _target)
     {
+        Timing.KillCoroutines(handle);
         switch (state)
         {
             case 0:
-                Moving(_target);
+                handle = Timing.RunCoroutine(Moving(_target));
                 break;
             case 1:
-                Shooting(_target);
+                handle = Timing.RunCoroutine(Shooting(_target));
                 break;
         }
         
     }
 
-    private void Moving(Transform _target)
+    private IEnumerator<float> Moving(Transform _target)
     {
-        if (Vector3.Distance(objectTransform.position, _target.position) <= shootingDistance)
+        while (state == 0)
         {
-            state++;
-            return;
+            if (Vector3.Distance(objectTransform.position, _target.position) <= shootingDistance)
+            {
+                state++;
+            }
+            objectTransform.position = Vector3.MoveTowards(objectTransform.position, _target.position, speed * Time.deltaTime);
+            yield return Timing.WaitForOneFrame;
         }
-        objectTransform.position = Vector3.MoveTowards(objectTransform.position, _target.position, speed * Time.deltaTime);
+        ActiveAction(_target);
     }
 
-    private void Shooting(Transform _target)
+    private IEnumerator<float> Shooting(Transform _target)
     {
-        onShoot?.Invoke(projectileName);
-        // if (projectilePrefab != null && _target != null)
-        // {
-        //     // Instantiate projectile
-        //     GameObject projectileGameObject = Instantiate(projectilePrefab, objectTransform);
-        //
-        //     var projectile = projectileGameObject.GetComponent<IProjectile>();
-        //     
-        //         projectile.Fire(_target.position,shootForce);
-        // }
+
+        while (state == 1)
+        {
+
+            onShoot?.Invoke(projectileName, transform.position, _target.position, shootForce);
+            yield return Timing.WaitForSeconds(2f);
+        }
+        ActiveAction(_target);
     }
 
-    public void AssignEvent(Action<string> _onShoot)
+    public void AssignEvent(Action<string, Vector2, Vector2, float> _onShoot)
     {
         onShoot = _onShoot;
     }
