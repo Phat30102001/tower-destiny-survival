@@ -55,6 +55,12 @@ public class ProjectilePoolingManager : MonoBehaviour
          
             _bullet.AssignEvent(() => ReturnToPool(_bullet.gameObject));
         }
+        _projectile.SetData(new ProjectileData 
+        { 
+            Damage=10,
+            ShootForce=_shootForce,
+            TargetTag=TargetConstant.PLAYER
+        });
         _projectile.Fire(_startPosition, _targetPosition, _shootForce);
     }
 
@@ -65,4 +71,5 @@ public class ProjectilePoolingManager : MonoBehaviour
     }
    
 }
+
 

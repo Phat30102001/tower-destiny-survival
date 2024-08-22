@@ -40,3 +40,8 @@ public class GameplayManager : MonoBehaviour
 
     }
 }
+public static class TargetConstant
+{
+    public static string PLAYER = "player";
+    public static string ENEMY = "enemy";
+}

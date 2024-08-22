@@ -13,6 +13,7 @@ public class Projectile : MonoBehaviour, IProjectile
         private ProjectileData cachedProjectileData;
         private Action onDisable;
         [SerializeField] private string ProjectileId;
+        [SerializeField] private float timeTillDisable=4f;
         CoroutineHandle coroWaitToDisable;
 
         public string GetProjectileId()
@@ -25,6 +26,7 @@ public class Projectile : MonoBehaviour, IProjectile
         public void SetData(ProjectileData _data)
         {
             cachedProjectileData = _data;
+            damageSender.SetData(timeTillDisable, cachedProjectileData.Damage);
         }
 
         public void AssignEvent(Action _onDisable)
@@ -42,7 +44,7 @@ public class Projectile : MonoBehaviour, IProjectile
                 rigidbody.AddForce(direction * _shootForce, ForceMode2D.Impulse);
             }
 
-        coroWaitToDisable = Timing.CallDelayed(4f, () => onDisable?.Invoke());
+        coroWaitToDisable = Timing.CallDelayed(timeTillDisable, () => onDisable?.Invoke());
     }
 
     public bool CheckIsAvailable()

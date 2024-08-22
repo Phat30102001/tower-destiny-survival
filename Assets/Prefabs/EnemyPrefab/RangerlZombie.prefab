@@ -86,7 +86,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1932788120106721710}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -163,6 +163,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 500
-  attackDistance: 50
+  attackDistance: 900
   projectilePrefab: {fileID: 7330347648388806743, guid: e47ca1e5e51464c44ad93b1386a2a8e4, type: 3}
   shootForce: 1000

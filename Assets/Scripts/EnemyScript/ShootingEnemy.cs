@@ -15,11 +15,17 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
 
     private Action<string, Vector2, Vector2, float> onShoot;
     CoroutineHandle handle;
+    private EnemyData enemyData;
 
-
-    public void ActiveAction(Transform _target)
+    public void SetData(EnemyData _data)
     {
+        enemyData = _data;
+    }
+    public void ActiveAction(Transform _target, Vector2 _spawnPos)
+    {
+
         if(!objectTransform) objectTransform = transform;
+        objectTransform.position = _spawnPos;
         Timing.KillCoroutines(handle);
         switch (state)
         {
@@ -41,10 +47,10 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
             {
                 state++;
             }
-            objectTransform.position = Vector3.MoveTowards(objectTransform.position, _target.position, speed * Time.deltaTime);
+            objectTransform.position -= Vector3.right * speed * Time.deltaTime;
             yield return Timing.WaitForOneFrame;
         }
-        ActiveAction(_target);
+        ActiveAction(_target, objectTransform.position);
     }
 
     private IEnumerator<float> Shooting(Transform _target)
@@ -56,7 +62,7 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
             onShoot?.Invoke(projectileName, transform.position, _target.position, shootForce);
             yield return Timing.WaitForSeconds(2f);
         }
-        ActiveAction(_target);
+        ActiveAction(_target, objectTransform.position);
     }
 
     public void AssignEvent(Action<string, Vector2, Vector2, float> _onShoot)

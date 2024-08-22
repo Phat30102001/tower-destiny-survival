@@ -9,16 +9,23 @@ public class EnemySpawner : MonoBehaviour
     private Transform target;
     [SerializeField] private List<GameObject> enemyVariationPrefab;
     [SerializeField] private Transform spawnLocation;
+    [SerializeField] private Transform bottomSpawnBound;
+    [SerializeField] private Transform topSpawnBound;
+    
     private List<IEnemy> enemies;
     [SerializeField] private int spawnAmount=10;
     [SerializeField] private int spawnAtIndex = 0;
     private bool isActive = false;
+
+    private float bottomSpawnBoundPosY, topSpawnBoundPosY;
 
     private Action<string, Vector2, Vector2, float> onShooting;
 
     public void Init()
     {
         enemies = new List<IEnemy>();
+        bottomSpawnBoundPosY=bottomSpawnBound.transform.position.y;
+        topSpawnBoundPosY=topSpawnBound.transform.position.y;   
     }
     public void SetData(Transform _playerTransform)
     {
@@ -32,7 +39,14 @@ public class EnemySpawner : MonoBehaviour
         isActive = true;
         foreach (var _enemy in enemies)
         {
-            _enemy.ActiveAction(target);
+            _enemy.SetData(new EnemyData
+            {
+                AttackCooldown = 1f,
+                Damage=10,
+                HealthPoint=50,
+                CoinReceiveAmount=10,
+            });
+            _enemy.ActiveAction(target, new Vector2(spawnLocation.position.x, UnityEngine.Random.Range(bottomSpawnBoundPosY, topSpawnBoundPosY)));
         }
     }
 

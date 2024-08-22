@@ -10,12 +10,17 @@ public class InteractEnemy: MonoBehaviour,IEnemy
     [SerializeField] private float attackDistance = 10;
     [SerializeField] private DamageSender damageSender;
     CoroutineHandle handle;
+    private EnemyData enemyData;
 
-
-
-    public void ActiveAction(Transform _target)
+    public void SetData(EnemyData _data)
+    {
+        enemyData = _data;
+        damageSender.SetData(enemyData.AttackCooldown, enemyData.Damage);
+    }
+    public void ActiveAction(Transform _target, Vector2 _spawnPos)
     {
         if(!objectTransform) objectTransform = transform;
+        objectTransform.position = _spawnPos;
         Timing.KillCoroutines(handle);
         switch (state)
         {
@@ -36,10 +41,10 @@ public class InteractEnemy: MonoBehaviour,IEnemy
             {
                 state++;
             }
-            objectTransform.position = Vector3.MoveTowards(objectTransform.position, _target.position, speed * Time.deltaTime);
+            objectTransform.position -= Vector3.right * speed * Time.deltaTime;
             yield return Timing.WaitForOneFrame;
         }
-        ActiveAction(_target);
+        ActiveAction(_target,objectTransform.position);
     }
     private IEnumerator<float> Attacking(Transform _target)
     {
@@ -50,13 +55,9 @@ public class InteractEnemy: MonoBehaviour,IEnemy
             {
                 state--;
             }
-            damageSender.gameObject.SetActive(false);
-
-            yield return Timing.WaitForSeconds(1f);
-            damageSender.gameObject.SetActive(true);
-
+            yield return Timing.WaitForOneFrame;
         }
-        ActiveAction(_target);
+        ActiveAction(_target, objectTransform.position);
     }
 
 }
