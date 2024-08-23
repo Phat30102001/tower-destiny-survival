@@ -7,8 +7,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private DamageReceiver damageReceiver;
     private PlayerData playerData;
+    [SerializeField] private Transform weaponContainer;
     private int healthPoint = 0;
-
     private Action onZeroHealthCallback;
     public void Init()
     {
@@ -18,6 +18,12 @@ public class Player : MonoBehaviour
     {
         playerData = _data;
         healthPoint = playerData.health;
+
+
+    }
+    public Transform GetWeaponCointainer()
+    {
+        return weaponContainer;
     }
 
     private void onReceiveDamage(int _amount)
@@ -33,7 +39,6 @@ public class Player : MonoBehaviour
     {
         onZeroHealthCallback = _onZeroHealthCallback;
     }
-
 }
 public class PlayerData
 {

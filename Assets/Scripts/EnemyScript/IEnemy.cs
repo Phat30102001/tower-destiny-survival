@@ -2,7 +2,8 @@ using UnityEngine;
 
 public interface IEnemy
 {
-    
+    public Vector2 getEnemyCurrentPos();
+    public bool CheckEnemyIsAlive();
     public void ActiveAction(Transform _target,Vector2 _spawnPos)
     {
         

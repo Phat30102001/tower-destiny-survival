@@ -20,7 +20,6 @@ public class EnemySpawner : MonoBehaviour
     private float bottomSpawnBoundPosY, topSpawnBoundPosY;
 
     private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShooting;
-
     public void Init()
     {
         enemies = new List<IEnemy>();
@@ -50,6 +49,19 @@ public class EnemySpawner : MonoBehaviour
             });
             _enemy.ActiveAction(target, new Vector2(spawnLocation.position.x, UnityEngine.Random.Range(bottomSpawnBoundPosY, topSpawnBoundPosY)));
         }
+    }
+    public Vector2 GetClosestEnemyPos()
+    {
+        Vector2 minPos=Vector2.zero;
+        foreach (var _enemy in enemies)
+        {
+            if (!_enemy.CheckEnemyIsAlive()) continue;
+            if (minPos==Vector2.zero||minPos.x>_enemy.getEnemyCurrentPos().x)
+            {
+                minPos=_enemy.getEnemyCurrentPos();
+            }
+        }
+        return minPos;
     }
 
     public void AssignEvent(Action<string, Vector2, Vector2,int,float,float, ProjectileData> _onShooting)

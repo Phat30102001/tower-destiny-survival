@@ -37,7 +37,7 @@ public class DamageSender : MonoBehaviour
             {
                 if (receiver && receiver.gameObject.tag.Equals(targetTag))
                 {
-                    Debug.Log("coro still running");
+                    //Debug.Log("coro still running");
                     SendDamage(receiver);
                     onHit?.Invoke();
                     if (hideOnHit)
@@ -64,9 +64,12 @@ public class DamageSender : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
          receiver = collision.gameObject.GetComponent<DamageReceiver>();
-        if (!receiver.gameObject.tag.Equals(targetTag)) return;
-        if(receiver)
-            isInTrigger = true;
+        if (receiver)
+        {
+            if (!receiver.gameObject.tag.Equals(targetTag)) return;
+                isInTrigger = true;
+
+        }
     }
     
     public void OnTriggerExit2D(Collider2D collision)

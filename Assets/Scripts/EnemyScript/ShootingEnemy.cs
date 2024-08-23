@@ -90,4 +90,17 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
     {
         onShoot = _onShoot;
     }
+
+    public Vector2 getEnemyCurrentPos()
+    {
+        return objectTransform.position;
+    }
+    public bool CheckEnemyIsAlive()
+    {
+        return healthPoint > 0;
+    }
+    private void OnDisable()
+    {
+        Timing.KillCoroutines(handle);
+    }
 }

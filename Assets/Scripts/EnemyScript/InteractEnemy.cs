@@ -2,7 +2,7 @@ using MEC;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class InteractEnemy: MonoBehaviour,IEnemy
+public class InteractEnemy : MonoBehaviour, IEnemy
 {
     private Transform objectTransform;
     private int state = 0;
@@ -71,4 +71,17 @@ public class InteractEnemy: MonoBehaviour,IEnemy
         ActiveAction(_target, objectTransform.position);
     }
 
+    public Vector2 getEnemyCurrentPos()
+    {
+        return objectTransform.position;
+    }
+    private void OnDisable()
+    {
+        Timing.KillCoroutines(handle);
+    }
+
+    public bool CheckEnemyIsAlive()
+    {
+        return healthPoint > 0;
+    }
 }
