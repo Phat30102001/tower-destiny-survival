@@ -19,7 +19,7 @@ public class EnemySpawner : MonoBehaviour
 
     private float bottomSpawnBoundPosY, topSpawnBoundPosY;
 
-    private Action<string, Vector2, Vector2, ProjectileData> onShooting;
+    private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShooting;
 
     public void Init()
     {
@@ -52,7 +52,7 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    public void AssignEvent(Action<string, Vector2, Vector2, ProjectileData> _onShooting)
+    public void AssignEvent(Action<string, Vector2, Vector2,int,float,float, ProjectileData> _onShooting)
     {
         onShooting = _onShooting;
     }

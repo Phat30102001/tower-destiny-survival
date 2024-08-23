@@ -11,8 +11,12 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
     [SerializeField] private DamageReceiver damageReceiver;
     private string projectileName="LinearBullet";
     private int healthPoint;
+    private int _amount=1;
+    private float _delayOffset=0;
+    private float _shotSpread=0;
 
-    private Action<string, Vector2, Vector2, ProjectileData> onShoot;
+
+    private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShoot;
     CoroutineHandle handle;
     private EnemyData enemyData;
 
@@ -69,7 +73,7 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
         while (state == 1)
         {
 
-            onShoot?.Invoke(projectileName, transform.position, _target.position, new ProjectileData
+            onShoot?.Invoke(projectileName, transform.position, _target.position,_amount,_delayOffset,_shotSpread, new ProjectileData
             {
                 Damage=enemyData.Damage,
                 ShootForce=shootForce,
@@ -82,7 +86,7 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
         ActiveAction(_target, objectTransform.position);
     }
 
-    public void AssignEvent(Action<string, Vector2, Vector2, ProjectileData> _onShoot)
+    public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShoot)
     {
         onShoot = _onShoot;
     }

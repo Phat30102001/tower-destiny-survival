@@ -19,7 +19,7 @@ public class ProjectilePoolingManager : MonoBehaviour
         projectilePool = new List<IProjectile>();
     }
 
-    public void GenerateProjectilePool(string projectileName, Vector2 _startPosition, Vector2 _targetPosition, ProjectileData _data)
+    public void GenerateProjectilePool(string projectileName, Vector2 _startPosition, Vector2 _targetPosition, int _amount, float _delayOffset, float _shotSpread, ProjectileData _data)
     {
         if(stopSpawning) return;
 
@@ -35,7 +35,7 @@ public class ProjectilePoolingManager : MonoBehaviour
         {
             if(_item.GetProjectileId() == projectileName&& _item.CheckIsAvailable())
             {
-                ActiveProjectile(_item, _startPosition, _targetPosition, _data);
+                ActiveProjectile(_item, _startPosition, _targetPosition, _amount, _delayOffset, _shotSpread, _data);
                 return;
             }
         }
@@ -45,10 +45,10 @@ public class ProjectilePoolingManager : MonoBehaviour
         projectilePool.Add(projectile);
         if (projectile != null)
         {
-            ActiveProjectile(projectile, _startPosition, _targetPosition, _data);
+            ActiveProjectile(projectile, _startPosition, _targetPosition, _amount, _delayOffset, _shotSpread, _data);
         }
     }
-    private void ActiveProjectile(IProjectile _projectile, Vector2 _startPosition, Vector2 _targetPosition, ProjectileData _data)
+    private void ActiveProjectile(IProjectile _projectile, Vector2 _startPosition, Vector2 _targetPosition, int _amount,float _delayOffset, float shotSpread, ProjectileData _data)
     {
         if (_projectile is Projectile _bullet)
         {
