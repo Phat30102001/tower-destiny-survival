@@ -26,7 +26,7 @@ public class Projectile : MonoBehaviour, IProjectile
         public void SetData(ProjectileData _data)
         {
             cachedProjectileData = _data;
-            damageSender.SetData(timeTillDisable, cachedProjectileData.Damage);
+            damageSender.SetData(timeTillDisable, cachedProjectileData.Damage,cachedProjectileData.TargetTag);
         }
 
         public void AssignEvent(Action _onDisable)

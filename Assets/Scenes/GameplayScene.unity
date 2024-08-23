@@ -391,10 +391,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4461360675318024549, guid: 53fbea622f8138e4b86bac28bbc3d79f, type: 3}
-      propertyPath: m_BodyType
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5023409170975036667, guid: 53fbea622f8138e4b86bac28bbc3d79f, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1201,7 +1197,7 @@ MonoBehaviour:
   spawnLocation: {fileID: 1222079201}
   bottomSpawnBound: {fileID: 1949891666}
   topSpawnBound: {fileID: 989435026}
-  spawnAmount: 7
+  spawnAmount: 1
   spawnAtIndex: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -17,4 +17,5 @@ public class EnemyData
     public int Damage;
     public float AttackCooldown;
     public int CoinReceiveAmount;
+    public string TargetTag = TargetConstant.PLAYER;
 }

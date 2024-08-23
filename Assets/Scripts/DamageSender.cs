@@ -9,10 +9,12 @@ public class DamageSender : MonoBehaviour
     DamageReceiver receiver;
     private bool isInTrigger=false;
     CoroutineHandle handle;
-    public void SetData(float _attackCooldown,int _damageAmount)
+    private string targetTag;
+    public void SetData(float _attackCooldown,int _damageAmount,string _targetTag)
     {
         attackCooldown = _attackCooldown;
         damageAmount= _damageAmount;
+        targetTag = _targetTag;
         handle=Timing.RunCoroutine (ApplyDamage());
     }
     public IEnumerator<float> ApplyDamage()
@@ -41,6 +43,7 @@ public class DamageSender : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
          receiver = collision.gameObject.GetComponent<DamageReceiver>();
+        if (!receiver.gameObject.tag.Equals(targetTag)) return;
         if(receiver)
             isInTrigger = true;
     }

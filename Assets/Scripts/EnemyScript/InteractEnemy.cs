@@ -15,7 +15,7 @@ public class InteractEnemy: MonoBehaviour,IEnemy
     public void SetData(EnemyData _data)
     {
         enemyData = _data;
-        damageSender.SetData(enemyData.AttackCooldown, enemyData.Damage);
+        damageSender.SetData(enemyData.AttackCooldown, enemyData.Damage,enemyData.TargetTag);
     }
     public void ActiveAction(Transform _target, Vector2 _spawnPos)
     {
