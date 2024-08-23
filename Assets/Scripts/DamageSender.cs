@@ -11,7 +11,7 @@ public class DamageSender : MonoBehaviour
     CoroutineHandle handle;
     public void SetData(float _attackCooldown,int _damageAmount)
     {
-        attackCooldown = attackCooldown;
+        attackCooldown = _attackCooldown;
         damageAmount= _damageAmount;
         handle=Timing.RunCoroutine (ApplyDamage());
     }
@@ -24,6 +24,7 @@ public class DamageSender : MonoBehaviour
             {
                 SendDamage(receiver);
                 yield return Timing.WaitForSeconds(attackCooldown);
+                Debug.Log($"attack cooldown: {attackCooldown}");
             }
             else
                 yield return Timing.WaitForOneFrame;
