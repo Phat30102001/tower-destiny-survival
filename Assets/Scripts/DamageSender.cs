@@ -1,4 +1,5 @@
 ﻿using MEC;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,15 +8,25 @@ public class DamageSender : MonoBehaviour
     public int damageAmount = 0;
     private float attackCooldown = 0;
     DamageReceiver receiver;
-    private bool isInTrigger=false;
+    public bool isInTrigger=false;
     CoroutineHandle handle;
     private string targetTag;
-    public void SetData(float _attackCooldown,int _damageAmount,string _targetTag)
+    private bool hideOnHit;
+    private Action onHit;
+
+    public void AssignEvent(Action _onHit)
+    {
+        onHit = null;
+        onHit = _onHit;
+    }
+    public void SetData(float _attackCooldown,int _damageAmount,string _targetTag,bool _hideOnHit)
     {
         attackCooldown = _attackCooldown;
         damageAmount= _damageAmount;
         targetTag = _targetTag;
-        handle=Timing.RunCoroutine (ApplyDamage());
+        hideOnHit = _hideOnHit;
+
+
     }
     public IEnumerator<float> ApplyDamage()
     {
@@ -24,9 +35,18 @@ public class DamageSender : MonoBehaviour
         {
             if (isInTrigger)
             {
-                SendDamage(receiver);
-                yield return Timing.WaitForSeconds(attackCooldown);
-                Debug.Log($"attack cooldown: {attackCooldown}");
+                if (receiver && receiver.gameObject.tag.Equals(targetTag))
+                {
+                    Debug.Log("coro still running");
+                    SendDamage(receiver);
+                    onHit?.Invoke();
+                    if (hideOnHit)
+                    {
+                        resetData();
+                    }
+                    yield return Timing.WaitForSeconds(attackCooldown);
+                }
+                //Debug.Log($"attack cooldown: {attackCooldown}");
             }
             else
                 yield return Timing.WaitForOneFrame;
@@ -37,6 +57,7 @@ public class DamageSender : MonoBehaviour
     {
         if (receiver != null)
         {
+            if (!receiver.gameObject.tag.Equals(targetTag)) return;
             receiver.ReceiveDamage(damageAmount);
         }
     }
@@ -54,8 +75,16 @@ public class DamageSender : MonoBehaviour
         if (!receiver)
             isInTrigger = false;
     }
-    private void OnDisable()
+    private void OnEnable()
     {
+        resetData();
+        handle = Timing.RunCoroutine(ApplyDamage());
+    }
+
+    private void resetData()
+    {
+        isInTrigger = false;
+        receiver = null;
         Timing.KillCoroutines(handle);
     }
 

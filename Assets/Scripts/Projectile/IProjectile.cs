@@ -13,7 +13,7 @@ using UnityEngine;
 
         }
 
-        public void Fire(Vector2 _startPosition,Vector2 _destination, float _shootForce)
+        public void Fire(Vector2 _startPosition,Vector2 _destination)
         {
 
         }
@@ -24,6 +24,7 @@ using UnityEngine;
         public float ShootForce;
         public int Damage;
         public string TargetTag;
+        public bool HideOnHit;
 
 
     }

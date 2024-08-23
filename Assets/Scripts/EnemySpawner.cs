@@ -19,7 +19,7 @@ public class EnemySpawner : MonoBehaviour
 
     private float bottomSpawnBoundPosY, topSpawnBoundPosY;
 
-    private Action<string, Vector2, Vector2, float> onShooting;
+    private Action<string, Vector2, Vector2, ProjectileData> onShooting;
 
     public void Init()
     {
@@ -45,12 +45,14 @@ public class EnemySpawner : MonoBehaviour
                 Damage=10,
                 HealthPoint=50,
                 CoinReceiveAmount=10,
+                MovingSpeed=500,
+                AttackRange=900,
             });
             _enemy.ActiveAction(target, new Vector2(spawnLocation.position.x, UnityEngine.Random.Range(bottomSpawnBoundPosY, topSpawnBoundPosY)));
         }
     }
 
-    public void AssignEvent(Action<string, Vector2, Vector2, float> _onShooting)
+    public void AssignEvent(Action<string, Vector2, Vector2, ProjectileData> _onShooting)
     {
         onShooting = _onShooting;
     }

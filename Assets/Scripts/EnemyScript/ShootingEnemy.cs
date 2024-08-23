@@ -5,21 +5,22 @@ using UnityEngine;
 
 public class ShootingEnemy : MonoBehaviour, IEnemy
 {
-    [SerializeField] private float speed = 500f;
     private Transform objectTransform;
     private int state = 0;
-    [SerializeField] private float attackDistance=50;
-    [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private float shootForce=1000;
+    [SerializeField] private DamageReceiver damageReceiver;
     private string projectileName="LinearBullet";
+    private int healthPoint;
 
-    private Action<string, Vector2, Vector2, float> onShoot;
+    private Action<string, Vector2, Vector2, ProjectileData> onShoot;
     CoroutineHandle handle;
     private EnemyData enemyData;
 
     public void SetData(EnemyData _data)
     {
         enemyData = _data;
+        healthPoint=enemyData.HealthPoint;
+        damageReceiver.AssignEvent(onReceiveDamage);
     }
     public void ActiveAction(Transform _target, Vector2 _spawnPos)
     {
@@ -38,16 +39,25 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
         }
         
     }
+    private void onReceiveDamage(int _amount)
+    {
+        healthPoint -= _amount;
+        //Debug.Log($"{gameObject.name}'s health: {healthPoint}");
+        if (healthPoint <= 0)
+        {
+            gameObject.SetActive(false);
+        }
+    }
 
     private IEnumerator<float> Moving(Transform _target)
     {
         while (state == 0)
         {
-            if (Vector3.Distance(objectTransform.position, _target.position) <= attackDistance)
+            if (Vector3.Distance(objectTransform.position, _target.position) <= enemyData.AttackRange)
             {
                 state++;
             }
-            objectTransform.position -= Vector3.right * speed * Time.deltaTime;
+            objectTransform.position -= Vector3.right * enemyData.MovingSpeed * Time.deltaTime;
             yield return Timing.WaitForOneFrame;
         }
         ActiveAction(_target, objectTransform.position);
@@ -59,13 +69,20 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
         while (state == 1)
         {
 
-            onShoot?.Invoke(projectileName, transform.position, _target.position, shootForce);
+            onShoot?.Invoke(projectileName, transform.position, _target.position, new ProjectileData
+            {
+                Damage=enemyData.Damage,
+                ShootForce=shootForce,
+                TargetTag=enemyData.TargetTag,
+                HideOnHit=true,
+
+            });
             yield return Timing.WaitForSeconds(2f);
         }
         ActiveAction(_target, objectTransform.position);
     }
 
-    public void AssignEvent(Action<string, Vector2, Vector2, float> _onShoot)
+    public void AssignEvent(Action<string, Vector2, Vector2, ProjectileData> _onShoot)
     {
         onShoot = _onShoot;
     }

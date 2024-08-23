@@ -18,4 +18,6 @@ public class EnemyData
     public float AttackCooldown;
     public int CoinReceiveAmount;
     public string TargetTag = TargetConstant.PLAYER;
+    public float MovingSpeed;
+    public float AttackRange;
 }

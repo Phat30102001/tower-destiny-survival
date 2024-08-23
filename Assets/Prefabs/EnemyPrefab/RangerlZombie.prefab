@@ -10,10 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 216269537237142496}
   - component: {fileID: 124755410384464618}
+  - component: {fileID: -6509114200005909450}
+  - component: {fileID: 6313632749415706944}
   - component: {fileID: 9113092407334513766}
   - component: {fileID: 2459232553063363174}
   - component: {fileID: 5379529685420031518}
-  - component: {fileID: -6509114200005909450}
   m_Layer: 0
   m_Name: RangerlZombie
   m_TagString: Enemy
@@ -48,6 +49,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1932788120106721710}
   m_CullTransparentMesh: 1
+--- !u!114 &-6509114200005909450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932788120106721710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e63a44173d547cba2765134dcc56ad4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootForce: 1000
+  damageReceiver: {fileID: 6313632749415706944}
+--- !u!114 &6313632749415706944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932788120106721710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7e9711b48af470459af0d96dadb759b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &9113092407334513766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,19 +177,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 103.13129, y: 100.076126}
   m_EdgeRadius: 0
---- !u!114 &-6509114200005909450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1932788120106721710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e63a44173d547cba2765134dcc56ad4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 500
-  attackDistance: 900
-  projectilePrefab: {fileID: 7330347648388806743, guid: e47ca1e5e51464c44ad93b1386a2a8e4, type: 3}
-  shootForce: 1000

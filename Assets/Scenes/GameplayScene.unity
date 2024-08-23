@@ -1198,7 +1198,7 @@ MonoBehaviour:
   bottomSpawnBound: {fileID: 1949891666}
   topSpawnBound: {fileID: 989435026}
   spawnAmount: 1
-  spawnAtIndex: 0
+  spawnAtIndex: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

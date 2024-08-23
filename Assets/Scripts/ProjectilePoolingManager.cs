@@ -19,7 +19,7 @@ public class ProjectilePoolingManager : MonoBehaviour
         projectilePool = new List<IProjectile>();
     }
 
-    public void GenerateProjectilePool(string projectileName, Vector2 _startPosition, Vector2 _targetPosition, float _shootForce)
+    public void GenerateProjectilePool(string projectileName, Vector2 _startPosition, Vector2 _targetPosition, ProjectileData _data)
     {
         if(stopSpawning) return;
 
@@ -35,7 +35,7 @@ public class ProjectilePoolingManager : MonoBehaviour
         {
             if(_item.GetProjectileId() == projectileName&& _item.CheckIsAvailable())
             {
-                ActiveProjectile(_item, _startPosition, _targetPosition, _shootForce);
+                ActiveProjectile(_item, _startPosition, _targetPosition, _data);
                 return;
             }
         }
@@ -45,23 +45,18 @@ public class ProjectilePoolingManager : MonoBehaviour
         projectilePool.Add(projectile);
         if (projectile != null)
         {
-            ActiveProjectile(projectile, _startPosition, _targetPosition, _shootForce);
+            ActiveProjectile(projectile, _startPosition, _targetPosition, _data);
         }
     }
-    private void ActiveProjectile(IProjectile _projectile, Vector2 _startPosition, Vector2 _targetPosition, float _shootForce)
+    private void ActiveProjectile(IProjectile _projectile, Vector2 _startPosition, Vector2 _targetPosition, ProjectileData _data)
     {
         if (_projectile is Projectile _bullet)
         {
          
             _bullet.AssignEvent(() => ReturnToPool(_bullet.gameObject));
         }
-        _projectile.SetData(new ProjectileData 
-        { 
-            Damage=10,
-            ShootForce=_shootForce,
-            TargetTag=TargetConstant.PLAYER
-        });
-        _projectile.Fire(_startPosition, _targetPosition, _shootForce);
+        _projectile.SetData(_data);
+        _projectile.Fire(_startPosition, _targetPosition);
     }
 
 

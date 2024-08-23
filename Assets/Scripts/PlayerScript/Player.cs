@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     private void onReceiveDamage(int _amount)
     {
         healthPoint -= _amount;
-        Debug.Log($"{gameObject.name}'s health: {healthPoint}");
+        //Debug.Log($"{gameObject.name}'s health: {healthPoint}");
         if (healthPoint <= 0)
         {
             onZeroHealthCallback?.Invoke();

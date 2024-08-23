@@ -10,10 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 216269537237142496}
   - component: {fileID: 124755410384464618}
+  - component: {fileID: 7651272116950663484}
   - component: {fileID: 9113092407334513766}
+  - component: {fileID: 8339944297725834086}
   - component: {fileID: 2459232553063363174}
   - component: {fileID: 5379529685420031518}
-  - component: {fileID: 7651272116950663484}
   m_Layer: 0
   m_Name: NormalZombie
   m_TagString: Enemy
@@ -49,6 +50,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1932788120106721710}
   m_CullTransparentMesh: 1
+--- !u!114 &7651272116950663484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932788120106721710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 944eac620424431e8936f0397325ee85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageSender: {fileID: 2656473460317054455}
+  damageReceiver: {fileID: 8339944297725834086}
 --- !u!114 &9113092407334513766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,6 +94,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8339944297725834086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932788120106721710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7e9711b48af470459af0d96dadb759b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!50 &2459232553063363174
 Rigidbody2D:
   serializedVersion: 4
@@ -151,21 +178,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 103.13129, y: 100.076126}
   m_EdgeRadius: 0
---- !u!114 &7651272116950663484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1932788120106721710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 944eac620424431e8936f0397325ee85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 500
-  attackDistance: 150
-  damageSender: {fileID: 2656473460317054455}
 --- !u!1 &6622436950653471493
 GameObject:
   m_ObjectHideFlags: 0

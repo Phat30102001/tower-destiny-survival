@@ -4,18 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 public class InteractEnemy: MonoBehaviour,IEnemy
 {
-    [SerializeField] private float speed = 500f;
     private Transform objectTransform;
     private int state = 0;
-    [SerializeField] private float attackDistance = 10;
     [SerializeField] private DamageSender damageSender;
+    [SerializeField] private DamageReceiver damageReceiver;
     CoroutineHandle handle;
     private EnemyData enemyData;
+    private int healthPoint;
 
     public void SetData(EnemyData _data)
     {
         enemyData = _data;
-        damageSender.SetData(enemyData.AttackCooldown, enemyData.Damage,enemyData.TargetTag);
+        healthPoint=enemyData.HealthPoint;
+        damageSender.SetData(enemyData.AttackCooldown, enemyData.Damage,enemyData.TargetTag,false);
+        damageReceiver.AssignEvent(onReceiveDamage);
     }
     public void ActiveAction(Transform _target, Vector2 _spawnPos)
     {
@@ -33,15 +35,24 @@ public class InteractEnemy: MonoBehaviour,IEnemy
         }
 
     }
+    private void onReceiveDamage(int _amount)
+    {
+        healthPoint -= _amount;
+        //Debug.Log($"{gameObject.name}'s health: {healthPoint}");
+        if (healthPoint <= 0)
+        {
+            gameObject.SetActive(false);
+        }
+    }
     private IEnumerator<float> Moving(Transform _target)
     {
         while (state == 0)
         {
-            if (Vector3.Distance(objectTransform.position, _target.position) <= attackDistance)
+            if (Vector3.Distance(objectTransform.position, _target.position) <= enemyData.AttackRange)
             {
                 state++;
             }
-            objectTransform.position -= Vector3.right * speed * Time.deltaTime;
+            objectTransform.position -= Vector3.right * enemyData.MovingSpeed * Time.deltaTime;
             yield return Timing.WaitForOneFrame;
         }
         ActiveAction(_target,objectTransform.position);
@@ -51,7 +62,7 @@ public class InteractEnemy: MonoBehaviour,IEnemy
 
         while (state == 1)
         {
-            if (Vector3.Distance(objectTransform.position, _target.position) > attackDistance)
+            if (Vector3.Distance(objectTransform.position, _target.position) > enemyData.AttackRange)
             {
                 state--;
             }

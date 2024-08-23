@@ -26,7 +26,12 @@ public class Projectile : MonoBehaviour, IProjectile
         public void SetData(ProjectileData _data)
         {
             cachedProjectileData = _data;
-            damageSender.SetData(timeTillDisable, cachedProjectileData.Damage,cachedProjectileData.TargetTag);
+            damageSender.SetData(timeTillDisable, cachedProjectileData.Damage,cachedProjectileData.TargetTag,cachedProjectileData.HideOnHit);
+            damageSender.AssignEvent(() =>
+            {
+                Timing.KillCoroutines(coroWaitToDisable);
+                gameObject.SetActive(false);
+            });
         }
 
         public void AssignEvent(Action _onDisable)
@@ -34,14 +39,17 @@ public class Projectile : MonoBehaviour, IProjectile
             onDisable = _onDisable;
         }
 
-        public void Fire(Vector2 _startPosition,Vector2 _destination, float _shootForce)
+        public void Fire(Vector2 _startPosition,Vector2 _destination)
         {
         gameObject.SetActive(true);
         transform.position = _startPosition;
             if (rigidbody != null)
             {
-                Vector2 direction = (_destination - _startPosition).normalized;
-                rigidbody.AddForce(direction * _shootForce, ForceMode2D.Impulse);
+                Vector2 _direction = (_destination - _startPosition).normalized;
+            float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            rigidbody.AddForce(_direction * cachedProjectileData.ShootForce, ForceMode2D.Impulse);
             }
 
         coroWaitToDisable = Timing.CallDelayed(timeTillDisable, () => onDisable?.Invoke());
