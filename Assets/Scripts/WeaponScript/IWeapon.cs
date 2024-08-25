@@ -7,8 +7,10 @@ using UnityEngine;
 public interface IWeapon
 {
     public string GetWeaponId();
+    public string GetUserId();
+    public void DisableWeapon();
     public float GetWeaponCooldown();
-    public IEnumerator<float> AutoAim();
+    public IEnumerator<float> ActiveWeapon();
     public void SetData(WeaponBaseData _data);
     public void Fire(Vector2 _target);
     public void AssignEvent(Action<string, Vector2, Vector2, int
@@ -16,12 +18,13 @@ public interface IWeapon
 }
 public class WeaponBaseData
 {
+    public string Uid;
     public string WeaponId;
     public int DamageAmount;
     public float Cooldown;
-    public int NumberPerRound;
-    public float FireSpreadOffset;
+    //public int NumberPerRound;
+    //public float FireSpreadOffset;
     public string TargetTag;
-    public float ShootForce;
-    public string ProjectileId;
+    //public float ShootForce;
+    //public string ProjectileId;
 }

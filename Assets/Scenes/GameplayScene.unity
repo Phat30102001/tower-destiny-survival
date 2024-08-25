@@ -1110,6 +1110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapons:
   - {fileID: 6557459710076565597, guid: 44d984a44699f3e4cafa7ab839f8acb3, type: 3}
+  - {fileID: 6557459710076565597, guid: a1782b8242fe5fe49ba83b06e6934a4e, type: 3}
 --- !u!1 &989435025
 GameObject:
   m_ObjectHideFlags: 0
@@ -1721,6 +1722,7 @@ MonoBehaviour:
   projectilePrefabList:
   - {fileID: 7330347648388806743, guid: e47ca1e5e51464c44ad93b1386a2a8e4, type: 3}
   - {fileID: 7330347648388806743, guid: 0944a61f009b4684b98ad1594ece1188, type: 3}
+  - {fileID: 7330347648388806743, guid: 3d46b1c635eed374985e7ea3fc8bbaca, type: 3}
   parentTransform: {fileID: 1852070374}
   poolSize: 10
 --- !u!1001 &1861442985
@@ -1999,7 +2001,7 @@ MonoBehaviour:
   bottomSpawnBound: {fileID: 1949891666}
   topSpawnBound: {fileID: 989435026}
   spawnAmount: 8
-  spawnAtIndex: 0
+  spawnAtIndex: 1
 --- !u!1001 &2100816810
 PrefabInstance:
   m_ObjectHideFlags: 0

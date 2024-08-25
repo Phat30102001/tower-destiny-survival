@@ -52,7 +52,7 @@ public class GameplayManager : MonoBehaviour
 
 
         enemySpawner.AssignEvent(projectilePoolingManager.GenerateProjectilePool);
-        turretManager.AssignEvent(enemySpawner.SwitchEnemyTarget);
+        turretManager.AssignEvent(enemySpawner.SwitchEnemyTarget,weaponController.RemoveWeapon);
         player.AssignEvent(activeGameOver);
     }
 
@@ -70,6 +70,7 @@ public class GameplayManager : MonoBehaviour
         weaponController.SetData(player.GetWeaponCointainer());
         weaponBaseData = new ShotgunData
         {
+            Uid=TargetConstant.PLAYER,
             Cooldown = 10f,
             WeaponId = WeaponIdConstant.SHOTGUN,
             DamageAmount = 10,
@@ -77,15 +78,29 @@ public class GameplayManager : MonoBehaviour
             NumberPerRound = 3,
             FireSpreadOffset = 100,
             TargetTag = TargetConstant.ENEMY,
-            ProjectileId="ShotgunBullet",
+            ProjectileId = "ShotgunBullet",
 
         };
-        weaponController.SpawnWeapon(WeaponIdConstant.SHOTGUN, weaponBaseData);
+        var _turretWeaponBaseData = new MachineGunData
+        {
+            Uid = "0",
+            Cooldown = 1f,
+            WeaponId = WeaponIdConstant.MACHINE_GUN,
+            DamageAmount = 10,
+            ShootForce = 3000,
+            NumberPerRound = 3,
+            TargetTag = TargetConstant.ENEMY,
+            ProjectileId = "MachineGunBullet",
+
+        };
+        weaponController.SpawnWeapon( weaponBaseData);
         turretManager.GenerateTurret(new TurretData
         {
             HealthPoint = 100,
+            TurretId = "0",
 
         });
+        weaponController.SpawnTurretWeapon(_turretWeaponBaseData,turretManager.GetTurretTransformAtId(_turretWeaponBaseData.Uid));
     }
     private void startGame()
     {
@@ -119,5 +134,6 @@ public static class TargetConstant
 public static class WeaponIdConstant
 {
     public static string SHOTGUN = "Shotgun";
+    public static string MACHINE_GUN = "MachineGun";
 }
 

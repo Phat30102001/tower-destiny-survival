@@ -5,8 +5,10 @@ public class Turret: MonoBehaviour
 {
     private TurretData turretData;
     [SerializeField] DamageReceiver damageReceiver;
+    [SerializeField] Transform weaponContainer;
     private int healthPoint;
     private Action onZeroHealthCallback;
+    Action<string> onDisableWeapon;
     public void SetData(TurretData _data)
     {
         turretData = _data;
@@ -20,15 +22,22 @@ public class Turret: MonoBehaviour
         if (healthPoint <= 0)
         {
             onZeroHealthCallback?.Invoke();
+            onDisableWeapon?.Invoke(turretData.TurretId);
         }
     }
-    public void AssignEvent(Action _onZeroHealthCallback)
+    public void AssignEvent(Action _onZeroHealthCallback, Action<string> _onDisableWeapon)
     {
+        onDisableWeapon = _onDisableWeapon;
         onZeroHealthCallback = _onZeroHealthCallback;
+    }
+    public Transform GetWeaponCointainer()
+    {
+        return weaponContainer;
     }
 }
 public class TurretData
 {
+    public string TurretId;
     public int HealthPoint;
     public string WeaponId;
 }

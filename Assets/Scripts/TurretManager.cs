@@ -37,15 +37,27 @@ public class TurretManager : MonoBehaviour
         
         _turretSlot.SetDataForTurret(turretData);
     }
+    public Transform GetTurretTransformAtId(string _id)
+    {
+        foreach(var _slot in turretSlots)
+        {
+            if(!_slot.CheckIsOccupied())continue;
+            if (_slot.GetTurretid().Equals(_id))
+            {
+                return _slot.GetTurretWeaponContainer();    
+            }
+        }
+        return null;
+    }
     public Transform GetTurretTransform()
     {
         return turretTransform;
     }
-    public void AssignEvent(Action _onZeroTurret)
+    public void AssignEvent(Action _onZeroTurret,Action<string> _onDisableTurretWeapon)
     {
         foreach (var _slot in turretSlots)
         {
-            _slot.AssignEvent(CheckAnyTurretAlive);
+            _slot.AssignEvent(CheckAnyTurretAlive, _onDisableTurretWeapon);
         }
         onZeroTurret = _onZeroTurret;
     }
