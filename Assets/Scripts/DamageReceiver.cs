@@ -7,7 +7,7 @@ public class DamageReceiver : MonoBehaviour
 
     public void ReceiveDamage(int damageAmount)
     {
-        //Debug.Log($"{gameObject.name} received {damageAmount} damage");
+        Debug.Log($"{gameObject.name} received {damageAmount} damage");
         onReceiveDamageCallback?.Invoke(damageAmount);
     }
 

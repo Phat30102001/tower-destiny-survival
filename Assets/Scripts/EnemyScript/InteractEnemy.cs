@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public class InteractEnemy : MonoBehaviour, IEnemy
 {
+    public string tag;
     private Transform objectTransform;
     private int state = 0;
     [SerializeField] private DamageSender damageSender;
@@ -12,6 +13,11 @@ public class InteractEnemy : MonoBehaviour, IEnemy
     private EnemyData enemyData;
     private int healthPoint;
 
+    private void Update()
+    {
+        if (enemyData != null)
+            tag = enemyData.TargetTag;
+    }
     public void SetData(EnemyData _data)
     {
         enemyData = _data;
@@ -83,5 +89,16 @@ public class InteractEnemy : MonoBehaviour, IEnemy
     public bool CheckEnemyIsAlive()
     {
         return healthPoint > 0;
+    }
+
+    public string GetCurrentTargetTag()
+    {
+        return enemyData.TargetTag;
+    }
+
+    public void SwitchEnemyTarget(string _targetTag)
+    {
+        enemyData.TargetTag = _targetTag;
+        damageSender.SetData(enemyData.AttackCooldown, enemyData.Damage, enemyData.TargetTag, false);
     }
 }

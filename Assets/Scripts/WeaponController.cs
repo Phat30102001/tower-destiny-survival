@@ -11,7 +11,8 @@ public class WeaponController : MonoBehaviour
     private IWeapon weapon;
     private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShoot;
     public Func<Vector2> onGetNearestTarget;
-
+    private Vector2 nearestEnemyPos=Vector2.zero;
+    CoroutineHandle handle;
 
 
 
@@ -31,19 +32,27 @@ public class WeaponController : MonoBehaviour
 
         IWeapon _weapon= _weaponObject.GetComponent<IWeapon>();
         _weapon.SetData(_data);
-        _weapon.AssignEvent(onShoot);
+        _weapon.AssignEvent(onShoot, getNearestEnemy);
         weapon =_weapon;
     }
-    public IEnumerator<float> CoroWeaponAutoAim()
+    public void ActiveWeapon()
+    {
+        handle = Timing.RunCoroutine(AutoAimEnemy());
+        handle=Timing.RunCoroutine( weapon.AutoAim());
+        
+    }
+    public IEnumerator<float> AutoAimEnemy()
     {
         while (true)
         {
-
-            Vector2 _nearestEnemyPos = onGetNearestTarget();
-            WeaponAutoAim(_nearestEnemyPos);
-            yield return Timing.WaitForSeconds(weapon.GetWeaponCooldown());
+            nearestEnemyPos = onGetNearestTarget();
+            yield return Timing.WaitForOneFrame;
         }
-        yield return 0;
+    }
+    
+    private Vector2 getNearestEnemy()
+    {
+        return nearestEnemyPos;
     }
     public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShoot,Func<Vector2> _onGetNearestTarget)
     {
@@ -51,11 +60,6 @@ public class WeaponController : MonoBehaviour
         onGetNearestTarget = _onGetNearestTarget;
     }
 
-    public void WeaponAutoAim(Vector2 _pos)
-    {
-        weapon.AutoAim(_pos);
-        weapon.Fire(_pos);
-    }
     public IWeapon GetCurrentEquipWeapon()
     {
         return weapon;

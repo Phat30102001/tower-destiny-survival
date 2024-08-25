@@ -1,12 +1,14 @@
+using MEC;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 
 public class EnemySpawner : MonoBehaviour
 { 
-    private Transform target;
+    //private Transform target;
     [SerializeField] private List<GameObject> enemyVariationPrefab;
     [SerializeField] private Transform spawnLocation;
     [SerializeField] private Transform bottomSpawnBound;
@@ -16,6 +18,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private int spawnAmount=10;
     [SerializeField] private int spawnAtIndex = 0;
     private bool isActive = false;
+    private Dictionary<string,Transform> targets = new Dictionary<string,Transform>();
 
     private float bottomSpawnBoundPosY, topSpawnBoundPosY;
 
@@ -26,28 +29,47 @@ public class EnemySpawner : MonoBehaviour
         bottomSpawnBoundPosY=bottomSpawnBound.transform.position.y;
         topSpawnBoundPosY=topSpawnBound.transform.position.y;   
     }
-    public void SetData(Transform _playerTransform)
+    // player transform is for enemy who directly aim at player, attack point is for enemy who destroy the lowest turret
+    public void SetData(Transform _attackPoint,Transform _playerTransform)
     {
-        target= _playerTransform;
+        targets.Add(TargetConstant.TURRET, _attackPoint);
+        targets.Add(TargetConstant.PLAYER, _playerTransform);
         generateEnemy();
 
     }
-    public void ActiveEnemies()
+    public IEnumerator<float> ActiveEnemies()
     {
-        if (isActive) return;
-        isActive = true;
+        if (!isActive)
+        {
+
+            isActive = true;
+            foreach (var _enemy in enemies)
+            {
+                yield return Timing.WaitForSeconds(0.5f);
+                _enemy.SetData(new EnemyData
+                {
+                    AttackCooldown = 1f,
+                    Damage=10,
+                    HealthPoint=50,
+                    CoinReceiveAmount=10,
+                    MovingSpeed=500,
+                    AttackRange=900,
+                    TargetTag = TargetConstant.TURRET,
+                });
+                _enemy.ActiveAction(targets[_enemy.GetCurrentTargetTag()], new Vector2(spawnLocation.position.x, UnityEngine.Random.Range(bottomSpawnBoundPosY, topSpawnBoundPosY)));
+            }
+        }
+        yield break;
+    }
+    public void SwitchEnemyTarget()
+    {
         foreach (var _enemy in enemies)
         {
-            _enemy.SetData(new EnemyData
+            if (_enemy.CheckEnemyIsAlive())
             {
-                AttackCooldown = 1f,
-                Damage=10,
-                HealthPoint=50,
-                CoinReceiveAmount=10,
-                MovingSpeed=500,
-                AttackRange=900,
-            });
-            _enemy.ActiveAction(target, new Vector2(spawnLocation.position.x, UnityEngine.Random.Range(bottomSpawnBoundPosY, topSpawnBoundPosY)));
+                _enemy.SwitchEnemyTarget(TargetConstant.PLAYER);
+                _enemy.ActiveAction(targets[TargetConstant.PLAYER], _enemy.getEnemyCurrentPos());
+            }
         }
     }
     public Vector2 GetClosestEnemyPos()

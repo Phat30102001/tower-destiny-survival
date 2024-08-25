@@ -9,6 +9,7 @@ public class Shotgun : MonoBehaviour, IWeapon
 {
     [SerializeField] private Projectile projectile;
     [SerializeField] private string weaponId;
+    private Func<Vector2> onGetNearestEnemy;
 
     private ShotgunData shotgunData;
     private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShoot;
@@ -19,21 +20,23 @@ public class Shotgun : MonoBehaviour, IWeapon
             shotgunData = _shotgunData;
         }
     }
-    public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShoot)
-    {
-        onShoot = _onShoot;
-    }
 
     public string GetWeaponId()
     {
         return weaponId;
     }
 
-    public void AutoAim(Vector2 _target)
+    public IEnumerator<float> AutoAim()
     {
-        float angle = Mathf.Atan2(_target.y, _target.x) * Mathf.Rad2Deg;
+        while (gameObject.activeSelf)
+        {
+            Vector2 _target = onGetNearestEnemy();
+            float angle = Mathf.Atan2(_target.y, _target.x) * Mathf.Rad2Deg;
 
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            Fire(_target);
+            yield return Timing.WaitForSeconds( shotgunData.Cooldown);
+        }
     }
 
     public void Fire(Vector2 _target)
@@ -52,6 +55,13 @@ public class Shotgun : MonoBehaviour, IWeapon
     public float GetWeaponCooldown()
     {
         return shotgunData.Cooldown;
+    }
+
+
+    public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShoot, Func<Vector2> _onGetNearestTarget)
+    {
+        onShoot = _onShoot;
+        onGetNearestEnemy=_onGetNearestTarget;
     }
 }
 public class ShotgunData : WeaponBaseData

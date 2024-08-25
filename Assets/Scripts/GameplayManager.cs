@@ -12,6 +12,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private ProjectilePoolingManager projectilePoolingManager;
     [SerializeField] private WeaponController weaponController;
+    [SerializeField] private TurretManager turretManager;
     
     CoroutineHandle handle;
     private WeaponBaseData weaponBaseData;
@@ -51,6 +52,7 @@ public class GameplayManager : MonoBehaviour
 
 
         enemySpawner.AssignEvent(projectilePoolingManager.GenerateProjectilePool);
+        turretManager.AssignEvent(enemySpawner.SwitchEnemyTarget);
         player.AssignEvent(activeGameOver);
     }
 
@@ -59,7 +61,7 @@ public class GameplayManager : MonoBehaviour
         if (currentState != GameplayState.INIT) return;
 
 
-        enemySpawner.SetData(player.transform);
+        enemySpawner.SetData(turretManager.GetTurretTransform(), player.transform);
 
         player.SetData(new PlayerData
         {
@@ -68,10 +70,10 @@ public class GameplayManager : MonoBehaviour
         weaponController.SetData(player.GetWeaponCointainer());
         weaponBaseData = new ShotgunData
         {
-            Cooldown = 0.5f,
+            Cooldown = 10f,
             WeaponId = WeaponIdConstant.SHOTGUN,
             DamageAmount = 10,
-            ShootForce = 1000,
+            ShootForce = 3000,
             NumberPerRound = 3,
             FireSpreadOffset = 100,
             TargetTag = TargetConstant.ENEMY,
@@ -79,11 +81,17 @@ public class GameplayManager : MonoBehaviour
 
         };
         weaponController.SpawnWeapon(WeaponIdConstant.SHOTGUN, weaponBaseData);
+        turretManager.GenerateTurret(new TurretData
+        {
+            HealthPoint = 100,
+
+        });
     }
     private void startGame()
     {
-        enemySpawner.ActiveEnemies();
-        handle=Timing.RunCoroutine( weaponController.CoroWeaponAutoAim());
+        handle=Timing.RunCoroutine( enemySpawner.ActiveEnemies());
+        turretManager.CheckAnyTurretAlive();
+        weaponController.ActiveWeapon();
     }
 
 
@@ -105,6 +113,7 @@ public enum GameplayState { INIT,PLAYING,END}
 public static class TargetConstant
 {
     public static string PLAYER = "Player";
+    public static string TURRET = "Turret";
     public static string ENEMY = "Enemy";
 }
 public static class WeaponIdConstant

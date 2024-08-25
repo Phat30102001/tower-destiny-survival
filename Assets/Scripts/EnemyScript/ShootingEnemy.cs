@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ShootingEnemy : MonoBehaviour, IEnemy
 {
+    public string tag;
     private Transform objectTransform;
     private int state = 0;
     [SerializeField] private float shootForce=1000;
@@ -19,6 +20,11 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
     private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShoot;
     CoroutineHandle handle;
     private EnemyData enemyData;
+    private void Update()
+    {
+        if(enemyData!=null)
+        tag = enemyData.TargetTag;
+    }
 
     public void SetData(EnemyData _data)
     {
@@ -102,5 +108,15 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
     private void OnDisable()
     {
         Timing.KillCoroutines(handle);
+    }
+
+    public string GetCurrentTargetTag()
+    {
+        return enemyData.TargetTag;
+    }
+
+    public void SwitchEnemyTarget(string _targetTag)
+    {
+        enemyData.TargetTag = _targetTag;
     }
 }

@@ -1,17 +1,18 @@
 ﻿
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public interface IWeapon
 {
     public string GetWeaponId();
     public float GetWeaponCooldown();
-    public void AutoAim(Vector2 _target);
+    public IEnumerator<float> AutoAim();
     public void SetData(WeaponBaseData _data);
     public void Fire(Vector2 _target);
     public void AssignEvent(Action<string, Vector2, Vector2, int
-        , float, float, ProjectileData> _onShoot);
+        , float, float, ProjectileData> _onShoot, Func<Vector2> onGetNearestTarget);
 }
 public class WeaponBaseData
 {
