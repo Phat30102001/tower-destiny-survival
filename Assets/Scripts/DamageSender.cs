@@ -7,37 +7,41 @@ public class DamageSender : MonoBehaviour
 {
     public int damageAmount = 0;
     private float attackCooldown = 0;
-    DamageReceiver receiver;
-    public bool isInTrigger=false;
+    private DamageReceiver receiver;
+    public bool isInTrigger = false;
     CoroutineHandle handle;
     private string targetTag;
     private bool hideOnHit;
     private Action onHit;
 
+    private string receiverTag;
+
     public void AssignEvent(Action _onHit)
     {
-        onHit = null;
         onHit = _onHit;
     }
-    public void SetData(float _attackCooldown,int _damageAmount,string _targetTag,bool _hideOnHit)
+
+    public void SetData(float _attackCooldown, int _damageAmount, string _targetTag, bool _hideOnHit)
     {
         attackCooldown = _attackCooldown;
-        damageAmount= _damageAmount;
+        damageAmount = _damageAmount;
         targetTag = _targetTag;
         hideOnHit = _hideOnHit;
-
-
     }
+
+    public void SwitchTargetTag(string _targetTag)
+    {
+        targetTag = _targetTag;
+    }
+
     public IEnumerator<float> ApplyDamage()
     {
-        
         while (gameObject.activeSelf)
         {
-            if (isInTrigger)
+            if (isInTrigger && receiver != null)
             {
-                if (receiver && receiver.gameObject.tag.Equals(targetTag))
+                if (receiverTag.Equals(targetTag))
                 {
-                    //Debug.Log("coro still running");
                     SendDamage(receiver);
                     onHit?.Invoke();
                     if (hideOnHit)
@@ -46,38 +50,47 @@ public class DamageSender : MonoBehaviour
                     }
                     yield return Timing.WaitForSeconds(attackCooldown);
                 }
-                //Debug.Log($"attack cooldown: {attackCooldown}");
+                else
+                {
+                    resetData();
+                }
             }
             else
+            {
                 yield return Timing.WaitForOneFrame;
-            
+            }
         }
     }
+
     public void SendDamage(DamageReceiver receiver)
     {
         if (receiver != null)
         {
-            if (!receiver.gameObject.tag.Equals(targetTag)) return;
             receiver.ReceiveDamage(damageAmount);
         }
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-         receiver = collision.gameObject.GetComponent<DamageReceiver>();
-        if (receiver)
+        if (targetTag == null || targetTag == "") return;
+        receiver = collision.gameObject.GetComponent<DamageReceiver>();
+        if (receiver != null && collision.gameObject.CompareTag(targetTag))
         {
-            if (!receiver.gameObject.tag.Equals(targetTag)) return;
-                isInTrigger = true;
-
+            receiverTag = collision.gameObject.tag;
+            isInTrigger = true;
         }
     }
-    
-    public void OnTriggerExit2D(Collider2D collision)
+
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        receiver = collision.gameObject.GetComponent<DamageReceiver>();
-        if (!receiver)
+        if (collision.gameObject.GetComponent<DamageReceiver>() == receiver)
+        {
             isInTrigger = false;
+            receiver = null;
+            receiverTag = null;
+        }
     }
+
     private void OnEnable()
     {
         resetData();
@@ -88,7 +101,7 @@ public class DamageSender : MonoBehaviour
     {
         isInTrigger = false;
         receiver = null;
+        receiverTag = null;
         Timing.KillCoroutines(handle);
     }
-
 }
