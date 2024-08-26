@@ -81,16 +81,25 @@ public class GameplayManager : MonoBehaviour
             ProjectileId = "ShotgunBullet",
 
         };
-        var _turretWeaponBaseData = new MachineGunData
+        //var _turretWeaponBaseData = new MachineGunData
+        //{
+        //    Uid = "0",
+        //    Cooldown = 1f,
+        //    WeaponId = WeaponIdConstant.MACHINE_GUN,
+        //    DamageAmount = 10,
+        //    ShootForce = 3000,
+        //    NumberPerRound = 3,
+        //    TargetTag = TargetConstant.ENEMY,
+        //    ProjectileId = "MachineGunBullet",
+
+        //};
+        var _turretWeaponBaseData = new ChainSawData
         {
             Uid = "0",
-            Cooldown = 1f,
-            WeaponId = WeaponIdConstant.MACHINE_GUN,
+            Cooldown = 0.5f,
+            WeaponId = WeaponIdConstant.CHAINSAW,
             DamageAmount = 10,
-            ShootForce = 3000,
-            NumberPerRound = 3,
             TargetTag = TargetConstant.ENEMY,
-            ProjectileId = "MachineGunBullet",
 
         };
         weaponController.SpawnWeapon( weaponBaseData);
@@ -135,5 +144,6 @@ public static class WeaponIdConstant
 {
     public static string SHOTGUN = "Shotgun";
     public static string MACHINE_GUN = "MachineGun";
+    public static string CHAINSAW = "ChainSaw";
 }
 
