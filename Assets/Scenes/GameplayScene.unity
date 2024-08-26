@@ -1112,6 +1112,7 @@ MonoBehaviour:
   - {fileID: 6557459710076565597, guid: 44d984a44699f3e4cafa7ab839f8acb3, type: 3}
   - {fileID: 6557459710076565597, guid: a1782b8242fe5fe49ba83b06e6934a4e, type: 3}
   - {fileID: 8737572134013835794, guid: 7af350db2783f144f9d86e754132a666, type: 3}
+  - {fileID: 8737572134013835794, guid: f85312d96d5fcd2409c43882038c5cbb, type: 3}
 --- !u!1 &989435025
 GameObject:
   m_ObjectHideFlags: 0
@@ -2001,7 +2002,7 @@ MonoBehaviour:
   spawnLocation: {fileID: 1222079201}
   bottomSpawnBound: {fileID: 1949891666}
   topSpawnBound: {fileID: 989435026}
-  spawnAmount: 8
+  spawnAmount: 0
   spawnAtIndex: 0
 --- !u!1001 &2100816810
 PrefabInstance:

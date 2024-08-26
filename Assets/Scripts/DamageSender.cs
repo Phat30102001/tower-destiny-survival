@@ -13,6 +13,7 @@ public class DamageSender : MonoBehaviour
     private string targetTag;
     private bool hideOnHit;
     private Action onHit;
+    private bool isActive = true;
 
     private string receiverTag;
 
@@ -38,7 +39,7 @@ public class DamageSender : MonoBehaviour
     {
         while (gameObject.activeSelf)
         {
-            if (isInTrigger && receiver != null)
+            if ((isInTrigger && receiver != null)&& isActive)
             {
                 if (receiverTag.Equals(targetTag))
                 {
@@ -104,4 +105,9 @@ public class DamageSender : MonoBehaviour
         receiverTag = null;
         Timing.KillCoroutines(handle);
     }
+    public void SetDamageSenderStatus(bool _isActive)
+    {
+        isActive=_isActive;
+    }
+    public bool CheckDamageSenderStatus() => isActive;
 }

@@ -46,6 +46,7 @@ public class EnemySpawner : MonoBehaviour
             foreach (var _enemy in enemies)
             {
                 yield return Timing.WaitForSeconds(0.5f);
+                //melee enemy data
                 _enemy.SetData(new EnemyData
                 {
                     AttackCooldown = 1f,
@@ -53,9 +54,20 @@ public class EnemySpawner : MonoBehaviour
                     HealthPoint=50,
                     CoinReceiveAmount=10,
                     MovingSpeed=500,
-                    AttackRange=900,
+                    AttackRange=200,
                     TargetTag = TargetConstant.TURRET,
-                });
+                });    
+                //range enemy data
+                //_enemy.SetData(new EnemyData
+                //{
+                //    AttackCooldown = 1f,
+                //    Damage=10,
+                //    HealthPoint=50,
+                //    CoinReceiveAmount=10,
+                //    MovingSpeed=500,
+                //    AttackRange=900,
+                //    TargetTag = TargetConstant.TURRET,
+                //});
                 _enemy.ActiveAction(targets[_enemy.GetCurrentTargetTag()], new Vector2(spawnLocation.position.x, UnityEngine.Random.Range(bottomSpawnBoundPosY, topSpawnBoundPosY)));
             }
         }

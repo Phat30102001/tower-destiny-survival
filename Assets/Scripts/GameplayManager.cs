@@ -93,13 +93,26 @@ public class GameplayManager : MonoBehaviour
         //    ProjectileId = "MachineGunBullet",
 
         //};
-        var _turretWeaponBaseData = new ChainSawData
+        //var _turretWeaponBaseData = new ChainSawData
+        //{
+        //    Uid = "0",
+        //    Cooldown = 0f,
+        //    BreakTimeBetweenSendDamage = 0.2f,
+        //    WeaponId = WeaponIdConstant.CHAINSAW,
+        //    DamageAmount = 10,
+        //    TargetTag = TargetConstant.ENEMY,
+
+        //};  
+        var _turretWeaponBaseData = new FlameThrowerData
         {
             Uid = "0",
-            Cooldown = 0.5f,
-            WeaponId = WeaponIdConstant.CHAINSAW,
+            Cooldown = 5f,
+            BreakTimeBetweenSendDamage = 0.2f,
+            WeaponId = WeaponIdConstant.FLAME_THROWER,
             DamageAmount = 10,
             TargetTag = TargetConstant.ENEMY,
+            MaxRotateAngle=45f,
+            RrotationSpeed=20
 
         };
         weaponController.SpawnWeapon( weaponBaseData);
@@ -145,5 +158,6 @@ public static class WeaponIdConstant
     public static string SHOTGUN = "Shotgun";
     public static string MACHINE_GUN = "MachineGun";
     public static string CHAINSAW = "ChainSaw";
+    public static string FLAME_THROWER = "FlameThrower";
 }
 

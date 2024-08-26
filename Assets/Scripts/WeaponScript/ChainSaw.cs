@@ -17,7 +17,7 @@ public class ChainSaw : MonoBehaviour, IWeapon
         if (_data is ChainSawData _weaponData)
         {
             weaponData = _weaponData;
-            damageSender.SetData(weaponData.Cooldown, weaponData.DamageAmount, weaponData.TargetTag, false);
+            damageSender.SetData(weaponData.BreakTimeBetweenSendDamage, weaponData.DamageAmount, weaponData.TargetTag, false);
         }
     }
 
@@ -59,4 +59,5 @@ public class ChainSaw : MonoBehaviour, IWeapon
 }
 public class ChainSawData : WeaponBaseData
 {
+    public float BreakTimeBetweenSendDamage;
 }
