@@ -13,7 +13,11 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private ProjectilePoolingManager projectilePoolingManager;
     [SerializeField] private WeaponController weaponController;
     [SerializeField] private TurretManager turretManager;
-    
+    [SerializeField] private EnemyTracker enemyTracker;
+    [SerializeField] private GameplayProgression gameplayProgression;
+
+
+
     CoroutineHandle handle;
     private WeaponBaseData weaponBaseData;
 
@@ -53,6 +57,7 @@ public class GameplayManager : MonoBehaviour
 
         enemySpawner.AssignEvent(projectilePoolingManager.GenerateProjectilePool);
         turretManager.AssignEvent(enemySpawner.SwitchEnemyTarget,weaponController.RemoveWeapon);
+        gameplayProgression.AssignEvent(enemyTracker.IsEnemyInArea);
         player.AssignEvent(activeGameOver);
     }
 
@@ -103,18 +108,18 @@ public class GameplayManager : MonoBehaviour
         //    TargetTag = TargetConstant.ENEMY,
 
         //};  
-        var _turretWeaponBaseData = new FlameThrowerData
-        {
-            Uid = "0",
-            Cooldown = 5f,
-            BreakTimeBetweenSendDamage = 0.2f,
-            WeaponId = WeaponIdConstant.FLAME_THROWER,
-            DamageAmount = 10,
-            TargetTag = TargetConstant.ENEMY,
-            MaxRotateAngle=45f,
-            RrotationSpeed=20
+        //var _turretWeaponBaseData = new FlameThrowerData
+        //{
+        //    Uid = "0",
+        //    Cooldown = 5f,
+        //    BreakTimeBetweenSendDamage = 0.2f,
+        //    WeaponId = WeaponIdConstant.FLAME_THROWER,
+        //    DamageAmount = 10,
+        //    TargetTag = TargetConstant.ENEMY,
+        //    MaxRotateAngle=45f,
+        //    RrotationSpeed=20
 
-        };
+        //};
         weaponController.SpawnWeapon( weaponBaseData);
         turretManager.GenerateTurret(new TurretData
         {
@@ -122,13 +127,14 @@ public class GameplayManager : MonoBehaviour
             TurretId = "0",
 
         });
-        weaponController.SpawnTurretWeapon(_turretWeaponBaseData,turretManager.GetTurretTransformAtId(_turretWeaponBaseData.Uid));
+        //weaponController.SpawnTurretWeapon(_turretWeaponBaseData,turretManager.GetTurretTransformAtId(_turretWeaponBaseData.Uid));
     }
     private void startGame()
     {
         handle=Timing.RunCoroutine( enemySpawner.ActiveEnemies());
         turretManager.CheckAnyTurretAlive();
         weaponController.ActiveWeapon();
+        handle = Timing.RunCoroutine(gameplayProgression.OnCheckEnemyInRange());
     }
 
 
