@@ -8,13 +8,14 @@ using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public class GameplayManager : MonoBehaviour
 {
-    [SerializeField] private EnemySpawner enemySpawner;
+    
     [SerializeField] private Player player;
     [SerializeField] private ProjectilePoolingManager projectilePoolingManager;
     [SerializeField] private WeaponController weaponController;
     [SerializeField] private TurretManager turretManager;
     [SerializeField] private EnemyTracker enemyTracker;
     [SerializeField] private GameplayProgression gameplayProgression;
+    [SerializeField] private EnemyWaveController waveController;
 
 
 
@@ -44,7 +45,7 @@ public class GameplayManager : MonoBehaviour
         if(currentState!=GameplayState.INIT)return;
         projectilePoolingManager.Init();
         player.Init();
-        enemySpawner.Init();
+        waveController.Init();
 
         
     }
@@ -52,12 +53,12 @@ public class GameplayManager : MonoBehaviour
     {
         if (currentState != GameplayState.INIT) return;
 
-        weaponController.AssignEvent(projectilePoolingManager.GenerateProjectilePool, enemySpawner.GetClosestEnemyPos);
+        weaponController.AssignEvent(projectilePoolingManager.GenerateProjectilePool, waveController.GetClosestEnemyPos);
 
 
-        enemySpawner.AssignEvent(projectilePoolingManager.GenerateProjectilePool);
-        turretManager.AssignEvent(enemySpawner.SwitchEnemyTarget,weaponController.RemoveWeapon);
-        gameplayProgression.AssignEvent(enemyTracker.IsEnemyInArea);
+        waveController.AssignEvent(projectilePoolingManager.GenerateProjectilePool);
+        turretManager.AssignEvent(waveController.SwitchEnemyTarget,weaponController.RemoveWeapon);
+        gameplayProgression.AssignEvent(enemyTracker.IsEnemyInArea,waveController.ActiveEnemies);
         player.AssignEvent(activeGameOver);
     }
 
@@ -66,7 +67,7 @@ public class GameplayManager : MonoBehaviour
         if (currentState != GameplayState.INIT) return;
 
 
-        enemySpawner.SetData(turretManager.GetTurretTransform(), player.transform);
+        waveController.SetData(turretManager.GetTurretTransform(), player.transform);
 
         player.SetData(new PlayerData
         {
@@ -127,14 +128,20 @@ public class GameplayManager : MonoBehaviour
             TurretId = "0",
 
         });
+        gameplayProgression.GetMilestone(waveController.GetWaveMilestones());
         //weaponController.SpawnTurretWeapon(_turretWeaponBaseData,turretManager.GetTurretTransformAtId(_turretWeaponBaseData.Uid));
     }
     private void startGame()
     {
-        handle=Timing.RunCoroutine( enemySpawner.ActiveEnemies());
+        //waveController.ActiveEnemies();
         turretManager.CheckAnyTurretAlive();
         weaponController.ActiveWeapon();
         handle = Timing.RunCoroutine(gameplayProgression.OnCheckEnemyInRange());
+    }
+    private void endGame()
+    {
+        Timing.KillCoroutines(handle);
+        waveController.onEndGame();
     }
 
 

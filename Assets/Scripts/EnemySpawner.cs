@@ -9,14 +9,15 @@ using static UnityEngine.GraphicsBuffer;
 public class EnemySpawner : MonoBehaviour
 { 
     //private Transform target;
-    [SerializeField] private List<GameObject> enemyVariationPrefab;
+    [SerializeField] private List<Enemybase> enemyVariationPrefab;
     [SerializeField] private Transform spawnLocation;
     [SerializeField] private Transform bottomSpawnBound;
     [SerializeField] private Transform topSpawnBound;
     
     private List<IEnemy> enemies;
-    [SerializeField] private int spawnAmount=10;
-    [SerializeField] private int spawnAtIndex = 0;
+    //[SerializeField] private int spawnAmount=10;
+    //[SerializeField] private int spawnAtIndex = 0;
+    [SerializeField] private List<EnemyData> enemyDatas;
     private bool isActive = false;
     private Dictionary<string,Transform> targets = new Dictionary<string,Transform>();
 
@@ -34,42 +35,22 @@ public class EnemySpawner : MonoBehaviour
     {
         targets.Add(TargetConstant.TURRET, _attackPoint);
         targets.Add(TargetConstant.PLAYER, _playerTransform);
-        generateEnemy();
 
     }
-    public IEnumerator<float> ActiveEnemies()
+    public IEnumerator<float> ActiveEnemies(EnemyWaveData _data)
     {
         if (!isActive)
         {
 
             isActive = true;
-            foreach (var _enemy in enemies)
+            while (true)
             {
-                yield return Timing.WaitForSeconds(0.5f);
-                //melee enemy data
-                _enemy.SetData(new EnemyData
-                {
-                    AttackCooldown = 1f,
-                    Damage=10,
-                    HealthPoint=50,
-                    CoinReceiveAmount=10,
-                    MovingSpeed=500,
-                    AttackRange=200,
-                    TargetTag = TargetConstant.TURRET,
-                });    
-                //range enemy data
-                //_enemy.SetData(new EnemyData
-                //{
-                //    AttackCooldown = 1f,
-                //    Damage=10,
-                //    HealthPoint=50,
-                //    CoinReceiveAmount=10,
-                //    MovingSpeed=500,
-                //    AttackRange=900,
-                //    TargetTag = TargetConstant.TURRET,
-                //});
-                _enemy.ActiveAction(targets[_enemy.GetCurrentTargetTag()], new Vector2(spawnLocation.position.x, UnityEngine.Random.Range(bottomSpawnBoundPosY, topSpawnBoundPosY)));
+                string _randomKey = _data.EnemyId[UnityEngine.Random.Range(0, _data.EnemyId.Count)];
+                generateEnemy(_randomKey);
+                yield return Timing.WaitForSeconds(
+                    UnityEngine.Random.Range(_data.SpawnFrequencyMin,_data.SpawnFrequencyMax));
             }
+            
         }
         yield break;
     }
@@ -103,23 +84,27 @@ public class EnemySpawner : MonoBehaviour
         onShooting = _onShooting;
     }
 
-    private void generateEnemy()
+    private void generateEnemy(string _enemyId)
     {
-        for (int i = 0; i < spawnAmount; i++)
+        var _prefab= enemyVariationPrefab.Find(x=>x.GetEnemyId().Equals(_enemyId));
+        var _data= enemyDatas.Find(x=>x.EnemyId.Equals(_enemyId));
+        Enemybase _enemy = Instantiate(_prefab, spawnLocation);
+        if (_enemy != null)
         {
-            int _index = spawnAtIndex;
-            if (spawnAtIndex < 0 || spawnAtIndex > enemyVariationPrefab.Count)
-            {
-                _index = UnityEngine.Random.Range(0, enemyVariationPrefab.Count);
-            }
-            GameObject _ememyObject = Instantiate(enemyVariationPrefab[_index], spawnLocation);
-            var _ememy = _ememyObject.GetComponent<IEnemy>();
-            if (_ememy is ShootingEnemy shootingEnemy)
+
+            if (_enemy is ShootingEnemy shootingEnemy)
             {
                 shootingEnemy.AssignEvent(onShooting);
+
             }
-            if (_ememy != null)
-                enemies.Add(_ememy);
+
+            _enemy.SetData(_data);
+            _enemy.ActiveAction(targets[_enemy.GetCurrentTargetTag()],
+                    new Vector2(spawnLocation.position.x, UnityEngine.Random.Range(bottomSpawnBoundPosY, topSpawnBoundPosY)));
+            
+                enemies.Add(_enemy);
         }
+
+        
     }
 }

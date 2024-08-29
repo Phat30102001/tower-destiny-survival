@@ -13,7 +13,14 @@ public class GameplayProgression : MonoBehaviour
 
 
     public float progress = 0f;
+    private List<int> cacheMilestones;
+    private int currentMilestone = -1;
+    private Action<int> onSpawnEnemy;
 
+    public void GetMilestone(List<int> _milestone)
+    {
+        cacheMilestones = _milestone;
+    }
     public IEnumerator<float> OnCheckEnemyInRange()
     {
         while (true)
@@ -24,15 +31,25 @@ public class GameplayProgression : MonoBehaviour
             }
             else
             {
-
-                progress += progressIncreaseRate * Time.deltaTime;
-                Debug.Log($"Progress increased. Current progress: {progress}");
+                if (progress== cacheMilestones[currentMilestone + 1])
+                {
+                    currentMilestone++;
+                    Debug.Log($"[PHAT] increase milestone, current milestone: {currentMilestone}");
+                    onSpawnEnemy?.Invoke(currentMilestone);
+                    if (currentMilestone >= cacheMilestones.Count - 1)
+                    {
+                        Debug.Log($"[phat] Final wave");
+                        yield break;
+                    }
+                }
+                progress += progressIncreaseRate;
             }
             yield return Timing.WaitForOneFrame;
         }
     }
-    public void AssignEvent(Func<bool> _onCheckEnemyInRange)
+    public void AssignEvent(Func<bool> _onCheckEnemyInRange, Action<int> _onSpawnEnemy)
     {
         onCheckEnemyInRange = _onCheckEnemyInRange;
+        onSpawnEnemy=_onSpawnEnemy;
     }
 }

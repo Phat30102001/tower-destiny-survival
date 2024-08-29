@@ -61,6 +61,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e63a44173d547cba2765134dcc56ad4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnemyId: RangerlZombie
   shootForce: 1000
   damageReceiver: {fileID: 6313632749415706944}
 --- !u!114 &6313632749415706944

@@ -2,9 +2,9 @@ using MEC;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class InteractEnemy : MonoBehaviour, IEnemy
+public class InteractEnemy : Enemybase
 {
-    public string tag;
+    [SerializeField] private string enemyId = "NormalZombie";
     private Transform objectTransform;
     private int state = 0;
     [SerializeField] private DamageSender damageSender;
@@ -13,19 +13,19 @@ public class InteractEnemy : MonoBehaviour, IEnemy
     private EnemyData enemyData;
     private int healthPoint;
 
-    private void Update()
+    public override string GetEnemyId()
     {
-        if (enemyData != null)
-            tag = enemyData.TargetTag;
+        return enemyId;
     }
-    public void SetData(EnemyData _data)
+
+    public override void SetData(EnemyData _data)
     {
         enemyData = _data;
         healthPoint=enemyData.HealthPoint;
         damageSender.SetData(enemyData.AttackCooldown, enemyData.Damage,enemyData.TargetTag,false);
         damageReceiver.AssignEvent(onReceiveDamage);
     }
-    public void ActiveAction(Transform _target, Vector2 _spawnPos)
+    public override void ActiveAction(Transform _target, Vector2 _spawnPos)
     {
         if(!objectTransform) objectTransform = transform;
         objectTransform.position = _spawnPos;
@@ -77,7 +77,7 @@ public class InteractEnemy : MonoBehaviour, IEnemy
         ActiveAction(_target, objectTransform.position);
     }
 
-    public Vector2 getEnemyCurrentPos()
+    public override Vector2 getEnemyCurrentPos()
     {
         return objectTransform.position;
     }
@@ -86,17 +86,17 @@ public class InteractEnemy : MonoBehaviour, IEnemy
         Timing.KillCoroutines(handle);
     }
 
-    public bool CheckEnemyIsAlive()
+    public override bool CheckEnemyIsAlive()
     {
         return healthPoint > 0;
     }
 
-    public string GetCurrentTargetTag()
+    public override string GetCurrentTargetTag()
     {
         return enemyData.TargetTag;
     }
 
-    public void SwitchEnemyTarget(string _targetTag)
+    public override void SwitchEnemyTarget(string _targetTag)
     {
         enemyData.TargetTag = _targetTag;
         damageSender.SetData(enemyData.AttackCooldown, enemyData.Damage, enemyData.TargetTag, false);

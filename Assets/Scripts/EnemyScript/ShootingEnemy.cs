@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootingEnemy : MonoBehaviour, IEnemy
+public class ShootingEnemy : Enemybase
 {
-    public string tag;
+    [SerializeField] private string enemyId = "RangerZombie";
     private Transform objectTransform;
     private int state = 0;
     [SerializeField] private float shootForce=1000;
@@ -16,23 +16,22 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
     private float _delayOffset=0;
     private float _shotSpread=0;
 
+    public override string GetEnemyId()
+    {
+        return enemyId;
+    }
 
     private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShoot;
     CoroutineHandle handle;
     private EnemyData enemyData;
-    private void Update()
-    {
-        if(enemyData!=null)
-        tag = enemyData.TargetTag;
-    }
 
-    public void SetData(EnemyData _data)
+    public override void SetData(EnemyData _data)
     {
         enemyData = _data;
         healthPoint=enemyData.HealthPoint;
         damageReceiver.AssignEvent(onReceiveDamage);
     }
-    public void ActiveAction(Transform _target, Vector2 _spawnPos)
+    public override void ActiveAction(Transform _target, Vector2 _spawnPos)
     {
 
         if(!objectTransform) objectTransform = transform;
@@ -97,11 +96,11 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
         onShoot = _onShoot;
     }
 
-    public Vector2 getEnemyCurrentPos()
+    public override Vector2 getEnemyCurrentPos()
     {
         return objectTransform.position;
     }
-    public bool CheckEnemyIsAlive()
+    public override bool CheckEnemyIsAlive()
     {
         return healthPoint > 0;
     }
@@ -110,12 +109,12 @@ public class ShootingEnemy : MonoBehaviour, IEnemy
         Timing.KillCoroutines(handle);
     }
 
-    public string GetCurrentTargetTag()
+    public override string GetCurrentTargetTag()
     {
         return enemyData.TargetTag;
     }
 
-    public void SwitchEnemyTarget(string _targetTag)
+    public override void SwitchEnemyTarget(string _targetTag)
     {
         enemyData.TargetTag = _targetTag;
     }
