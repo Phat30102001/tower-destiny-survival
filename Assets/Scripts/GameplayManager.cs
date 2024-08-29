@@ -77,7 +77,7 @@ public class GameplayManager : MonoBehaviour
         weaponBaseData = new ShotgunData
         {
             Uid=TargetConstant.PLAYER,
-            Cooldown = 10f,
+            Cooldown = 1f,
             WeaponId = WeaponIdConstant.SHOTGUN,
             DamageAmount = 10,
             ShootForce = 3000,

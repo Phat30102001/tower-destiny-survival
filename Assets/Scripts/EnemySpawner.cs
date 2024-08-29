@@ -39,19 +39,15 @@ public class EnemySpawner : MonoBehaviour
     }
     public IEnumerator<float> ActiveEnemies(EnemyWaveData _data)
     {
-        if (!isActive)
+        while (true)
         {
-
-            isActive = true;
-            while (true)
-            {
-                string _randomKey = _data.EnemyId[UnityEngine.Random.Range(0, _data.EnemyId.Count)];
-                generateEnemy(_randomKey);
-                yield return Timing.WaitForSeconds(
-                    UnityEngine.Random.Range(_data.SpawnFrequencyMin,_data.SpawnFrequencyMax));
-            }
-            
+            string _randomKey = _data.EnemyId[UnityEngine.Random.Range(0, _data.EnemyId.Count)];
+            generateEnemy(_randomKey);
+            yield return Timing.WaitForSeconds(
+                UnityEngine.Random.Range(_data.SpawnFrequencyMin,_data.SpawnFrequencyMax));
         }
+            
+        
         yield break;
     }
     public void SwitchEnemyTarget()

@@ -31,6 +31,7 @@ public class GameplayProgression : MonoBehaviour
             }
             else
             {
+                    Debug.Log($"[PHAT] progress: {progress}");
                 if (progress== cacheMilestones[currentMilestone + 1])
                 {
                     currentMilestone++;

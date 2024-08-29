@@ -174,15 +174,15 @@ MonoBehaviour:
   waveDatas:
   - EnemyId:
     - NormalZombie
-    SpawnFrequencyMax: 1.5
-    SpawnFrequencyMin: 4
+    SpawnFrequencyMax: 1
+    SpawnFrequencyMin: 2
     SpawnPoint: 10
     IsSpawnAtBase: 0
   - EnemyId:
+    - RangerZombie
     - NormalZombie
-    - RangerlZombie
-    SpawnFrequencyMax: 0.3
-    SpawnFrequencyMin: 0.5
+    SpawnFrequencyMax: 0.5
+    SpawnFrequencyMin: 1.5
     SpawnPoint: 50
     IsSpawnAtBase: 0
   enemySpawner: {fileID: 2062181501}
@@ -2291,8 +2291,8 @@ MonoBehaviour:
     SubTargetTag: Player
     MovingSpeed: 500
     AttackRange: 200
-  - EnemyId: RangerlZombie
-    HealthPoint: 50
+  - EnemyId: RangerZombie
+    HealthPoint: 30
     Damage: 10
     AttackCooldown: 1
     CoinReceiveAmount: 10

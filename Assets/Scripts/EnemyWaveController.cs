@@ -41,6 +41,7 @@ public class EnemyWaveController : MonoBehaviour
     }
     public void ActiveEnemies(int _index) 
     {
+        Timing.KillCoroutines(handle);
         handle = Timing.RunCoroutine(enemySpawner.ActiveEnemies(waveDatas[_index]));
     }
     public void onEndGame()
