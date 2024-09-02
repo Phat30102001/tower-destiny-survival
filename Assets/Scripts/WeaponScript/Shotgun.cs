@@ -32,6 +32,7 @@ public class Shotgun : MonoBehaviour, IWeapon
         while (gameObject.activeSelf)
         {
             Vector2 _target = onGetNearestEnemy();
+            Debug.Log($"target: {_target}");
             float angle = Mathf.Atan2(_target.y, _target.x) * Mathf.Rad2Deg;
 
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
@@ -47,7 +48,7 @@ public class Shotgun : MonoBehaviour, IWeapon
                 _target, shotgunData.NumberPerRound, shotgunData.Cooldown, shotgunData.FireSpreadOffset, new ProjectileData
                 {
                     Damage = shotgunData.DamageAmount,
-                    ShootForce = shotgunData.ShootForce,
+                    ShootSpeed = shotgunData.ShootSpeed,
                     TargetTag = shotgunData.TargetTag,
                     HideOnHit = true,
                 });
@@ -80,5 +81,5 @@ public class ShotgunData : WeaponBaseData
     public int NumberPerRound;
     public float FireSpreadOffset;
     public string ProjectileId;
-    public float ShootForce;
+    public float ShootSpeed;
 }

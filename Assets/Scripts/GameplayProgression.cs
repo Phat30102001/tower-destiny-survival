@@ -31,15 +31,15 @@ public class GameplayProgression : MonoBehaviour
             }
             else
             {
-                    Debug.Log($"[PHAT] progress: {progress}");
-                if (progress== cacheMilestones[currentMilestone + 1])
+                    //Debug.Log($"[PHAT] progress: {progress}");
+                if (cacheMilestones.Count>0&& progress == cacheMilestones[currentMilestone + 1])
                 {
                     currentMilestone++;
-                    Debug.Log($"[PHAT] increase milestone, current milestone: {currentMilestone}");
+                    //Debug.Log($"[PHAT] increase milestone, current milestone: {currentMilestone}");
                     onSpawnEnemy?.Invoke(currentMilestone);
                     if (currentMilestone >= cacheMilestones.Count - 1)
                     {
-                        Debug.Log($"[phat] Final wave");
+                        //Debug.Log($"[phat] Final wave");
                         yield break;
                     }
                 }

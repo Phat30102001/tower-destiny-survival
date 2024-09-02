@@ -29,6 +29,8 @@ public class InteractEnemy : Enemybase
     {
         if(!objectTransform) objectTransform = transform;
         objectTransform.position = _spawnPos;
+        Debug.Log($"state: {state}");
+
         Timing.KillCoroutines(handle);
         switch (state)
         {
@@ -54,7 +56,8 @@ public class InteractEnemy : Enemybase
     {
         while (state == 0)
         {
-            if (Vector3.Distance(objectTransform.position, _target.position) <= enemyData.AttackRange)
+            float _space = objectTransform.position.x - _target.position.x;
+            if (_space <= enemyData.AttackRange)
             {
                 state++;
             }
@@ -68,7 +71,8 @@ public class InteractEnemy : Enemybase
 
         while (state == 1)
         {
-            if (Vector3.Distance(objectTransform.position, _target.position) > enemyData.AttackRange)
+            float _space = objectTransform.position.x- _target.position.x;
+            if (_space > enemyData.AttackRange)
             {
                 state--;
             }

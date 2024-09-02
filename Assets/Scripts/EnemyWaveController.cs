@@ -9,6 +9,8 @@ public class EnemyWaveController : MonoBehaviour
 {
     [SerializeField] List<EnemyWaveData> waveDatas;
     [SerializeField] EnemySpawner enemySpawner;
+    [SerializeField] EnemyBaseController enemyBaseController;
+    [SerializeField] private Transform inSceneTransform;
     CoroutineHandle handle;
     public void Init()
     {
@@ -37,13 +39,23 @@ public class EnemyWaveController : MonoBehaviour
     }
     public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShooting)
     {
-        enemySpawner.AssignEvent(_onShooting);
+        enemySpawner.AssignEvent(_onShooting, onGetSpawnPos);
+    }
+    private Vector2 onGetSpawnPos()
+    {
+        return enemyBaseController.transform.position;
     }
     public void ActiveEnemies(int _index) 
     {
         Timing.KillCoroutines(handle);
         handle = Timing.RunCoroutine(enemySpawner.ActiveEnemies(waveDatas[_index]));
+        if(waveDatas[_index].IsSpawnAtBase)
+        {
+            enemyBaseController.SetData(waveDatas[_index].BaseData);
+            enemyBaseController.RunToScene(inSceneTransform.position);
+        }
     }
+   
     public void onEndGame()
     {
         Timing.KillCoroutines(handle);
@@ -57,4 +69,5 @@ public class EnemyWaveData
     public float SpawnFrequencyMax, SpawnFrequencyMin;
     public int SpawnPoint;
     public bool IsSpawnAtBase;
+    public EnemyBaseData BaseData;
 }

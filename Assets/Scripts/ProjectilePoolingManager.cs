@@ -22,7 +22,7 @@ public class ProjectilePoolingManager : MonoBehaviour
 
     public void GenerateProjectilePool(string projectileName, Vector2 _startPosition, Vector2 _targetPosition, int _amount, float _delayOffset, float _shotSpread, ProjectileData _data)
     {
-
+        //Debug.Log($"GenerateProjectilePool target: {_targetPosition}");
 
         GameObject projectilePrefab = projectilePrefabList.Find(prefab =>
             prefab.GetComponent<IProjectile>().GetProjectileId().Equals(projectileName));
@@ -70,7 +70,8 @@ public class ProjectilePoolingManager : MonoBehaviour
         _projectile.SetData(_data);
         float yOffset = Random.Range(-shotSpread, shotSpread);
         Vector2 _destination=new Vector2(_targetPosition.x,_targetPosition.y+yOffset);
-        _projectile.Fire(_startPosition, _destination);
+        //Debug.Log($"ActiveProjectile target: {_targetPosition}. start pos: {_startPosition}");
+        _projectile.Fire(_startPosition,_targetPosition);
     }
 
 

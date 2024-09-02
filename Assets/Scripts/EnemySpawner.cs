@@ -24,6 +24,7 @@ public class EnemySpawner : MonoBehaviour
     private float bottomSpawnBoundPosY, topSpawnBoundPosY;
 
     private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShooting;
+    private Func<Vector2> onGetSpawnPos;
     public void Init()
     {
         enemies = new List<IEnemy>();
@@ -42,7 +43,7 @@ public class EnemySpawner : MonoBehaviour
         while (true)
         {
             string _randomKey = _data.EnemyId[UnityEngine.Random.Range(0, _data.EnemyId.Count)];
-            generateEnemy(_randomKey);
+            generateEnemy(_randomKey, onGetSpawnPos());
             yield return Timing.WaitForSeconds(
                 UnityEngine.Random.Range(_data.SpawnFrequencyMin,_data.SpawnFrequencyMax));
         }
@@ -75,12 +76,13 @@ public class EnemySpawner : MonoBehaviour
         return minPos;
     }
 
-    public void AssignEvent(Action<string, Vector2, Vector2,int,float,float, ProjectileData> _onShooting)
+    public void AssignEvent(Action<string, Vector2, Vector2,int,float,float, ProjectileData> _onShooting, Func<Vector2> _onGetSpawnPos)
     {
         onShooting = _onShooting;
+        onGetSpawnPos=_onGetSpawnPos;
     }
 
-    private void generateEnemy(string _enemyId)
+    private void generateEnemy(string _enemyId, Vector2 _spawnPos)
     {
         var _prefab= enemyVariationPrefab.Find(x=>x.GetEnemyId().Equals(_enemyId));
         var _data= enemyDatas.Find(x=>x.EnemyId.Equals(_enemyId));
@@ -96,7 +98,7 @@ public class EnemySpawner : MonoBehaviour
 
             _enemy.SetData(_data);
             _enemy.ActiveAction(targets[_enemy.GetCurrentTargetTag()],
-                    new Vector2(spawnLocation.position.x, UnityEngine.Random.Range(bottomSpawnBoundPosY, topSpawnBoundPosY)));
+                    new Vector2(_spawnPos.x, UnityEngine.Random.Range(bottomSpawnBoundPosY, topSpawnBoundPosY)));
             
                 enemies.Add(_enemy);
         }

@@ -21,7 +21,7 @@ using UnityEngine;
 
     public struct ProjectileData
     {
-        public float ShootForce;
+        public float ShootSpeed;
         public int Damage;
         public string TargetTag;
         public bool HideOnHit;

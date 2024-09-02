@@ -77,28 +77,28 @@ public class GameplayManager : MonoBehaviour
         weaponBaseData = new ShotgunData
         {
             Uid=TargetConstant.PLAYER,
-            Cooldown = 1f,
+            Cooldown = 0.8f,
             WeaponId = WeaponIdConstant.SHOTGUN,
             DamageAmount = 10,
-            ShootForce = 3000,
+            ShootSpeed = 30,
             NumberPerRound = 3,
             FireSpreadOffset = 100,
             TargetTag = TargetConstant.ENEMY,
             ProjectileId = "ShotgunBullet",
 
         };
-        //var _turretWeaponBaseData = new MachineGunData
-        //{
-        //    Uid = "0",
-        //    Cooldown = 1f,
-        //    WeaponId = WeaponIdConstant.MACHINE_GUN,
-        //    DamageAmount = 10,
-        //    ShootForce = 3000,
-        //    NumberPerRound = 3,
-        //    TargetTag = TargetConstant.ENEMY,
-        //    ProjectileId = "MachineGunBullet",
+        var _turretWeaponBaseData = new MachineGunData
+        {
+            Uid = "0",
+            Cooldown = 1f,
+            WeaponId = WeaponIdConstant.MACHINE_GUN,
+            DamageAmount = 10,
+            ShootForce = 50,
+            NumberPerRound = 3,
+            TargetTag = TargetConstant.ENEMY,
+            ProjectileId = "MachineGunBullet",
 
-        //};
+        };
         //var _turretWeaponBaseData = new ChainSawData
         //{
         //    Uid = "0",
@@ -129,7 +129,7 @@ public class GameplayManager : MonoBehaviour
 
         });
         gameplayProgression.GetMilestone(waveController.GetWaveMilestones());
-        //weaponController.SpawnTurretWeapon(_turretWeaponBaseData,turretManager.GetTurretTransformAtId(_turretWeaponBaseData.Uid));
+        weaponController.SpawnTurretWeapon(_turretWeaponBaseData, turretManager.GetTurretTransformAtId(_turretWeaponBaseData.Uid));
     }
     private void startGame()
     {

@@ -62,7 +62,8 @@ public class ShootingEnemy : Enemybase
     {
         while (state == 0)
         {
-            if (Vector3.Distance(objectTransform.position, _target.position) <= enemyData.AttackRange)
+            float _space = objectTransform.position.x - _target.position.x;
+            if (_space <= enemyData.AttackRange)
             {
                 state++;
             }
@@ -81,7 +82,7 @@ public class ShootingEnemy : Enemybase
             onShoot?.Invoke(projectileName, transform.position, _target.position,_amount,_delayOffset,_shotSpread, new ProjectileData
             {
                 Damage=enemyData.Damage,
-                ShootForce=shootForce,
+                ShootSpeed=shootForce,
                 TargetTag=enemyData.TargetTag,
                 HideOnHit=true,
 

@@ -47,7 +47,7 @@ public class MachineGun : MonoBehaviour, IWeapon
                 _target, weaponData.NumberPerRound, weaponData.Cooldown, 0, new ProjectileData
                 {
                     Damage = weaponData.DamageAmount,
-                    ShootForce = weaponData.ShootForce,
+                    ShootSpeed = weaponData.ShootForce,
                     TargetTag = weaponData.TargetTag,
                     HideOnHit = true,
                 });
