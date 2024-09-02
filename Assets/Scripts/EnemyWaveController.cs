@@ -37,9 +37,9 @@ public class EnemyWaveController : MonoBehaviour
     {
         enemySpawner.SwitchEnemyTarget();
     }
-    public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShooting)
+    public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShooting, Action<int> _onEnemyDropResource)
     {
-        enemySpawner.AssignEvent(_onShooting, onGetSpawnPos);
+        enemySpawner.AssignEvent(_onShooting, onGetSpawnPos, _onEnemyDropResource);
     }
     private Vector2 onGetSpawnPos()
     {

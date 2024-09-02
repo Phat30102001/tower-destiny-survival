@@ -25,6 +25,7 @@ public class EnemySpawner : MonoBehaviour
 
     private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShooting;
     private Func<Vector2> onGetSpawnPos;
+    private Action<int> onEnemyDropResource;
     public void Init()
     {
         enemies = new List<IEnemy>();
@@ -76,10 +77,12 @@ public class EnemySpawner : MonoBehaviour
         return minPos;
     }
 
-    public void AssignEvent(Action<string, Vector2, Vector2,int,float,float, ProjectileData> _onShooting, Func<Vector2> _onGetSpawnPos)
+    public void AssignEvent(Action<string, Vector2, Vector2,int,float,float
+        , ProjectileData> _onShooting, Func<Vector2> _onGetSpawnPos, Action<int> _onEnemyDropResource)
     {
         onShooting = _onShooting;
         onGetSpawnPos=_onGetSpawnPos;
+        onEnemyDropResource= _onEnemyDropResource;
     }
 
     private void generateEnemy(string _enemyId, Vector2 _spawnPos)
@@ -92,8 +95,12 @@ public class EnemySpawner : MonoBehaviour
 
             if (_enemy is ShootingEnemy shootingEnemy)
             {
-                shootingEnemy.AssignEvent(onShooting);
+                shootingEnemy.AssignEvent(onShooting, onEnemyDropResource);
 
+            }
+            if(_enemy is InteractEnemy interactEnemy)
+            {
+                interactEnemy.AssignEvent(onEnemyDropResource);
             }
 
             _enemy.SetData(_data);

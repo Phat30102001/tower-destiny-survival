@@ -1,4 +1,5 @@
 using MEC;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class InteractEnemy : Enemybase
     CoroutineHandle handle;
     private EnemyData enemyData;
     private int healthPoint;
+    Action<int> onEnemyDropResource;
 
     public override string GetEnemyId()
     {
@@ -49,6 +51,7 @@ public class InteractEnemy : Enemybase
         //Debug.Log($"{gameObject.name}'s health: {healthPoint}");
         if (healthPoint <= 0)
         {
+            onEnemyDropResource?.Invoke(enemyData.CoinReceiveAmount);
             gameObject.SetActive(false);
         }
     }
@@ -104,5 +107,9 @@ public class InteractEnemy : Enemybase
     {
         enemyData.TargetTag = _targetTag;
         damageSender.SetData(enemyData.AttackCooldown, enemyData.Damage, enemyData.TargetTag, false);
+    }
+    public void AssignEvent(Action<int> _onEnemyDropResource)
+    {
+        onEnemyDropResource = _onEnemyDropResource;
     }
 }

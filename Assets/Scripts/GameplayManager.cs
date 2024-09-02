@@ -16,6 +16,8 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private EnemyTracker enemyTracker;
     [SerializeField] private GameplayProgression gameplayProgression;
     [SerializeField] private EnemyWaveController waveController;
+    private ResourceManager resourceManager;
+
 
 
 
@@ -24,8 +26,9 @@ public class GameplayManager : MonoBehaviour
 
     private GameplayState currentState=GameplayState.INIT;
 
-    private void Start()
+    public void ActiveGameplay(ResourceManager _resourceManager)
     {
+        resourceManager = _resourceManager;
 
         Init();
 
@@ -40,7 +43,8 @@ public class GameplayManager : MonoBehaviour
 
 
     }
-    private void Init()
+    
+    public void Init()
     {
         if(currentState!=GameplayState.INIT)return;
         projectilePoolingManager.Init();
@@ -56,7 +60,7 @@ public class GameplayManager : MonoBehaviour
         weaponController.AssignEvent(projectilePoolingManager.GenerateProjectilePool, waveController.GetClosestEnemyPos);
 
 
-        waveController.AssignEvent(projectilePoolingManager.GenerateProjectilePool);
+        waveController.AssignEvent(projectilePoolingManager.GenerateProjectilePool,(_resource)=> resourceManager.AddResource(ResourceConstant.COIN, _resource));
         turretManager.AssignEvent(waveController.SwitchEnemyTarget,weaponController.RemoveWeapon);
         gameplayProgression.AssignEvent(enemyTracker.IsEnemyInArea,waveController.ActiveEnemies);
         player.AssignEvent(activeGameOver);

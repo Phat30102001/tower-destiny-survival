@@ -22,6 +22,7 @@ public class ShootingEnemy : Enemybase
     }
 
     private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShoot;
+    private Action<int> onEnemyDropResource;
     CoroutineHandle handle;
     private EnemyData enemyData;
 
@@ -54,6 +55,7 @@ public class ShootingEnemy : Enemybase
         //Debug.Log($"{gameObject.name}'s health: {healthPoint}");
         if (healthPoint <= 0)
         {
+            onEnemyDropResource?.Invoke(enemyData.CoinReceiveAmount);
             gameObject.SetActive(false);
         }
     }
@@ -92,9 +94,10 @@ public class ShootingEnemy : Enemybase
         ActiveAction(_target, objectTransform.position);
     }
 
-    public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShoot)
+    public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShoot, Action<int> _onEnemyDropResource)
     {
         onShoot = _onShoot;
+        onEnemyDropResource = _onEnemyDropResource;
     }
 
     public override Vector2 getEnemyCurrentPos()
