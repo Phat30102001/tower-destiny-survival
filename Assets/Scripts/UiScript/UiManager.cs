@@ -11,6 +11,7 @@ public class UiManager : MonoBehaviour
     // List of all UI GameObjects to manage their active state
     public List<UiBase> uiList;
     Action onStartGame;
+    Action onBackToMainMenu;
 
     // Called when the script instance is being loaded
     public void Init()
@@ -25,10 +26,7 @@ public class UiManager : MonoBehaviour
 
     public void ShowUI(string _uid, UiBaseData _data)
     {
-        foreach (var _ui in uiDictionary.Values)
-        {
-            _ui.Hide();
-        }
+        HideAllUIs();
 
         if (uiDictionary.TryGetValue(_uid, out UiBase uiBase))
         {
@@ -41,9 +39,10 @@ public class UiManager : MonoBehaviour
             Debug.LogError($"UI with name {_uid} not found.");
         }
     }
-    public void AssignEvent(Action _onStartGame) 
+    public void AssignEvent(Action _onStartGame,Action _onBackToMainMenu) 
     {
         onStartGame= _onStartGame;
+        onBackToMainMenu = _onBackToMainMenu;
     }
 
     private void AssignUiEvent(string _uid,UiBase uiBase)
@@ -56,6 +55,10 @@ public class UiManager : MonoBehaviour
 
             case UiConstant.SETTING_UI:
                 break;
+            case UiConstant.RESULT_UI:
+                ResultUi resultUi = uiBase as ResultUi;
+                resultUi.AssignEvents(OnBecameInvisible);
+                break;
             default:
                 Debug.LogWarning("Unhandled UI type.");
                 break;
@@ -66,6 +69,11 @@ public class UiManager : MonoBehaviour
         onStartGame?.Invoke();
         HideUI(UiConstant.MAIN_MENU_UI);
     }
+    private void OnBecameInvisible()
+    {
+        onBackToMainMenu?.Invoke();
+    }
+
 
     public void HideAllUIs()
     {
@@ -101,6 +109,7 @@ public static class UiConstant
     public const string MAIN_MENU_UI = "MainMenuUI";
     public const string GAMEPLAY_UI = "GameplayUI";
     public const string SETTING_UI="SettingUI";
+    public const string RESULT_UI = "ResultUI";
 }
 
 

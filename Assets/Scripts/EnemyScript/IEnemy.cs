@@ -9,6 +9,7 @@ public interface IEnemy
     Vector2 getEnemyCurrentPos();
     string GetCurrentTargetTag();
     void SwitchEnemyTarget(string _targetTag);
+    void KillEnemy();
 }
 //public interface IEnemy
 //{
@@ -32,6 +33,10 @@ public abstract class Enemybase : MonoBehaviour, IEnemy
     public abstract string GetCurrentTargetTag();
     public abstract void SwitchEnemyTarget(string _targetTag);
 
+    public void KillEnemy()
+    {
+        gameObject.SetActive(false);
+    }
 }
 //public class Enemybase : MonoBehaviour, IEnemy
 //{

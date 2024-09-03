@@ -42,7 +42,7 @@ public class TouchManager : MonoBehaviour
             // Handle mouse input
             if (Input.GetMouseButton(0))
             {
-                Debug.Log($"touching:{Input.mousePosition}");
+                //Debug.Log($"touching:{Input.mousePosition}");
                 isTouching = true;
                 CurrentTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 CurrentTouchPosition = new Vector2(CurrentTouchPosition.x, CurrentTouchPosition.y);

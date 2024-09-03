@@ -1,4 +1,5 @@
 using MEC;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -18,7 +19,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private EnemyWaveController waveController;
     private ResourceManager resourceManager;
 
-
+    Action<ResultType> onEndGame;
 
 
     CoroutineHandle handle;
@@ -32,8 +33,6 @@ public class GameplayManager : MonoBehaviour
 
         Init();
 
-        AssignEvent();
-
         setData();
 
         currentState = GameplayState.PLAYING;
@@ -45,16 +44,17 @@ public class GameplayManager : MonoBehaviour
     
     public void Init()
     {
-        if(currentState!=GameplayState.INIT)return;
         projectilePoolingManager.Init();
         player.Init();
         waveController.Init();
 
         
     }
-    private void AssignEvent()
+    public void AssignEvent(Action<ResultType> _onEndGame)
     {
-        if (currentState != GameplayState.INIT) return;
+
+
+        onEndGame = _onEndGame;
 
         weaponController.AssignEvent(projectilePoolingManager.GenerateProjectilePool, waveController.GetClosestEnemyPos);
 
@@ -67,8 +67,6 @@ public class GameplayManager : MonoBehaviour
 
     private void setData()
     {
-        if (currentState != GameplayState.INIT) return;
-
 
         waveController.SetData(turretManager.GetTurretTransform(), player.transform);
 
@@ -145,6 +143,9 @@ public class GameplayManager : MonoBehaviour
     {
         Timing.KillCoroutines(handle);
         waveController.onEndGame();
+        onEndGame?.Invoke(ResultType.Lose);
+        gameplayProgression.ResetData();
+        weaponController.DisableWeapon();
     }
 
 
@@ -153,7 +154,7 @@ public class GameplayManager : MonoBehaviour
 
     private void activeGameOver()
     {
-
+        endGame();
     }
 
     private void OnDestroy()

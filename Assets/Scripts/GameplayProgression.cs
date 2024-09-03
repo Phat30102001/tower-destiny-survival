@@ -31,6 +31,7 @@ public class GameplayProgression : MonoBehaviour
             }
             else
             {
+                if ((currentMilestone + 1) >= cacheMilestones.Count) yield break;
                     //Debug.Log($"[PHAT] progress: {progress}");
                 if (cacheMilestones.Count>0&& progress == cacheMilestones[currentMilestone + 1])
                 {
@@ -52,5 +53,10 @@ public class GameplayProgression : MonoBehaviour
     {
         onCheckEnemyInRange = _onCheckEnemyInRange;
         onSpawnEnemy=_onSpawnEnemy;
+    }
+    public void ResetData()
+    {
+        progress = 0;
+        currentMilestone = -1;
     }
 }

@@ -14,9 +14,28 @@ public class GameManager : MonoBehaviour
         resourceManager.AddResource(ResourceConstant.GEM, 0);
 
         uiManager.Init();
-        gameplayManager.ActiveGameplay(resourceManager);
-        uiManager.AssignEvent(gameplayManager.StartGame);
-        uiManager.ShowUI(UiConstant.MAIN_MENU_UI, new UiBaseData());
+        uiManager.AssignEvent(gameplayManager.StartGame, InitStartPoint);
+        gameplayManager.AssignEvent(OnEndGame);
+        InitStartPoint();
     }
 
+    private void InitStartPoint()
+    {
+        gameplayManager.ActiveGameplay(resourceManager);
+        uiManager.ShowUI(UiConstant.MAIN_MENU_UI, new MainMenuUiData()
+        {
+            Uid = UiConstant.MAIN_MENU_UI,
+            CoinAmount = resourceManager.GetResourceValue(ResourceConstant.COIN)
+        });
+    }
+    private void OnEndGame(ResultType _type)
+    {
+        uiManager.ShowUI(UiConstant.RESULT_UI, new ResultUiData()
+        {
+            Uid = UiConstant.RESULT_UI,
+            CoinAmount = resourceManager.GetResourceValue(ResourceConstant.COIN),
+            ResultType = _type
+        });
+
+    }
 }

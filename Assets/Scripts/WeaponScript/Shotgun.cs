@@ -15,7 +15,7 @@ public class Shotgun : MonoBehaviour, IWeapon
     private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShoot;
     public void SetData(WeaponBaseData _data)
     {
-        if(_data is  ShotgunData _shotgunData)
+        if (_data is ShotgunData _shotgunData)
         {
             shotgunData = _shotgunData;
         }
@@ -37,7 +37,7 @@ public class Shotgun : MonoBehaviour, IWeapon
 
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
             Fire(_target);
-            yield return Timing.WaitForSeconds( shotgunData.Cooldown);
+            yield return Timing.WaitForSeconds(shotgunData.Cooldown);
         }
     }
 
@@ -63,7 +63,7 @@ public class Shotgun : MonoBehaviour, IWeapon
     public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShoot, Func<Vector2> _onGetNearestTarget)
     {
         onShoot = _onShoot;
-        onGetNearestEnemy=_onGetNearestTarget;
+        onGetNearestEnemy = _onGetNearestTarget;
     }
 
     public string GetUserId()

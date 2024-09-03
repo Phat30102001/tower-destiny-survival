@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public void Init()
     {
         damageReceiver.AssignEvent(onReceiveDamage);
+        gameObject.SetActive(true);
     }
     public void SetData(PlayerData _data)
     {
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour
         //Debug.Log($"{gameObject.name}'s health: {healthPoint}");
         if (healthPoint <= 0)
         {
+            gameObject.SetActive(false);
             onZeroHealthCallback?.Invoke();
         }
     }

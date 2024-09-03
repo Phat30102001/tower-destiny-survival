@@ -59,6 +59,8 @@ public class EnemyWaveController : MonoBehaviour
     public void onEndGame()
     {
         Timing.KillCoroutines(handle);
+        enemySpawner.ClearAllEnemy();
+        enemyBaseController.OnBaseDestroyed();
     }
         
 }
