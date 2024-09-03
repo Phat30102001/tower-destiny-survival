@@ -38,7 +38,6 @@ public class GameplayManager : MonoBehaviour
 
         currentState = GameplayState.PLAYING;
 
-        startGame();
         
 
 
@@ -135,7 +134,7 @@ public class GameplayManager : MonoBehaviour
         gameplayProgression.GetMilestone(waveController.GetWaveMilestones());
         weaponController.SpawnTurretWeapon(_turretWeaponBaseData, turretManager.GetTurretTransformAtId(_turretWeaponBaseData.Uid));
     }
-    private void startGame()
+    public void StartGame()
     {
         //waveController.ActiveEnemies();
         turretManager.CheckAnyTurretAlive();

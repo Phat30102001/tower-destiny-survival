@@ -31,6 +31,7 @@ public abstract class Enemybase : MonoBehaviour, IEnemy
     public abstract Vector2 getEnemyCurrentPos();
     public abstract string GetCurrentTargetTag();
     public abstract void SwitchEnemyTarget(string _targetTag);
+
 }
 //public class Enemybase : MonoBehaviour, IEnemy
 //{
