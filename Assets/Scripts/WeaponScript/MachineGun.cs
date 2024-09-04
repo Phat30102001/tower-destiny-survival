@@ -75,6 +75,7 @@ public class MachineGun : MonoBehaviour, IWeapon
         gameObject.SetActive(false);
     }
 }
+[Serializable]
 public class MachineGunData : WeaponBaseData
 {
     public int NumberPerRound;

@@ -24,23 +24,25 @@ public class GameplayManager : MonoBehaviour
 
     CoroutineHandle handle;
     private WeaponBaseData weaponBaseData;
+    private DataHolder dataHolder;
 
-    private GameplayState currentState=GameplayState.INIT;
 
-    public void ActiveGameplay(ResourceManager _resourceManager)
+    public void ActiveGameplay(ResourceManager _resourceManager, DataHolder _dataHolder)
     {
         resourceManager = _resourceManager;
+        dataHolder= _dataHolder;
 
         Init();
 
         setData();
 
-        currentState = GameplayState.PLAYING;
+
 
         
 
 
     }
+
     
     public void Init()
     {
@@ -123,14 +125,12 @@ public class GameplayManager : MonoBehaviour
 
         //};
         weaponController.SpawnWeapon( weaponBaseData);
-        turretManager.GenerateTurret(new TurretData
-        {
-            HealthPoint = 100,
-            TurretId = "0",
-
-        });
         gameplayProgression.GetMilestone(waveController.GetWaveMilestones());
         weaponController.SpawnTurretWeapon(_turretWeaponBaseData, turretManager.GetTurretTransformAtId(_turretWeaponBaseData.Uid));
+    }
+    public bool CreateTurret()
+    {
+       return turretManager.GenerateTurret(dataHolder.GetTurretDataAtLevel(0));
     }
     public void StartGame()
     {
@@ -163,7 +163,7 @@ public class GameplayManager : MonoBehaviour
     }
 }
 
-public enum GameplayState { INIT,PLAYING,END}
+//public enum GameplayState { INIT,PLAYING,END}
 public static class TargetConstant
 {
     public static string PLAYER = "Player";

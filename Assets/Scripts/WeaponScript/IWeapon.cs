@@ -25,6 +25,8 @@ public class WeaponBaseData
     //public int NumberPerRound;
     //public float FireSpreadOffset;
     public string TargetTag;
+
+    public ResourceData priceData;
     //public float ShootForce;
     //public string ProjectileId;
 }

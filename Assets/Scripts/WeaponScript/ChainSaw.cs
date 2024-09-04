@@ -57,6 +57,7 @@ public class ChainSaw : MonoBehaviour, IWeapon
         gameObject.SetActive(false);
     }
 }
+[Serializable]
 public class ChainSawData : WeaponBaseData
 {
     public float BreakTimeBetweenSendDamage;

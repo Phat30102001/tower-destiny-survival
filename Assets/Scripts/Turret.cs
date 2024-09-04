@@ -35,9 +35,11 @@ public class Turret: MonoBehaviour
         return weaponContainer;
     }
 }
+[Serializable]
 public class TurretData
 {
     public string TurretId;
     public int HealthPoint;
     public string WeaponId;
+    public ResourceData priceData;
 }

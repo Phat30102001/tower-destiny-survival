@@ -102,6 +102,7 @@ public class FlameThrower : MonoBehaviour, IWeapon
         gameObject.SetActive(false);
     }
 }
+[Serializable]
 public class FlameThrowerData : WeaponBaseData
 {
     public float BreakTimeBetweenSendDamage;

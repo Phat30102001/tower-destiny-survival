@@ -12,6 +12,7 @@ public class UiManager : MonoBehaviour
     public List<UiBase> uiList;
     Action onStartGame;
     Action onBackToMainMenu;
+    Func<int> onAddTurret;
 
     // Called when the script instance is being loaded
     public void Init()
@@ -39,10 +40,11 @@ public class UiManager : MonoBehaviour
             Debug.LogError($"UI with name {_uid} not found.");
         }
     }
-    public void AssignEvent(Action _onStartGame,Action _onBackToMainMenu) 
+    public void AssignEvent(Action _onStartGame,Action _onBackToMainMenu,Func<int> _onAddTurret) 
     {
         onStartGame= _onStartGame;
         onBackToMainMenu = _onBackToMainMenu;
+        onAddTurret= _onAddTurret;
     }
 
     private void AssignUiEvent(string _uid,UiBase uiBase)
@@ -50,7 +52,7 @@ public class UiManager : MonoBehaviour
         switch (_uid) {
             case UiConstant.MAIN_MENU_UI:
                 MainMenuUI mainMenuUI = uiBase as MainMenuUI;
-                mainMenuUI.AssignEvents(OnStartGame);
+                mainMenuUI.AssignEvents(OnStartGame, OnAddTurret);
                 break;
 
             case UiConstant.SETTING_UI:
@@ -68,6 +70,10 @@ public class UiManager : MonoBehaviour
     {
         onStartGame?.Invoke();
         HideUI(UiConstant.MAIN_MENU_UI);
+    }
+    private int OnAddTurret()
+    {
+        return onAddTurret();
     }
     private void OnBecameInvisible()
     {

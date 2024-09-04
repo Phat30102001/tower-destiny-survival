@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,15 +6,6 @@ public class ResourceManager : MonoBehaviour
 {
     // Dictionary to store resource counts with string keys
     private Dictionary<string, int> resources = new Dictionary<string, int>();
-
-    // Called when the script instance is being loaded
-    void Start()
-    {
-        // Initialize resources
-        resources[ResourceConstant.COIN] = 0;
-        resources[ResourceConstant.GEM] = 0;
-    }
-
     public void AddResource(string resourceType, int amount)
     {
         if (amount <= 0) return;
@@ -30,21 +22,38 @@ public class ResourceManager : MonoBehaviour
         Debug.Log($"{resourceType} added. New count: {resources[resourceType]}");
     }
 
-    public bool ConsumeResource(string resourceType, int amount)
+    public int ConsumeResource(ResourceData _price, Action _onSuccess, Action _onFail = null, Func<bool> _callbackBeforeConsume=null)
     {
-        if (amount <= 0) return false;
+        if (_price.ResourceValue <= 0) return resources[_price.ResourceId];
 
-        if (resources.ContainsKey(resourceType) && resources[resourceType] >= amount)
+        if (resources.ContainsKey(_price.ResourceId) && resources[_price.ResourceId] >= _price.ResourceValue)
         {
-            resources[resourceType] -= amount;
-            Debug.Log($"{resourceType} consumed. Remaining count: {resources[resourceType]}");
-            return true;
+            if(_callbackBeforeConsume != null)
+            {
+                if (_callbackBeforeConsume()){
+                    _onSuccess?.Invoke();
+                    resources[_price.ResourceId] -= _price.ResourceValue;
+                }
+                else
+                {
+                    _onFail?.Invoke();
+
+                }
+               
+            }
+            else
+            {
+                _onSuccess?.Invoke();
+                resources[_price.ResourceId] -= _price.ResourceValue;
+            }
+
+
         }
         else
         {
-            Debug.Log($"{resourceType} not enough or doesn't exist.");
-            return false;
+            _onFail?.Invoke();
         }
+        return resources[_price.ResourceId];
     }
 
 
@@ -59,6 +68,13 @@ public class ResourceManager : MonoBehaviour
             return 0;
         }
     }
+}
+[Serializable]
+public class ResourceData
+{
+    public string ResourceId;
+    public int ResourceValue;
+
 }
 public static class  ResourceConstant
 {

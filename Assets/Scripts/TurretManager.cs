@@ -20,22 +20,24 @@ public class TurretManager : MonoBehaviour
         onZeroTurret?.Invoke();
     }
 
-    public void GenerateTurret(TurretData turretData)
+    public bool GenerateTurret(TurretData turretData)
     {
         TurretSlot _turretSlot=new TurretSlot();
         bool _isHaveSlot=false;
-        foreach (TurretSlot _slot in turretSlots)
+        for (int i = 0; i < turretSlots.Count; i++)
         {
+            TurretSlot _slot = turretSlots[i];
             if (!_slot.CheckIsOccupied())
             {
                 _turretSlot = _slot;
                 _isHaveSlot = true;
+                turretData.TurretId = i.ToString();
                 break;
             }
         }
-        if (!_isHaveSlot) return;
-        
+        if (!_isHaveSlot) return false;
         _turretSlot.SetDataForTurret(turretData);
+        return true;
     }
     public Transform GetTurretTransformAtId(string _id)
     {

@@ -7,21 +7,28 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ResourceManager resourceManager;
     [SerializeField] private GameplayManager gameplayManager;
     [SerializeField] private UiManager uiManager;
+    [SerializeField] private DataHolder dataHolder;
 
     private void Start()
     {
-        resourceManager.AddResource(ResourceConstant.COIN, 0);
+        dataHolder.Init();
+
+        resourceManager.AddResource(ResourceConstant.COIN, 100);
         resourceManager.AddResource(ResourceConstant.GEM, 0);
 
         uiManager.Init();
-        uiManager.AssignEvent(gameplayManager.StartGame, InitStartPoint);
+        uiManager.AssignEvent(gameplayManager.StartGame, InitStartPoint, CreateTurret);
         gameplayManager.AssignEvent(OnEndGame);
         InitStartPoint();
     }
-
-    private void InitStartPoint()
+    private int CreateTurret()
     {
-        gameplayManager.ActiveGameplay(resourceManager);
+        return resourceManager.ConsumeResource(
+            dataHolder.GetTurretDataAtLevel(0).priceData, null, null, gameplayManager.CreateTurret);
+    }
+        private void InitStartPoint()
+    {
+        gameplayManager.ActiveGameplay(resourceManager, dataHolder);
         uiManager.ShowUI(UiConstant.MAIN_MENU_UI, new MainMenuUiData()
         {
             Uid = UiConstant.MAIN_MENU_UI,
