@@ -18,15 +18,25 @@ public class GameManager : MonoBehaviour
 
         uiManager.Init();
         uiManager.AssignEvent(gameplayManager.StartGame, InitStartPoint, CreateTurret);
-        gameplayManager.AssignEvent(OnEndGame);
+        gameplayManager.AssignEvent(OnEndGame, UpgradeTurret,null);
         InitStartPoint();
     }
     private int CreateTurret()
     {
         return resourceManager.ConsumeResource(
-            dataHolder.GetTurretDataAtLevel(0).priceData, null, null, gameplayManager.CreateTurret);
+            dataHolder.GetTurretDataAtLevel(1).priceData, null, null, gameplayManager.CreateTurret);
     }
-        private void InitStartPoint()
+    private void UpgradeTurret(string _turretIndex,int _currentLevel)
+    {
+        TurretData _data = dataHolder.GetTurretDataAtLevel(_currentLevel + 1);
+        resourceManager.ConsumeResource(
+    _data.priceData, (() => { 
+    
+        _data.TurretId = _turretIndex;
+        gameplayManager.UpgradeTurret(_data);
+        }), null);
+    }
+    private void InitStartPoint()
     {
         gameplayManager.ActiveGameplay(resourceManager, dataHolder);
         uiManager.ShowUI(UiConstant.MAIN_MENU_UI, new MainMenuUiData()
@@ -45,4 +55,9 @@ public class GameManager : MonoBehaviour
         });
 
     }
+    
+}
+public enum GameState
+{
+    Prepare, Playing, End
 }

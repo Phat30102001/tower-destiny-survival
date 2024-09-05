@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DataHolder : MonoBehaviour
@@ -22,7 +23,7 @@ public class DataHolder : MonoBehaviour
     }
     public TurretData GetTurretDataAtLevel(int _level)
     {
-        return turretLevelDatas[_level];
+        return turretLevelDatas.First(x=>x.Level==_level);
     }
 }
 

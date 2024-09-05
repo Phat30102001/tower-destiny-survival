@@ -39,6 +39,13 @@ public class TurretManager : MonoBehaviour
         _turretSlot.SetDataForTurret(turretData);
         return true;
     }
+    public void UpgradeTurret(TurretData turretData)
+    {
+        TurretSlot _turretSlot= turretSlots.
+            Find(x => x.GetTurretid().Equals(turretData.TurretId));
+
+        _turretSlot?.SetDataForTurret(turretData);
+    }
     public Transform GetTurretTransformAtId(string _id)
     {
         foreach(var _slot in turretSlots)
@@ -55,11 +62,12 @@ public class TurretManager : MonoBehaviour
     {
         return turretTransform;
     }
-    public void AssignEvent(Action _onZeroTurret,Action<string> _onDisableTurretWeapon)
+    public void AssignEvent(Action _onZeroTurret,Action<string> _onDisableTurretWeapon,
+        Action<string,int> onUpgradeTurret, Action<Action, string> onBuyWeapon)
     {
         foreach (var _slot in turretSlots)
         {
-            _slot.AssignEvent(CheckAnyTurretAlive, _onDisableTurretWeapon);
+            _slot.AssignEvent(CheckAnyTurretAlive, _onDisableTurretWeapon, onUpgradeTurret, onBuyWeapon);
         }
         onZeroTurret = _onZeroTurret;
     }

@@ -160,7 +160,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchorMin.x
@@ -168,7 +168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_SizeDelta.x
@@ -208,11 +208,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 149.4468
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1148.78
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -229,10 +229,6 @@ PrefabInstance:
     - target: {fileID: 3094872932646451913, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_Name
       value: TurretSlot (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3094872932646451913, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -346,10 +342,6 @@ PrefabInstance:
     - target: {fileID: 3094872932646451913, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_Name
       value: TurretSlot
-      objectReference: {fileID: 0}
-    - target: {fileID: 3094872932646451913, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2736,24 +2728,28 @@ MonoBehaviour:
   chainSawLevelDatas: []
   turretLevelDatas:
   - TurretId: 
+    Level: 1
     HealthPoint: 100
     WeaponId: 
     priceData:
       ResourceId: Coin
       ResourceValue: 10
   - TurretId: 
+    Level: 2
     HealthPoint: 200
     WeaponId: 
     priceData:
       ResourceId: Coin
       ResourceValue: 50
   - TurretId: 
+    Level: 3
     HealthPoint: 300
     WeaponId: 
     priceData:
       ResourceId: Coin
       ResourceValue: 100
   - TurretId: 
+    Level: 4
     HealthPoint: 400
     WeaponId: 
     priceData:
@@ -2871,7 +2867,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchorMin.x
@@ -2879,7 +2875,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2919,11 +2915,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 149.4468
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -965.17004
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2940,10 +2936,6 @@ PrefabInstance:
     - target: {fileID: 3094872932646451913, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_Name
       value: TurretSlot (3)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3094872932646451913, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3142,7 +3134,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchorMin.x
@@ -3150,7 +3142,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_SizeDelta.x
@@ -3190,11 +3182,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 149.4468
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1516
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3211,10 +3203,6 @@ PrefabInstance:
     - target: {fileID: 3094872932646451913, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_Name
       value: TurretSlot (5)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3094872932646451913, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3313,7 +3301,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchorMin.x
@@ -3321,7 +3309,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_SizeDelta.x
@@ -3361,11 +3349,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 149.4468
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -781.56006
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3382,10 +3370,6 @@ PrefabInstance:
     - target: {fileID: 3094872932646451913, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_Name
       value: TurretSlot (4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3094872932646451913, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3562,7 +3546,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchorMin.x
@@ -3570,7 +3554,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_SizeDelta.x
@@ -3610,11 +3594,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 149.4468
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1332.39
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 270098997795223736, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3631,10 +3615,6 @@ PrefabInstance:
     - target: {fileID: 3094872932646451913, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
       propertyPath: m_Name
       value: TurretSlot (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3094872932646451913, guid: 7b29bee06a133fe4994846a3d40b87a5, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

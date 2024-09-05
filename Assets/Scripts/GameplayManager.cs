@@ -52,7 +52,7 @@ public class GameplayManager : MonoBehaviour
 
         
     }
-    public void AssignEvent(Action<ResultType> _onEndGame)
+    public void AssignEvent(Action<ResultType> _onEndGame, Action<string, int> onUpgradeTurret, Action<Action, string> onBuyWeapon)
     {
 
 
@@ -62,7 +62,7 @@ public class GameplayManager : MonoBehaviour
 
 
         waveController.AssignEvent(projectilePoolingManager.GenerateProjectilePool,(_resource)=> resourceManager.AddResource(ResourceConstant.COIN, _resource));
-        turretManager.AssignEvent(waveController.SwitchEnemyTarget,weaponController.RemoveWeapon);
+        turretManager.AssignEvent(waveController.SwitchEnemyTarget,weaponController.RemoveWeapon, onUpgradeTurret, onBuyWeapon);
         gameplayProgression.AssignEvent(enemyTracker.IsEnemyInArea,waveController.ActiveEnemies);
         player.AssignEvent(activeGameOver);
     }
@@ -130,7 +130,11 @@ public class GameplayManager : MonoBehaviour
     }
     public bool CreateTurret()
     {
-       return turretManager.GenerateTurret(dataHolder.GetTurretDataAtLevel(0));
+       return turretManager.GenerateTurret(dataHolder.GetTurretDataAtLevel(1));
+    }
+    public void UpgradeTurret(TurretData _data)
+    {
+        turretManager.UpgradeTurret(_data);
     }
     public void StartGame()
     {

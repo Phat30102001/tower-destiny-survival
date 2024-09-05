@@ -39,6 +39,7 @@ public class Turret: MonoBehaviour
 public class TurretData
 {
     public string TurretId;
+    public int Level;
     public int HealthPoint;
     public string WeaponId;
     public ResourceData priceData;
