@@ -66,6 +66,12 @@ public class UiManager : MonoBehaviour
                 break;
         } 
     }
+    public void SetCoinData(long amount)
+    {
+        uiDictionary.TryGetValue(UiConstant.MAIN_MENU_UI, out var _ui);
+        if (_ui != null && _ui is MainMenuUI _mainMenuUi)
+            _mainMenuUi.SetCoinAmount(amount);
+    }
     private void OnStartGame()
     {
         onStartGame?.Invoke();

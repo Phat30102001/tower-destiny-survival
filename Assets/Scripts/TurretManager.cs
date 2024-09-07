@@ -20,10 +20,10 @@ public class TurretManager : MonoBehaviour
         onZeroTurret?.Invoke();
     }
 
-    public bool GenerateTurret(TurretData turretData)
+    public bool GenerateTurret(TurretData turretData, List<WeaponBaseData> _weaponDatas)
     {
-        TurretSlot _turretSlot=new TurretSlot();
-        bool _isHaveSlot=false;
+        TurretSlot _turretSlot = new TurretSlot();
+        bool _isHaveSlot = false;
         for (int i = 0; i < turretSlots.Count; i++)
         {
             TurretSlot _slot = turretSlots[i];
@@ -36,24 +36,36 @@ public class TurretManager : MonoBehaviour
             }
         }
         if (!_isHaveSlot) return false;
-        _turretSlot.SetDataForTurret(turretData);
+        _turretSlot.SetDataForTurret(turretData, _weaponDatas);
         return true;
     }
-    public void UpgradeTurret(TurretData turretData)
+    public void UpgradeTurret(TurretData turretData, List<WeaponBaseData> _weaponDatas)
     {
-        TurretSlot _turretSlot= turretSlots.
+        TurretSlot _turretSlot = turretSlots.
             Find(x => x.GetTurretid().Equals(turretData.TurretId));
 
-        _turretSlot?.SetDataForTurret(turretData);
+        _turretSlot?.SetDataForTurret(turretData, _weaponDatas);
+    }
+    public string GetWeaponIdTurretAtId(string _id)
+    {
+        foreach (var _slot in turretSlots)
+        {
+            if (!_slot.CheckIsOccupied()) continue;
+            if (_slot.GetTurretid().Equals(_id))
+            {
+                return _slot.GetTurretWeaponId();
+            }
+        }
+        return null;
     }
     public Transform GetTurretTransformAtId(string _id)
     {
-        foreach(var _slot in turretSlots)
+        foreach (var _slot in turretSlots)
         {
-            if(!_slot.CheckIsOccupied())continue;
+            if (!_slot.CheckIsOccupied()) continue;
             if (_slot.GetTurretid().Equals(_id))
             {
-                return _slot.GetTurretWeaponContainer();    
+                return _slot.GetTurretWeaponContainer();
             }
         }
         return null;
@@ -62,13 +74,25 @@ public class TurretManager : MonoBehaviour
     {
         return turretTransform;
     }
-    public void AssignEvent(Action _onZeroTurret,Action<string> _onDisableTurretWeapon,
-        Action<string,int> onUpgradeTurret, Action<Action, string> onBuyWeapon)
+    public void AssignEvent(Action _onZeroTurret, Action<string> _onDisableTurretWeapon,
+        Action<string, int> onUpgradeTurret, Action<string, string, int> onBuyWeapon)
     {
         foreach (var _slot in turretSlots)
         {
             _slot.AssignEvent(CheckAnyTurretAlive, _onDisableTurretWeapon, onUpgradeTurret, onBuyWeapon);
         }
         onZeroTurret = _onZeroTurret;
+    }
+
+    public void SetTurretWeaponId(string _turretId, WeaponBaseData _weaponData)
+    {
+        foreach (var _slot in turretSlots)
+        {
+            if (_slot.GetTurretid().Equals(_turretId))
+            {
+                _slot.SetTurretWeapon(_weaponData);
+
+            }
+        }
     }
 }

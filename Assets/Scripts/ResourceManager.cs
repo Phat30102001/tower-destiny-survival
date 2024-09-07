@@ -22,7 +22,7 @@ public class ResourceManager : MonoBehaviour
         Debug.Log($"{resourceType} added. New count: {resources[resourceType]}");
     }
 
-    public int ConsumeResource(ResourceData _price, Action _onSuccess, Action _onFail = null, Func<bool> _callbackBeforeConsume=null)
+    public int ConsumeResource(ResourceData _price, Action<long> _onSuccess, Action _onFail = null, Func<bool> _callbackBeforeConsume=null)
     {
         if (_price.ResourceValue <= 0) return resources[_price.ResourceId];
 
@@ -31,8 +31,8 @@ public class ResourceManager : MonoBehaviour
             if(_callbackBeforeConsume != null)
             {
                 if (_callbackBeforeConsume()){
-                    _onSuccess?.Invoke();
                     resources[_price.ResourceId] -= _price.ResourceValue;
+                    _onSuccess?.Invoke(resources[_price.ResourceId]);
                 }
                 else
                 {
@@ -43,8 +43,8 @@ public class ResourceManager : MonoBehaviour
             }
             else
             {
-                _onSuccess?.Invoke();
                 resources[_price.ResourceId] -= _price.ResourceValue;
+                _onSuccess?.Invoke(resources[_price.ResourceId]);
             }
 
 

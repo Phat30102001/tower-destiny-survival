@@ -9,11 +9,18 @@ public class Turret: MonoBehaviour
     private int healthPoint;
     private Action onZeroHealthCallback;
     Action<string> onDisableWeapon;
+    private string weaponId="";
+    private int weaponLevel;
     public void SetData(TurretData _data)
     {
         turretData = _data;
-        healthPoint=turretData.HealthPoint;
+        healthPoint =turretData.HealthPoint;
         damageReceiver.AssignEvent(onReceiveDamage);
+    }
+    public void SetTurretWeapon(string _weaponId, int _level)
+    {
+        weaponId = _weaponId;
+        weaponLevel = _level;
     }
     private void onReceiveDamage(int _amount)
     {
@@ -34,13 +41,22 @@ public class Turret: MonoBehaviour
     {
         return weaponContainer;
     }
+    public string CurrentEquipWeaponId()
+    {
+        return weaponId;
+    }
+    public int CurrentEquipWeaponLevel()
+    {
+        return weaponLevel;
+    }
 }
 [Serializable]
-public class TurretData
+public struct TurretData
 {
     public string TurretId;
     public int Level;
     public int HealthPoint;
     public string WeaponId;
+    public int WeaponLevel;
     public ResourceData priceData;
 }

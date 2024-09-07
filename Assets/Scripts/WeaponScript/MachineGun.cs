@@ -47,7 +47,7 @@ public class MachineGun : MonoBehaviour, IWeapon
                 _target, weaponData.NumberPerRound, weaponData.Cooldown, 0, new ProjectileData
                 {
                     Damage = weaponData.DamageAmount,
-                    ShootSpeed = weaponData.ShootForce,
+                    ShootSpeed = weaponData.ShootSpeed,
                     TargetTag = weaponData.TargetTag,
                     HideOnHit = true,
                 });
@@ -81,5 +81,5 @@ public class MachineGunData : WeaponBaseData
     public int NumberPerRound;
     //public float FireSpreadOffset;
     public string ProjectileId;
-    public float ShootForce;
+    public float ShootSpeed;
 }

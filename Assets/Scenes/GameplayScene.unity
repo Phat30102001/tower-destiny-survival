@@ -2722,10 +2722,104 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3522bff3139fea545a5db5daae776fdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shotgunLevelData: []
-  machineGunLevelDatas: []
-  flameThrowerLevelDatas: []
-  chainSawLevelDatas: []
+  shotgunLevelData:
+  - Uid: Player
+    WeaponId: Shotgun
+    Level: 1
+    DamageAmount: 10
+    Cooldown: 0.8
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 0
+    NumberPerRound: 3
+    FireSpreadOffset: 100
+    ProjectileId: ShotgunBullet
+    ShootSpeed: 30
+  - Uid: Player
+    WeaponId: Shotgun
+    Level: 2
+    DamageAmount: 10
+    Cooldown: 0.5
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 0
+    NumberPerRound: 5
+    FireSpreadOffset: 100
+    ProjectileId: ShotgunBullet
+    ShootSpeed: 30
+  machineGunLevelDatas:
+  - Uid: 
+    WeaponId: MachineGun
+    Level: 1
+    DamageAmount: 10
+    Cooldown: 1
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 20
+    NumberPerRound: 1
+    ProjectileId: MachineGunBullet
+    ShootSpeed: 30
+  - Uid: 
+    WeaponId: MachineGun
+    Level: 2
+    DamageAmount: 30
+    Cooldown: 1
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 20
+    NumberPerRound: 1
+    ProjectileId: MachineGunBullet
+    ShootSpeed: 30
+  flameThrowerLevelDatas:
+  - Uid: 
+    WeaponId: FlameThrower
+    Level: 1
+    DamageAmount: 3
+    Cooldown: 5
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 30
+    BreakTimeBetweenSendDamage: 0.5
+    MaxRotateAngle: 45
+    RrotationSpeed: 20
+  - Uid: 
+    WeaponId: FlameThrower
+    Level: 2
+    DamageAmount: 3
+    Cooldown: 5
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 30
+    BreakTimeBetweenSendDamage: 0.3
+    MaxRotateAngle: 45
+    RrotationSpeed: 20
+  chainSawLevelDatas:
+  - Uid: 
+    WeaponId: ChainSaw
+    Level: 1
+    DamageAmount: 10
+    Cooldown: 0
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 10
+    BreakTimeBetweenSendDamage: 0.5
+  - Uid: 
+    WeaponId: ChainSaw
+    Level: 1
+    DamageAmount: 10
+    Cooldown: 0
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 10
+    BreakTimeBetweenSendDamage: 0.3
   turretLevelDatas:
   - TurretId: 
     Level: 1

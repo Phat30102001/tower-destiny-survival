@@ -25,6 +25,23 @@ public class DataHolder : MonoBehaviour
     {
         return turretLevelDatas.First(x=>x.Level==_level);
     }
+
+
+    public WeaponBaseData GetWeaponData(string _weaponId, int _level)
+    {
+        return weaponDataHolder[_weaponId].Find(x => x.Level == _level);
+    }
+    public List<WeaponBaseData> GetAllLv1Turretweapondata()
+    {
+        
+        List < WeaponBaseData > lv1Weapon= new List<WeaponBaseData>();
+        foreach (var weaponData in weaponDataHolder)
+        {
+            if (weaponData.Value[0].Uid.Equals(TargetConstant.PLAYER)) continue;
+            lv1Weapon.Add(weaponData.Value[0]);
+        }
+        return lv1Weapon;
+    }
 }
 
 

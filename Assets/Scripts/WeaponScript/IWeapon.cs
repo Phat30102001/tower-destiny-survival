@@ -20,6 +20,7 @@ public class WeaponBaseData
 {
     public string Uid;
     public string WeaponId;
+    public int Level;
     public int DamageAmount;
     public float Cooldown;
     //public int NumberPerRound;

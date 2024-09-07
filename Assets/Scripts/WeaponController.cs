@@ -44,21 +44,22 @@ public class WeaponController : MonoBehaviour
         weapon.AssignEvent(onShoot, getNearestEnemy);
     }
 
-    public void SpawnTurretWeapon(WeaponBaseData _data, Transform _weaponContainer)
+    public bool SpawnTurretWeapon(WeaponBaseData _data,bool _isContainWeapon, Transform _weaponContainer)
     {
-        if (_weaponContainer == null) return;
+        if (_weaponContainer == null|| _isContainWeapon) return false;
         if(turretWeapons.TryGetValue(_data.Uid, out IWeapon _turretWeapon))
         {
             if (_turretWeapon.GetWeaponId().Equals(_data.WeaponId))
             {
-
+                _turretWeapon.SetData(_data);
+                return true;
             }
             else
             {
                 _turretWeapon.DisableWeapon();
 
                 GameObject _weaponPrefab = weapons.Find(x => x.GetComponent<IWeapon>().GetWeaponId().Equals(_data.WeaponId));
-                if (_weaponPrefab == null) return;
+                if (_weaponPrefab == null) return false;
 
                 GameObject _weaponObject = Instantiate(_weaponPrefab, _weaponContainer);
 
@@ -70,7 +71,7 @@ public class WeaponController : MonoBehaviour
         {
 
             GameObject _weaponPrefab = weapons.Find(x => x.GetComponent<IWeapon>().GetWeaponId().Equals(_data.WeaponId));
-            if (_weaponPrefab == null) return;
+            if (_weaponPrefab == null) return false;
 
             GameObject _weaponObject = Instantiate(_weaponPrefab, _weaponContainer);
 
@@ -79,6 +80,7 @@ public class WeaponController : MonoBehaviour
         }
         turretWeapons[_data.Uid].SetData(_data);
         turretWeapons[_data.Uid].AssignEvent(onShoot, getNearestEnemy);
+        return true;
     }
     public void DisableWeapon()
     {

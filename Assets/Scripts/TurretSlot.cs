@@ -17,17 +17,37 @@ public class TurretSlot : MonoBehaviour
     public bool CheckIsOccupied() => isOccupied;
     public Transform GetSlotTransform()=> slotTransform;
 
-    public void SetDataForTurret(TurretData _data)
+    public void SetDataForTurret(TurretData _data,List<WeaponBaseData> _weaponData)
     {
         if (turret == null) return;
         data = _data;
         turret.SetData(data);
         gameObject.SetActive(true);
         isOccupied=true;
-        turretUi.UpdateTurretData(data.Level);
+        SetTurretDataUi(_data.Level, _data.priceData.ResourceValue, _weaponData);
     }
+    public void SetTurretDataUi(int _level, int _price, List<WeaponBaseData> _weaponData)
+    {
+        turretUi.UpdateTurretData(_level, _price, ConvertWeaponData(_weaponData));
+
+    }
+
+    private List<WeaponButtonData> ConvertWeaponData(List<WeaponBaseData> _weaponData)
+    {
+        List < WeaponButtonData > weaponButtonDataList = new List<WeaponButtonData>();
+        foreach (var weaponData in _weaponData)
+        {
+            WeaponButtonData weaponButtonData = new WeaponButtonData();
+            weaponButtonData.weaponId = weaponData.WeaponId;
+            weaponButtonData.weaponLevel = weaponData.Level;
+            weaponButtonData.weaponPrice = weaponData.priceData.ResourceValue;
+            weaponButtonDataList.Add(weaponButtonData);
+        }
+        return weaponButtonDataList;
+    }
+
     public void AssignEvent(Action _onTurretDestroy, Action<string> _onDisableWeaponTurret,
-        Action<string,int> onUpgradeTurret, Action<Action, string> onBuyWeapon)
+        Action<string,int> onUpgradeTurret, Action<string,string,int> onBuyWeapon)
     {
         turret.AssignEvent(()=> 
         {
@@ -37,11 +57,19 @@ public class TurretSlot : MonoBehaviour
         }, onDisableWeaponTurret);
         onTurretDestroy= _onTurretDestroy;
         onDisableWeaponTurret= _onDisableWeaponTurret;
-        turretUi.AssignEvent(()=>onUpgradeTurret?.Invoke(data.TurretId, data.Level), onBuyWeapon);
+        turretUi.AssignEvent(()=>onUpgradeTurret?.Invoke(data.TurretId, data.Level),(_weaponId, _level)=> {
+            onBuyWeapon?.Invoke(GetTurretid(), _weaponId, _level);
+        });
     }
     public string GetTurretid()
     {
-        return data.TurretId;
+        return data.TurretId??"";
     }
     public Transform GetTurretWeaponContainer() => turret.GetWeaponCointainer();
+    public string GetTurretWeaponId() => turret.CurrentEquipWeaponId();
+    public void SetTurretWeapon(WeaponBaseData _data)
+    {
+        turret.SetTurretWeapon(_data.WeaponId, _data.Level);
+        turretUi.SetWeaponData(ConvertWeaponData(new List<WeaponBaseData>() { _data}));
+    }
 }

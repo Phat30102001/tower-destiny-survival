@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
 
         uiManager.Init();
         uiManager.AssignEvent(gameplayManager.StartGame, InitStartPoint, CreateTurret);
-        gameplayManager.AssignEvent(OnEndGame, UpgradeTurret,null);
+        gameplayManager.AssignEvent(OnEndGame, UpgradeTurret, UpgradeWeapon);
         InitStartPoint();
     }
     private int CreateTurret()
@@ -29,12 +29,20 @@ public class GameManager : MonoBehaviour
     private void UpgradeTurret(string _turretIndex,int _currentLevel)
     {
         TurretData _data = dataHolder.GetTurretDataAtLevel(_currentLevel + 1);
+        bool _isContainWeapon = gameplayManager.GetTurretWeaponId(_turretIndex)!="";
         resourceManager.ConsumeResource(
-    _data.priceData, (() => { 
+    _data.priceData, ((_remainAmount) => { 
     
         _data.TurretId = _turretIndex;
-        gameplayManager.UpgradeTurret(_data);
+        gameplayManager.UpgradeTurret(_data,dataHolder.GetAllLv1Turretweapondata());
+        uiManager.SetCoinData(_remainAmount);
         }), null);
+    }
+    private void UpgradeWeapon(string _turretId, string _weaponId, int _level)
+    {
+        resourceManager.ConsumeResource(
+            dataHolder.GetWeaponData(_weaponId, _level).priceData, uiManager.SetCoinData, null,
+            () => gameplayManager.BuyWeapon(_turretId, _weaponId, _level));
     }
     private void InitStartPoint()
     {

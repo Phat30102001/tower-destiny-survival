@@ -52,7 +52,7 @@ public class GameplayManager : MonoBehaviour
 
         
     }
-    public void AssignEvent(Action<ResultType> _onEndGame, Action<string, int> onUpgradeTurret, Action<Action, string> onBuyWeapon)
+    public void AssignEvent(Action<ResultType> _onEndGame, Action<string, int> onUpgradeTurret, Action<string, string, int> onBuyWeapon)
     {
 
 
@@ -90,18 +90,7 @@ public class GameplayManager : MonoBehaviour
             ProjectileId = "ShotgunBullet",
 
         };
-        var _turretWeaponBaseData = new MachineGunData
-        {
-            Uid = "0",
-            Cooldown = 1f,
-            WeaponId = WeaponIdConstant.MACHINE_GUN,
-            DamageAmount = 10,
-            ShootForce = 50,
-            NumberPerRound = 3,
-            TargetTag = TargetConstant.ENEMY,
-            ProjectileId = "MachineGunBullet",
 
-        };
         //var _turretWeaponBaseData = new ChainSawData
         //{
         //    Uid = "0",
@@ -126,15 +115,31 @@ public class GameplayManager : MonoBehaviour
         //};
         weaponController.SpawnWeapon( weaponBaseData);
         gameplayProgression.GetMilestone(waveController.GetWaveMilestones());
-        weaponController.SpawnTurretWeapon(_turretWeaponBaseData, turretManager.GetTurretTransformAtId(_turretWeaponBaseData.Uid));
+        
     }
     public bool CreateTurret()
     {
-       return turretManager.GenerateTurret(dataHolder.GetTurretDataAtLevel(1));
+       return turretManager.GenerateTurret(dataHolder.GetTurretDataAtLevel(1),dataHolder.GetAllLv1Turretweapondata());
     }
-    public void UpgradeTurret(TurretData _data)
+    public string GetTurretWeaponId(string _turretId)
     {
-        turretManager.UpgradeTurret(_data);
+        return turretManager.GetWeaponIdTurretAtId(_turretId);
+    }
+    public void UpgradeTurret(TurretData _data,List<WeaponBaseData> _weaponDatas)
+    {
+        turretManager.UpgradeTurret(_data, _weaponDatas);
+    }
+    public bool BuyWeapon(string _turretId, string _weaponId,int _level)
+    {
+        WeaponBaseData _weaponData = dataHolder.GetWeaponData(_weaponId, _level);
+        _weaponData.Uid = _turretId;
+        bool _isSuccess= weaponController.SpawnTurretWeapon(_weaponData,
+            (GetTurretWeaponId(_turretId) != ""), turretManager.GetTurretTransformAtId(_turretId));
+        if(_isSuccess)
+        {
+            turretManager.SetTurretWeaponId(_turretId, _weaponData);
+        }
+        return _isSuccess;
     }
     public void StartGame()
     {
