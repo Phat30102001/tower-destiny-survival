@@ -25,6 +25,9 @@ public class TurretSlot : MonoBehaviour
         gameObject.SetActive(true);
         isOccupied=true;
         SetTurretDataUi(_data.Level, _data.priceData.ResourceValue, _weaponData);
+        SaveGameManager.instance.SaveTurretData(_data);
+        if(_data.WeaponId != "" && _data.WeaponLevel > 0)
+            turret.SetTurretWeapon(_data.WeaponId, _data.WeaponLevel);
     }
     public void SetTurretDataUi(int _level, int _price, List<WeaponBaseData> _weaponData)
     {
@@ -52,7 +55,6 @@ public class TurretSlot : MonoBehaviour
     {
         turret.AssignEvent(()=> 
         {
-            isOccupied=false ;
             onTurretDestroy?.Invoke();
             gameObject.SetActive(false);
         }, onDisableWeaponTurret);
@@ -73,5 +75,6 @@ public class TurretSlot : MonoBehaviour
     {
         turret.SetTurretWeapon(_data.WeaponId, _data.Level);
         turretUi.SetWeaponData(ConvertWeaponData(new List<WeaponBaseData>() { _nextLevelData }));
+        SaveGameManager.instance.SaveWeaponTurretData(data.TurretId, _data.WeaponId, _data.Level);
     }
 }

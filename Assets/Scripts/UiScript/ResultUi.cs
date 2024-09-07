@@ -11,7 +11,12 @@ public class ResultUi : UiBase
     [SerializeField] private TextMeshProUGUI resultText;
     [SerializeField] private TextMeshProUGUI coinAmount;
     [SerializeField] private Button continueButton;
+    Action onContinue;
 
+    private void Start()
+    {
+        continueButton.onClick.AddListener(() => onContinue?.Invoke());
+    }
     public override void SetData(UiBaseData data)
     {
         if (data is ResultUiData _resultUiData)
@@ -44,7 +49,7 @@ public class ResultUi : UiBase
 
     public void AssignEvents(Action _onContinue)
     {
-        continueButton.onClick.AddListener(() => _onContinue?.Invoke());
+        onContinue = _onContinue;
     }
 
     public override string GetUiId()

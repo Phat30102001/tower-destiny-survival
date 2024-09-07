@@ -24,13 +24,11 @@ public class GameplayManager : MonoBehaviour
 
     CoroutineHandle handle;
     private WeaponBaseData weaponBaseData;
-    private DataHolder dataHolder;
 
 
-    public void ActiveGameplay(ResourceManager _resourceManager, DataHolder _dataHolder)
+    public void ActiveGameplay(ResourceManager _resourceManager)
     {
         resourceManager = _resourceManager;
-        dataHolder= _dataHolder;
 
         Init();
 
@@ -115,11 +113,12 @@ public class GameplayManager : MonoBehaviour
         //};
         weaponController.SpawnWeapon( weaponBaseData);
         gameplayProgression.GetMilestone(waveController.GetWaveMilestones());
-        
+        turretManager.RefreshManager();
+
     }
     public bool CreateTurret()
     {
-       return turretManager.GenerateTurret(dataHolder.GetTurretDataAtLevel(1),dataHolder.GetAllLv1Turretweapondata());
+       return turretManager.GenerateTurret(DataHolder.instance.GetTurretDataAtLevel(1),DataHolder.instance.GetAllLv1Turretweapondata());
     }
     public (string _weaponId,int _level) GetTurretWeaponId(string _turretId)
     {
@@ -131,8 +130,8 @@ public class GameplayManager : MonoBehaviour
     }
     public bool BuyWeapon(string _turretId, string _weaponId,int _level)
     {
-        WeaponBaseData _weaponData = dataHolder.GetWeaponData(_weaponId, _level);
-        WeaponBaseData _nextLevelWeaponData = dataHolder.GetWeaponData(_weaponId, _level+1);
+        WeaponBaseData _weaponData = DataHolder.instance.GetWeaponData(_weaponId, _level);
+        WeaponBaseData _nextLevelWeaponData = DataHolder.instance.GetWeaponData(_weaponId, _level+1);
 
         
         _weaponData.Uid = _turretId;
@@ -147,7 +146,6 @@ public class GameplayManager : MonoBehaviour
     public void StartGame()
     {
         //waveController.ActiveEnemies();
-        turretManager.CheckAnyTurretAlive();
         weaponController.ActiveWeapon();
         handle = Timing.RunCoroutine(gameplayProgression.OnCheckEnemyInRange());
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class DataHolder : MonoBehaviour
 {
+    public static DataHolder instance;
     [SerializeField] private Dictionary<string, List<WeaponBaseData>> weaponDataHolder = new Dictionary<string, List<WeaponBaseData>>();
 
     [SerializeField] private List<ShotgunData> shotgunLevelData = new List<ShotgunData>();
@@ -13,6 +14,12 @@ public class DataHolder : MonoBehaviour
     [SerializeField] private List<ChainSawData> chainSawLevelDatas = new List<ChainSawData>();
 
     [SerializeField] private List<TurretData> turretLevelDatas = new List<TurretData>();
+
+    private void Start()
+    {
+        instance = this;
+        Init();
+    }
 
     public void Init()
     {
@@ -23,7 +30,8 @@ public class DataHolder : MonoBehaviour
     }
     public TurretData GetTurretDataAtLevel(int _level)
     {
-        return turretLevelDatas.First(x=>x.Level==_level);
+        TurretData turretData = turretLevelDatas.First(x => x.Level == _level);
+        return turretData;
     }
     public bool IsMaxTurretLevel(int _level)
     {

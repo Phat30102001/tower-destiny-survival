@@ -9,7 +9,19 @@ public class MainMenuUI : UiBase
     [SerializeField] private TextMeshProUGUI coinAmount;
     [SerializeField] private Button addTurretButton;
     public Button startButton;
+    Action onStartGame;
+    Func<int> onAddTurret;
+    private void Start()
+    {
+        startButton.onClick.RemoveAllListeners();
+        startButton.onClick.AddListener(() => onStartGame?.Invoke());
 
+        addTurretButton.onClick.RemoveAllListeners();
+        addTurretButton.onClick.AddListener(() => {
+            SetCoinAmount(onAddTurret());
+
+        });
+    }
     public override void SetData(UiBaseData data)
     {
         if(data is MainMenuUiData _mainMenuData)
@@ -24,13 +36,10 @@ public class MainMenuUI : UiBase
         coinAmount.text = amount.ToString();
     }
 
-    public void AssignEvents(Action onStartGame,Func<int> _onAddTurret)
+    public void AssignEvents(Action _onStartGame,Func<int> _onAddTurret)
     {
-        startButton.onClick.AddListener(()=> onStartGame?.Invoke());
-        addTurretButton.onClick.AddListener(()=> {
-            SetCoinAmount(_onAddTurret());
-
-            });
+        onAddTurret = _onAddTurret;
+        onStartGame = _onStartGame;
     }
 
     public override string GetUiId()

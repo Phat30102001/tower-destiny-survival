@@ -10,11 +10,36 @@ public class TurretManager : MonoBehaviour
     [SerializeField] private Transform turretTransform;
     Action onZeroTurret;
 
+    public void RefreshManager()
+    {
+        var _cacheTurretData = SaveGameManager.instance.LoadSaveTurretData();
+        foreach (var _slot in turretSlots)
+        {
+
+            if (_slot.CheckIsOccupied())
+            {
+                var _turretData = _cacheTurretData[_slot.GetTurretid()];
+                List <WeaponBaseData> _weaponBaseDatas = new List<WeaponBaseData>();
+                WeaponBaseData _turretWeaponData = DataHolder.instance.GetWeaponData(_turretData.WeaponId, _turretData.WeaponLevel + 1);
+
+                if (_turretData.WeaponId != "" && _turretData.WeaponLevel > 0)
+                    _weaponBaseDatas.Add(_turretWeaponData);
+
+                else if (_turretWeaponData == null && _turretData.WeaponId == "")
+                    _weaponBaseDatas = DataHolder.instance.GetAllLv1Turretweapondata();
+
+
+                _slot.gameObject.SetActive(true);
+                _slot.SetDataForTurret(_turretData, _weaponBaseDatas);
+            }
+            
+        }
+    }
     public void CheckAnyTurretAlive()
     {
         foreach (var _slot in turretSlots)
         {
-            if (_slot.CheckIsOccupied())
+            if (_slot.gameObject.activeSelf)
                 return;
         }
         onZeroTurret?.Invoke();
@@ -45,6 +70,7 @@ public class TurretManager : MonoBehaviour
             Find(x => x.GetTurretid().Equals(turretData.TurretId));
 
         _turretSlot?.SetDataForTurret(turretData, _weaponDatas);
+        
     }
     public string GetWeaponIdTurretAtId(string _id)
     {
