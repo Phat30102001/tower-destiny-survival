@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     {
         dataHolder.Init();
 
-        resourceManager.AddResource(ResourceConstant.COIN, 100);
+        resourceManager.AddResource(ResourceConstant.COIN, 1000);
         resourceManager.AddResource(ResourceConstant.GEM, 0);
 
         uiManager.Init();
@@ -28,13 +28,22 @@ public class GameManager : MonoBehaviour
     }
     private void UpgradeTurret(string _turretIndex,int _currentLevel)
     {
+        if (dataHolder.IsMaxTurretLevel(_currentLevel)) return;
         TurretData _data = dataHolder.GetTurretDataAtLevel(_currentLevel + 1);
-        bool _isContainWeapon = gameplayManager.GetTurretWeaponId(_turretIndex)!="";
         resourceManager.ConsumeResource(
     _data.priceData, ((_remainAmount) => { 
     
         _data.TurretId = _turretIndex;
-        gameplayManager.UpgradeTurret(_data,dataHolder.GetAllLv1Turretweapondata());
+        List<WeaponBaseData> _weaponBaseDatas = new List<WeaponBaseData>();
+        var _turretKeyData = gameplayManager.GetTurretWeaponId(_turretIndex);
+        WeaponBaseData _turretWeaponData=dataHolder.GetWeaponData(_turretKeyData._weaponId, _turretKeyData._level+1);
+        if(_turretKeyData._weaponId!=""&&_turretKeyData._level>0)
+            _weaponBaseDatas.Add(_turretWeaponData);
+        else if(_turretWeaponData == null&& _turretKeyData._weaponId=="")
+            _weaponBaseDatas = dataHolder.GetAllLv1Turretweapondata();
+
+
+        gameplayManager.UpgradeTurret(_data, _weaponBaseDatas);
         uiManager.SetCoinData(_remainAmount);
         }), null);
     }

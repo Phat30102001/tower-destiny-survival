@@ -44,9 +44,9 @@ public class WeaponController : MonoBehaviour
         weapon.AssignEvent(onShoot, getNearestEnemy);
     }
 
-    public bool SpawnTurretWeapon(WeaponBaseData _data,bool _isContainWeapon, Transform _weaponContainer)
+    public bool SpawnTurretWeapon(WeaponBaseData _data, Transform _weaponContainer)
     {
-        if (_weaponContainer == null|| _isContainWeapon) return false;
+        if (_weaponContainer == null) return false;
         if(turretWeapons.TryGetValue(_data.Uid, out IWeapon _turretWeapon))
         {
             if (_turretWeapon.GetWeaponId().Equals(_data.WeaponId))

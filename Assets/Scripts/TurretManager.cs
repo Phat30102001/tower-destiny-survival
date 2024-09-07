@@ -57,6 +57,18 @@ public class TurretManager : MonoBehaviour
             }
         }
         return null;
+    } 
+    public int GetWeaponLevelTurretAtId(string _id)
+    {
+        foreach (var _slot in turretSlots)
+        {
+            if (!_slot.CheckIsOccupied()) continue;
+            if (_slot.GetTurretid().Equals(_id))
+            {
+                return _slot.GetTurretWeaponLevel();
+            }
+        }
+        return -1;
     }
     public Transform GetTurretTransformAtId(string _id)
     {
@@ -84,13 +96,13 @@ public class TurretManager : MonoBehaviour
         onZeroTurret = _onZeroTurret;
     }
 
-    public void SetTurretWeaponId(string _turretId, WeaponBaseData _weaponData)
+    public void SetTurretWeaponId(string _turretId, WeaponBaseData _weaponData, WeaponBaseData _nextLevelWeaponData)
     {
         foreach (var _slot in turretSlots)
         {
             if (_slot.GetTurretid().Equals(_turretId))
             {
-                _slot.SetTurretWeapon(_weaponData);
+                _slot.SetTurretWeapon(_weaponData,_nextLevelWeaponData);
 
             }
         }

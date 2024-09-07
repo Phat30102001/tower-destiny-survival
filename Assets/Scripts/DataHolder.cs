@@ -25,10 +25,15 @@ public class DataHolder : MonoBehaviour
     {
         return turretLevelDatas.First(x=>x.Level==_level);
     }
+    public bool IsMaxTurretLevel(int _level)
+    {
+        return turretLevelDatas.Count <= _level;
+    }
 
 
     public WeaponBaseData GetWeaponData(string _weaponId, int _level)
     {
+        if (_weaponId == "") return null;
         return weaponDataHolder[_weaponId].Find(x => x.Level == _level);
     }
     public List<WeaponBaseData> GetAllLv1Turretweapondata()

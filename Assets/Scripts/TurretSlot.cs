@@ -37,6 +37,7 @@ public class TurretSlot : MonoBehaviour
         List < WeaponButtonData > weaponButtonDataList = new List<WeaponButtonData>();
         foreach (var weaponData in _weaponData)
         {
+            if (weaponData == null) continue;
             WeaponButtonData weaponButtonData = new WeaponButtonData();
             weaponButtonData.weaponId = weaponData.WeaponId;
             weaponButtonData.weaponLevel = weaponData.Level;
@@ -67,9 +68,10 @@ public class TurretSlot : MonoBehaviour
     }
     public Transform GetTurretWeaponContainer() => turret.GetWeaponCointainer();
     public string GetTurretWeaponId() => turret.CurrentEquipWeaponId();
-    public void SetTurretWeapon(WeaponBaseData _data)
+    public int GetTurretWeaponLevel() => turret.CurrentEquipWeaponLevel();
+    public void SetTurretWeapon(WeaponBaseData _data,WeaponBaseData _nextLevelData)
     {
         turret.SetTurretWeapon(_data.WeaponId, _data.Level);
-        turretUi.SetWeaponData(ConvertWeaponData(new List<WeaponBaseData>() { _data}));
+        turretUi.SetWeaponData(ConvertWeaponData(new List<WeaponBaseData>() { _nextLevelData }));
     }
 }

@@ -121,9 +121,9 @@ public class GameplayManager : MonoBehaviour
     {
        return turretManager.GenerateTurret(dataHolder.GetTurretDataAtLevel(1),dataHolder.GetAllLv1Turretweapondata());
     }
-    public string GetTurretWeaponId(string _turretId)
+    public (string _weaponId,int _level) GetTurretWeaponId(string _turretId)
     {
-        return turretManager.GetWeaponIdTurretAtId(_turretId);
+        return (turretManager.GetWeaponIdTurretAtId(_turretId), turretManager.GetWeaponLevelTurretAtId(_turretId));
     }
     public void UpgradeTurret(TurretData _data,List<WeaponBaseData> _weaponDatas)
     {
@@ -132,12 +132,15 @@ public class GameplayManager : MonoBehaviour
     public bool BuyWeapon(string _turretId, string _weaponId,int _level)
     {
         WeaponBaseData _weaponData = dataHolder.GetWeaponData(_weaponId, _level);
+        WeaponBaseData _nextLevelWeaponData = dataHolder.GetWeaponData(_weaponId, _level+1);
+
+        
         _weaponData.Uid = _turretId;
         bool _isSuccess= weaponController.SpawnTurretWeapon(_weaponData,
-            (GetTurretWeaponId(_turretId) != ""), turretManager.GetTurretTransformAtId(_turretId));
+             turretManager.GetTurretTransformAtId(_turretId));
         if(_isSuccess)
         {
-            turretManager.SetTurretWeaponId(_turretId, _weaponData);
+            turretManager.SetTurretWeaponId(_turretId, _weaponData, _nextLevelWeaponData);
         }
         return _isSuccess;
     }
