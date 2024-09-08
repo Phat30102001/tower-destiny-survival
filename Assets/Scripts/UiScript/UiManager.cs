@@ -13,6 +13,8 @@ public class UiManager : MonoBehaviour
     Action onStartGame;
     Action onBackToMainMenu;
     Func<int> onAddTurret;
+    Action<string> onUseEnergy;
+    Func<EnergyData> onUpgradeEnergy;
 
     // Called when the script instance is being loaded
     public void Init()
@@ -40,11 +42,14 @@ public class UiManager : MonoBehaviour
             Debug.LogError($"UI with name {_uid} not found.");
         }
     }
-    public void AssignEvent(Action _onStartGame,Action _onBackToMainMenu,Func<int> _onAddTurret) 
+    public void AssignEvent(Action _onStartGame,Action _onBackToMainMenu,Func<int> _onAddTurret
+        ,Func<EnergyData> _onUpgradeEnergy,Action<string> _onUseEnergy) 
     {
         onStartGame= _onStartGame;
         onBackToMainMenu = _onBackToMainMenu;
         onAddTurret= _onAddTurret;
+        onUpgradeEnergy = _onUpgradeEnergy;
+        onUseEnergy = _onUseEnergy;
     }
 
     private void AssignUiEvent(string _uid,UiBase uiBase)
@@ -52,7 +57,7 @@ public class UiManager : MonoBehaviour
         switch (_uid) {
             case UiConstant.MAIN_MENU_UI:
                 MainMenuUI mainMenuUI = uiBase as MainMenuUI;
-                mainMenuUI.AssignEvents(OnStartGame, OnAddTurret);
+                mainMenuUI.AssignEvents(OnStartGame, OnAddTurret,onUpgradeEnergy);
                 break;
 
             case UiConstant.SETTING_UI:
@@ -61,6 +66,11 @@ public class UiManager : MonoBehaviour
                 ResultUi resultUi = uiBase as ResultUi;
                 resultUi.AssignEvents(OnBecameInvisible);
                 break;
+            case UiConstant.GAMEPLAY_UI:
+                GameplayUi gameplayUi = uiBase as GameplayUi;
+                gameplayUi.AssignEvents(onUseEnergy);
+                break;
+
             default:
                 Debug.LogWarning("Unhandled UI type.");
                 break;
@@ -76,6 +86,7 @@ public class UiManager : MonoBehaviour
     {
         onStartGame?.Invoke();
         HideUI(UiConstant.MAIN_MENU_UI);
+        ShowUI(UiConstant.GAMEPLAY_UI,new GameplayUiData());
     }
     private int OnAddTurret()
     {

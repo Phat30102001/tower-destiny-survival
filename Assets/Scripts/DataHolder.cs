@@ -7,6 +7,7 @@ public class DataHolder : MonoBehaviour
 {
     public static DataHolder instance;
     [SerializeField] private Dictionary<string, List<WeaponBaseData>> weaponDataHolder = new Dictionary<string, List<WeaponBaseData>>();
+    [SerializeField] private List <EnergyData> energyData = new List<EnergyData>();
 
     [SerializeField] private List<ShotgunData> shotgunLevelData = new List<ShotgunData>();
     [SerializeField] private List<MachineGunData> machineGunLevelDatas = new List<MachineGunData>();
@@ -15,7 +16,7 @@ public class DataHolder : MonoBehaviour
 
     [SerializeField] private List<TurretData> turretLevelDatas = new List<TurretData>();
 
-    private void Start()
+    private void Awake()
     {
         instance = this;
         Init();
@@ -54,6 +55,15 @@ public class DataHolder : MonoBehaviour
             lv1Weapon.Add(weaponData.Value[0]);
         }
         return lv1Weapon;
+    }
+
+    public EnergyData GetEnergyData(int _level)
+    {
+        return energyData.First(x => x.Level == _level);
+    }
+    public bool CheckEnergyMaxlevel(int _level)
+    {
+        return energyData.Count <= _level;
     }
 }
 

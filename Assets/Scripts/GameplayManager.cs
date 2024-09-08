@@ -17,12 +17,15 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private EnemyTracker enemyTracker;
     [SerializeField] private GameplayProgression gameplayProgression;
     [SerializeField] private EnemyWaveController waveController;
+    [SerializeField] private EnergyController energyController;
     private ResourceManager resourceManager;
+    private DataHolder dataHolder;
 
     Action<ResultType> onEndGame;
 
 
-    CoroutineHandle handle;
+    CoroutineHandle handleCheckTarget;
+    CoroutineHandle handleGenEnergy;
     private WeaponBaseData weaponBaseData;
 
 
@@ -44,6 +47,7 @@ public class GameplayManager : MonoBehaviour
     
     public void Init()
     {
+        dataHolder=DataHolder.instance;
         projectilePoolingManager.Init();
         player.Init();
         waveController.Init();
@@ -89,36 +93,15 @@ public class GameplayManager : MonoBehaviour
 
         };
 
-        //var _turretWeaponBaseData = new ChainSawData
-        //{
-        //    Uid = "0",
-        //    Cooldown = 0f,
-        //    BreakTimeBetweenSendDamage = 0.2f,
-        //    WeaponId = WeaponIdConstant.CHAINSAW,
-        //    DamageAmount = 10,
-        //    TargetTag = TargetConstant.ENEMY,
-
-        //};  
-        //var _turretWeaponBaseData = new FlameThrowerData
-        //{
-        //    Uid = "0",
-        //    Cooldown = 5f,
-        //    BreakTimeBetweenSendDamage = 0.2f,
-        //    WeaponId = WeaponIdConstant.FLAME_THROWER,
-        //    DamageAmount = 10,
-        //    TargetTag = TargetConstant.ENEMY,
-        //    MaxRotateAngle=45f,
-        //    RrotationSpeed=20
-
-        //};
         weaponController.SpawnWeapon( weaponBaseData);
         gameplayProgression.GetMilestone(waveController.GetWaveMilestones());
         turretManager.RefreshManager();
+        
 
     }
     public bool CreateTurret()
     {
-       return turretManager.GenerateTurret(DataHolder.instance.GetTurretDataAtLevel(1),DataHolder.instance.GetAllLv1Turretweapondata());
+       return turretManager.GenerateTurret(dataHolder.GetTurretDataAtLevel(1),dataHolder.GetAllLv1Turretweapondata());
     }
     public (string _weaponId,int _level) GetTurretWeaponId(string _turretId)
     {
@@ -130,8 +113,8 @@ public class GameplayManager : MonoBehaviour
     }
     public bool BuyWeapon(string _turretId, string _weaponId,int _level)
     {
-        WeaponBaseData _weaponData = DataHolder.instance.GetWeaponData(_weaponId, _level);
-        WeaponBaseData _nextLevelWeaponData = DataHolder.instance.GetWeaponData(_weaponId, _level+1);
+        WeaponBaseData _weaponData = dataHolder.GetWeaponData(_weaponId, _level);
+        WeaponBaseData _nextLevelWeaponData = dataHolder.GetWeaponData(_weaponId, _level+1);
 
         
         _weaponData.Uid = _turretId;
@@ -146,12 +129,15 @@ public class GameplayManager : MonoBehaviour
     public void StartGame()
     {
         //waveController.ActiveEnemies();
+        energyController.SetEnergyData(SaveGameManager.LoadSaveEnergyData());
         weaponController.ActiveWeapon();
-        handle = Timing.RunCoroutine(gameplayProgression.OnCheckEnemyInRange());
+        handleCheckTarget = Timing.RunCoroutine(gameplayProgression.OnCheckEnemyInRange());
+        handleGenEnergy=Timing.RunCoroutine(energyController.GenerateEnergy());
     }
     private void endGame()
     {
-        Timing.KillCoroutines(handle);
+        Timing.KillCoroutines(handleCheckTarget);
+        Timing.KillCoroutines(handleGenEnergy);
         waveController.onEndGame();
         onEndGame?.Invoke(ResultType.Lose);
         gameplayProgression.ResetData();
@@ -169,7 +155,7 @@ public class GameplayManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        Timing.KillCoroutines(handle);
+        Timing.KillCoroutines(handleCheckTarget);
     }
 }
 

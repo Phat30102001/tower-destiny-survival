@@ -12,7 +12,7 @@ public class TurretManager : MonoBehaviour
 
     public void RefreshManager()
     {
-        var _cacheTurretData = SaveGameManager.instance.LoadSaveTurretData();
+        var _cacheTurretData = SaveGameManager.LoadSaveTurretData();
         foreach (var _slot in turretSlots)
         {
 

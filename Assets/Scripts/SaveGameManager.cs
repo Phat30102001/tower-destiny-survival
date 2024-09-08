@@ -2,16 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SaveGameManager : MonoBehaviour
+public static class SaveGameManager
 {
-    public static SaveGameManager instance;
-    private void Start()
-    {
-        instance = this;
-    }
-    private Dictionary<string, TurretData> saveTurretData = new();
+    private static Dictionary<string, TurretData> saveTurretData = new();
+    private static EnergyData saveEnergyData;
 
-    public void SaveTurretData(TurretData _data)
+    public static void SaveTurretData(TurretData _data)
     {
         if (saveTurretData.ContainsKey(_data.TurretId))
         {
@@ -23,7 +19,7 @@ public class SaveGameManager : MonoBehaviour
             saveTurretData.Add(_data.TurretId, _data);
         }
     }
-    public void SaveWeaponTurretData(string _uid, string _weaponId, int _level)
+    public static void SaveWeaponTurretData(string _uid, string _weaponId, int _level)
     {
         if (saveTurretData.ContainsKey(_uid))
         {
@@ -34,8 +30,21 @@ public class SaveGameManager : MonoBehaviour
             return;
         }
     }
-    public Dictionary<string,TurretData> LoadSaveTurretData()
+    public static Dictionary<string,TurretData> LoadSaveTurretData()
     {
         return saveTurretData;
+    }
+
+    public static void SaveEnergyData(EnergyData _data)
+    {
+        saveEnergyData = _data;
+    }
+    public static EnergyData LoadSaveEnergyData()
+    {
+        if(saveEnergyData.Level<=0)
+        {
+            saveEnergyData = DataHolder.instance.GetEnergyData(1);
+        }
+        return saveEnergyData;
     }
 }
