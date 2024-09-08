@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public class FlameThrower : MonoBehaviour, IWeapon
 {
@@ -14,20 +15,26 @@ public class FlameThrower : MonoBehaviour, IWeapon
 
     private float currentRotation = 0.0f;
     private bool rotatingClockwise = true;
-    private bool isCooldown=false;
+    private bool isCooldown = false;
+    public bool isTriggerSkill = false;
 
     private FlameThrowerData weaponData;
+    private FlameThrowerSkillData skillData;
     private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShoot;
+    CoroutineHandle handle;
+
     public void SetData(WeaponBaseData _data)
     {
         if (_data is FlameThrowerData _weaponData)
         {
             weaponData = _weaponData;
             rotationSpeed = weaponData.RrotationSpeed;
-            maxRotation=weaponData.MaxRotateAngle;
+            maxRotation = weaponData.MaxRotateAngle;
+            skillData = weaponData.SkillData;
             damageSender.SetData(weaponData.Cooldown, weaponData.DamageAmount, weaponData.TargetTag, false);
         }
     }
+
     public string GetWeaponId()
     {
         return weaponId;
@@ -38,18 +45,23 @@ public class FlameThrower : MonoBehaviour, IWeapon
         gameObject.SetActive(true);
         while (gameObject.activeSelf)
         {
+            if (isTriggerSkill&&handle!=null)
+            {
+                handle= Timing.RunCoroutine(ActivateSkill());
+                Debug.Log($"active skill {weaponId} at{weaponData.Uid}");
+            }
+
             if (isCooldown)
             {
                 damageSender.SetDamageSenderStatus(false);
                 yield return Timing.WaitForSeconds(weaponData.Cooldown);
-                isCooldown = false; 
+                isCooldown = false;
             }
             else
             {
                 if (!damageSender.CheckDamageSenderStatus())
                     damageSender.SetDamageSenderStatus(true);
                 float rotationAmount = rotationSpeed * Time.deltaTime;
-
 
                 if (rotatingClockwise)
                 {
@@ -65,7 +77,7 @@ public class FlameThrower : MonoBehaviour, IWeapon
                     currentRotation -= rotationAmount;
                     if (currentRotation <= -maxRotation)
                     {
-                        isCooldown=true;
+                        isCooldown = true;
                         currentRotation = -maxRotation;
                         rotatingClockwise = true;
                     }
@@ -77,6 +89,30 @@ public class FlameThrower : MonoBehaviour, IWeapon
         }
     }
 
+    private IEnumerator<float> ActivateSkill()
+    {
+        float originalCooldown = weaponData.Cooldown;
+        int originalDamageAmount = weaponData.DamageAmount;
+
+        // Use skill data
+        weaponData.Cooldown = skillData.BreakTimeBetweenSendDamage;
+        weaponData.DamageAmount = skillData.DamageAmount;
+
+        float skillDuration = skillData.SkillDuration;
+        float elapsed = 0;
+
+        while (elapsed < skillDuration)
+        {
+            elapsed += Time.deltaTime;
+            yield return Timing.WaitForOneFrame;
+        }
+
+        // Revert to original data
+        weaponData.Cooldown = originalCooldown;
+        weaponData.DamageAmount = originalDamageAmount;
+        isTriggerSkill = false;
+    }
+
     public void Fire(Vector2 _target)
     {
     }
@@ -85,7 +121,6 @@ public class FlameThrower : MonoBehaviour, IWeapon
     {
         return weaponData.Cooldown;
     }
-
 
     public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShoot, Func<Vector2> _onGetNearestTarget)
     {
@@ -100,12 +135,29 @@ public class FlameThrower : MonoBehaviour, IWeapon
     public void DisableWeapon()
     {
         gameObject.SetActive(false);
+        Timing.KillCoroutines(handle);
+    }
+
+    public void TriggerWeaponSkill()
+    {
+        isTriggerSkill = true;
+        rotationSpeed *= 2;
     }
 }
+
 [Serializable]
 public class FlameThrowerData : WeaponBaseData
 {
     public float BreakTimeBetweenSendDamage;
     public float MaxRotateAngle;
     public float RrotationSpeed;
+    public FlameThrowerSkillData SkillData;
+}
+
+[Serializable]
+public class FlameThrowerSkillData : WeaponSkillData
+{
+    public int DamageAmount;
+    public float BreakTimeBetweenSendDamage;
+
 }

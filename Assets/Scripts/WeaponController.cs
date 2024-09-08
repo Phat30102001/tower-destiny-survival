@@ -100,7 +100,16 @@ public class WeaponController : MonoBehaviour
             handle = Timing.RunCoroutine(_weapon.Value.ActiveWeapon());
         }
     }
-
+    public void TriggerWeaponSkill(string _weaponId)
+    {
+        foreach(var _weapon in turretWeapons)
+        {
+            if (_weapon.Value.GetWeaponId().Equals(_weaponId))
+            {
+                _weapon.Value.TriggerWeaponSkill();
+            }
+        }
+    }
     public void RemoveWeapon(string _uid)
     {
         turretWeapons.TryGetValue(_uid, out IWeapon _weapon);

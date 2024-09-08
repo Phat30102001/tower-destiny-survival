@@ -9,14 +9,21 @@ public class WeaponSkillButton : MonoBehaviour
     Action<string> onUseSkill;
     [SerializeField] private Button useSkillButton;
     [SerializeField] private TextMeshProUGUI buttonWeaponidText;
+    [SerializeField] private TextMeshProUGUI energyRequireText;
     private void Awake()
     {
         useSkillButton.onClick.RemoveAllListeners();
-        useSkillButton.onClick.AddListener(() => onUseSkill?.Invoke(weaponId)); 
+        useSkillButton.onClick.AddListener(triggerSkill); 
     }
     public void SetData(WeaponSkillButtonData weaponSkillButtonData)
     {
+        weaponId = weaponSkillButtonData.weaponId;
         buttonWeaponidText.text = weaponSkillButtonData.weaponId;
+        energyRequireText.text = weaponSkillButtonData.EnergyRequire.ToString();
+    }
+    private void triggerSkill()
+    {
+        onUseSkill?.Invoke(weaponId);
     }
     public void AssignEvent(Action<string> _onUseSkill)
     {
@@ -26,4 +33,5 @@ public class WeaponSkillButton : MonoBehaviour
 public struct WeaponSkillButtonData
 {
     public string weaponId;
+    public int EnergyRequire;
 }

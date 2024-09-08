@@ -26,15 +26,17 @@ public class EnergyController : MonoBehaviour
         }
     }
 
-    public bool ConsumeEnergy(float amount)
+    public bool ConsumeEnergy(float amount,Action _onSuccess, Action _onFail)
     {
         if (currentEnergy >= amount)
         {
             currentEnergy -= amount;
+            _onSuccess?.Invoke();
             return true;
         }
         else
         {
+            _onFail?.Invoke();
             return false;
         }
     }

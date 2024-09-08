@@ -3012,6 +3012,11 @@ MonoBehaviour:
       ResourceId: Coin
       ResourceValue: 60
     EnergyGenerateValuePerSecond: 0.9
+  - Level: 7
+    Price:
+      ResourceId: Coin
+      ResourceValue: 60
+    EnergyGenerateValuePerSecond: 6
   shotgunLevelData:
   - Uid: Player
     WeaponId: Shotgun
@@ -3022,6 +3027,7 @@ MonoBehaviour:
     priceData:
       ResourceId: Coin
       ResourceValue: 0
+    EnergyRequire: 0
     NumberPerRound: 3
     FireSpreadOffset: 100
     ProjectileId: ShotgunBullet
@@ -3035,6 +3041,7 @@ MonoBehaviour:
     priceData:
       ResourceId: Coin
       ResourceValue: 0
+    EnergyRequire: 0
     NumberPerRound: 5
     FireSpreadOffset: 100
     ProjectileId: ShotgunBullet
@@ -3049,6 +3056,7 @@ MonoBehaviour:
     priceData:
       ResourceId: Coin
       ResourceValue: 20
+    EnergyRequire: 8
     NumberPerRound: 1
     ProjectileId: MachineGunBullet
     ShootSpeed: 30
@@ -3061,6 +3069,7 @@ MonoBehaviour:
     priceData:
       ResourceId: Coin
       ResourceValue: 20
+    EnergyRequire: 8
     NumberPerRound: 1
     ProjectileId: MachineGunBullet
     ShootSpeed: 30
@@ -3074,9 +3083,14 @@ MonoBehaviour:
     priceData:
       ResourceId: Coin
       ResourceValue: 30
+    EnergyRequire: 6
     BreakTimeBetweenSendDamage: 0.5
     MaxRotateAngle: 45
     RrotationSpeed: 20
+    SkillData:
+      SkillDuration: 5
+      DamageAmount: 5
+      BreakTimeBetweenSendDamage: 0.3
   - Uid: 
     WeaponId: FlameThrower
     Level: 2
@@ -3086,9 +3100,14 @@ MonoBehaviour:
     priceData:
       ResourceId: Coin
       ResourceValue: 30
+    EnergyRequire: 6
     BreakTimeBetweenSendDamage: 0.3
     MaxRotateAngle: 45
     RrotationSpeed: 20
+    SkillData:
+      SkillDuration: 5
+      DamageAmount: 5
+      BreakTimeBetweenSendDamage: 0.3
   chainSawLevelDatas:
   - Uid: 
     WeaponId: ChainSaw
@@ -3099,6 +3118,7 @@ MonoBehaviour:
     priceData:
       ResourceId: Coin
       ResourceValue: 10
+    EnergyRequire: 2
     BreakTimeBetweenSendDamage: 0.5
   - Uid: 
     WeaponId: ChainSaw
@@ -3109,6 +3129,7 @@ MonoBehaviour:
     priceData:
       ResourceId: Coin
       ResourceValue: 10
+    EnergyRequire: 2
     BreakTimeBetweenSendDamage: 0.3
   turretLevelDatas:
   - TurretId: 

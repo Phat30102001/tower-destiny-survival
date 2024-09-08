@@ -75,6 +75,11 @@ public class Shotgun : MonoBehaviour, IWeapon
     {
         gameObject.SetActive(false);
     }
+
+    public void TriggerWeaponSkill()
+    {
+
+    }
 }
 [Serializable]
 public class ShotgunData : WeaponBaseData

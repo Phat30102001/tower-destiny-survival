@@ -77,4 +77,14 @@ public class TurretSlot : MonoBehaviour
         turretUi.SetWeaponData(ConvertWeaponData(new List<WeaponBaseData>() { _nextLevelData }));
         SaveGameManager.SaveWeaponTurretData(data.TurretId, _data.WeaponId, _data.Level);
     }
+
+    public void DisablePrepareUi()
+    {
+        turretUi.ResetUi();
+    }
+    public void ActivePrepareUi()
+    {
+        turretUi.UpdateGameState(GameState.Prepare);
+    }
+
 }

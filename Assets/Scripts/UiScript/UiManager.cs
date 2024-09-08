@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -34,8 +35,8 @@ public class UiManager : MonoBehaviour
         if (uiDictionary.TryGetValue(_uid, out UiBase uiBase))
         {
             uiBase.Show();
-            uiBase.SetData(_data);
             AssignUiEvent(_uid, uiBase);
+            uiBase.SetData(_data);
         }
         else
         {
@@ -86,7 +87,34 @@ public class UiManager : MonoBehaviour
     {
         onStartGame?.Invoke();
         HideUI(UiConstant.MAIN_MENU_UI);
-        ShowUI(UiConstant.GAMEPLAY_UI,new GameplayUiData());
+        ShowUI(UiConstant.GAMEPLAY_UI, GetGameplayData());
+    }
+    private GameplayUiData GetGameplayData()
+    {
+        var turretDataList = new List<TurretData>(SaveGameManager.LoadSaveTurretData().Values);
+        var weaponBaseDataList = DataHolder.instance.GetWeaponBaseDatasFromTurretDatas(turretDataList);
+
+        List<WeaponSkillButtonData> _weaponSkillButtonDatas = new();
+        foreach (var _weaponBaseData in weaponBaseDataList)
+        {
+            if (_weaponSkillButtonDatas.Any(x => x.weaponId.Equals(_weaponBaseData.WeaponId))) continue;
+            _weaponSkillButtonDatas.Add( ConvertWeaponBaseDataToWeaponSkillData(_weaponBaseData));
+        }
+        return new GameplayUiData
+        {
+            WeaponSkillButtonDatas = _weaponSkillButtonDatas,
+        };
+    }
+    private WeaponSkillButtonData ConvertWeaponBaseDataToWeaponSkillData (WeaponBaseData _weaponBaseData)
+    {
+        WeaponSkillButtonData _data = new WeaponSkillButtonData()
+        {
+            weaponId = _weaponBaseData.WeaponId,
+            EnergyRequire = _weaponBaseData.EnergyRequire
+        };
+        return _data;
+
+
     }
     private int OnAddTurret()
     {

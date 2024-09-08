@@ -99,6 +99,13 @@ public class GameplayManager : MonoBehaviour
         
 
     }
+    public void OnUseWeaponSkill(string _weaponId)
+    {
+        energyController.ConsumeEnergy((float)dataHolder.GetWeaponData(_weaponId, 1).EnergyRequire, () =>
+        {
+            weaponController.TriggerWeaponSkill(_weaponId);
+        },null);
+    }
     public bool CreateTurret()
     {
        return turretManager.GenerateTurret(dataHolder.GetTurretDataAtLevel(1),dataHolder.GetAllLv1Turretweapondata());
@@ -129,6 +136,7 @@ public class GameplayManager : MonoBehaviour
     public void StartGame()
     {
         //waveController.ActiveEnemies();
+        turretManager.ActiveGameplay();
         energyController.SetEnergyData(SaveGameManager.LoadSaveEnergyData());
         weaponController.ActiveWeapon();
         handleCheckTarget = Timing.RunCoroutine(gameplayProgression.OnCheckEnemyInRange());

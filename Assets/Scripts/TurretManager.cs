@@ -34,6 +34,7 @@ public class TurretManager : MonoBehaviour
             }
             
         }
+        ActivePrepareState();
     }
     public void CheckAnyTurretAlive()
     {
@@ -131,6 +132,20 @@ public class TurretManager : MonoBehaviour
                 _slot.SetTurretWeapon(_weaponData,_nextLevelWeaponData);
 
             }
+        }
+    }
+    public void ActiveGameplay()
+    {
+        foreach(var _turretSlot in turretSlots)
+        {
+            _turretSlot.DisablePrepareUi();
+        }
+    }
+    public void ActivePrepareState()
+    {
+        foreach (var _turretSlot in turretSlots)
+        {
+            _turretSlot.ActivePrepareUi();
         }
     }
 }

@@ -56,6 +56,19 @@ public class DataHolder : MonoBehaviour
         }
         return lv1Weapon;
     }
+    public WeaponBaseData GetWeaponDataFromTurretData(TurretData _data)
+    {
+       return  GetWeaponData(_data.WeaponId, _data.Level);
+    }
+    public List<WeaponBaseData> GetWeaponBaseDatasFromTurretDatas(List<TurretData> _datas)
+    {
+        List<WeaponBaseData> weaponBaseDatas = new List<WeaponBaseData>();
+        foreach (var turretData in _datas)
+        {
+            weaponBaseDatas.Add(GetWeaponDataFromTurretData(turretData));
+        }
+        return weaponBaseDatas;
+    }
 
     public EnergyData GetEnergyData(int _level)
     {
@@ -65,6 +78,7 @@ public class DataHolder : MonoBehaviour
     {
         return energyData.Count <= _level;
     }
+
 }
 
 

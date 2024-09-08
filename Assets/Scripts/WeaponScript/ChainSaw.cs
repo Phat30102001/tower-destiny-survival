@@ -56,6 +56,11 @@ public class ChainSaw : MonoBehaviour, IWeapon
     {
         gameObject.SetActive(false);
     }
+
+    public void TriggerWeaponSkill()
+    {
+        
+    }
 }
 [Serializable]
 public class ChainSawData : WeaponBaseData

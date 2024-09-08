@@ -71,17 +71,15 @@ public class TurretUi : MonoBehaviour
         switch (_state)
         {
             case GameState.Prepare:
-                ResetUi();
                 mainmenuGroup.SetActive(true);
                 break;
             case GameState.Playing:
-                ResetUi();
                 gameplayGroup.SetActive(true);
                 break;
 
         }
     }
-    private void ResetUi()
+    public void ResetUi()
     {
         mainmenuGroup.SetActive(false);
         gameplayGroup.SetActive(false);

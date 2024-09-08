@@ -11,6 +11,7 @@ public interface IWeapon
     public void DisableWeapon();
     public float GetWeaponCooldown();
     public IEnumerator<float> ActiveWeapon();
+    public void TriggerWeaponSkill();
     public void SetData(WeaponBaseData _data);
     public void Fire(Vector2 _target);
     public void AssignEvent(Action<string, Vector2, Vector2, int
@@ -28,6 +29,11 @@ public class WeaponBaseData
     public string TargetTag;
 
     public ResourceData priceData;
+    public int EnergyRequire;
     //public float ShootForce;
     //public string ProjectileId;
+}
+public class WeaponSkillData
+{
+    public float SkillDuration;
 }

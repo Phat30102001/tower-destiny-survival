@@ -28,8 +28,9 @@ public class GameManager : MonoBehaviour
     }
     private void onUseEnergy(string _weaponId)
     {
-
+        gameplayManager.OnUseWeaponSkill(_weaponId);
     }
+
     private EnergyData UpgradeEnergy()
     {
         var _currentEnergyData = SaveGameManager.LoadSaveEnergyData();

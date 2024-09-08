@@ -74,6 +74,11 @@ public class MachineGun : MonoBehaviour, IWeapon
     {
         gameObject.SetActive(false);
     }
+
+    public void TriggerWeaponSkill()
+    {
+
+    }
 }
 [Serializable]
 public class MachineGunData : WeaponBaseData
