@@ -16,12 +16,13 @@ public class FlameThrower : MonoBehaviour, IWeapon
     private float currentRotation = 0.0f;
     private bool rotatingClockwise = true;
     private bool isCooldown = false;
-    public bool isTriggerSkill = false;
+    private bool isTriggerSkill = false;
 
     private FlameThrowerData weaponData;
     private FlameThrowerSkillData skillData;
     private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShoot;
     CoroutineHandle handle;
+    private bool isRunHandle = false;
 
     public void SetData(WeaponBaseData _data)
     {
@@ -45,9 +46,10 @@ public class FlameThrower : MonoBehaviour, IWeapon
         gameObject.SetActive(true);
         while (gameObject.activeSelf)
         {
-            if (isTriggerSkill&&handle!=null)
+            if (isTriggerSkill&& !isRunHandle)
             {
                 handle= Timing.RunCoroutine(ActivateSkill());
+                isRunHandle=true;
                 Debug.Log($"active skill {weaponId} at{weaponData.Uid}");
             }
 
@@ -91,11 +93,11 @@ public class FlameThrower : MonoBehaviour, IWeapon
 
     private IEnumerator<float> ActivateSkill()
     {
-        float originalCooldown = weaponData.Cooldown;
+        float originalCooldown = weaponData.BreakTimeBetweenSendDamage;
         int originalDamageAmount = weaponData.DamageAmount;
 
         // Use skill data
-        weaponData.Cooldown = skillData.BreakTimeBetweenSendDamage;
+        weaponData.BreakTimeBetweenSendDamage = skillData.BreakTimeBetweenSendDamage;
         weaponData.DamageAmount = skillData.DamageAmount;
 
         float skillDuration = skillData.SkillDuration;
@@ -108,9 +110,10 @@ public class FlameThrower : MonoBehaviour, IWeapon
         }
 
         // Revert to original data
-        weaponData.Cooldown = originalCooldown;
+        weaponData.BreakTimeBetweenSendDamage = originalCooldown;
         weaponData.DamageAmount = originalDamageAmount;
         isTriggerSkill = false;
+        isRunHandle=false;
     }
 
     public void Fire(Vector2 _target)
@@ -141,7 +144,6 @@ public class FlameThrower : MonoBehaviour, IWeapon
     public void TriggerWeaponSkill()
     {
         isTriggerSkill = true;
-        rotationSpeed *= 2;
     }
 }
 
