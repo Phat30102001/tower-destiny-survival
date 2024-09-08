@@ -11,12 +11,14 @@ public class ChainSaw : MonoBehaviour, IWeapon
     [SerializeField] private string weaponId;
 
     private ChainSawData weaponData;
+    private ChainSawSkillData skillData;
     private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShoot;
     public void SetData(WeaponBaseData _data)
     {
         if (_data is ChainSawData _weaponData)
         {
             weaponData = _weaponData;
+            skillData= _weaponData.SkillData;
             damageSender.SetData(weaponData.BreakTimeBetweenSendDamage, weaponData.DamageAmount, weaponData.TargetTag, false);
         }
     }
@@ -59,11 +61,33 @@ public class ChainSaw : MonoBehaviour, IWeapon
 
     public void TriggerWeaponSkill()
     {
-        
+        Vector2 _cacheTrasformPos= transform.position;
+        Vector2 _target = new Vector2(_cacheTrasformPos.x+1, _cacheTrasformPos.y);
+        onShoot?.Invoke(skillData.ProjectileId, _cacheTrasformPos,
+               _target, skillData.NumberPerRound, skillData.Cooldown, 0, new ProjectileData
+                {
+                    Damage = skillData.DamageAmount,
+                    ShootSpeed = skillData.ShootSpeed,
+                    TargetTag = weaponData.TargetTag,
+                    HideOnHit = true,
+                });
     }
 }
 [Serializable]
 public class ChainSawData : WeaponBaseData
 {
     public float BreakTimeBetweenSendDamage;
+    public ChainSawSkillData SkillData;
 }
+
+[Serializable]
+public class ChainSawSkillData : WeaponSkillData
+{
+    public int DamageAmount;
+    public float Cooldown;
+    public float ShootSpeed;
+    public string ProjectileId;
+    public int NumberPerRound;
+}
+
+
