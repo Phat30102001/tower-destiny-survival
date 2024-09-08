@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public class MachineGun : MonoBehaviour, IWeapon
 {
@@ -12,12 +13,17 @@ public class MachineGun : MonoBehaviour, IWeapon
     private Func<Vector2> onGetNearestEnemy;
 
     private MachineGunData weaponData;
+    private MachineGunSkillData skillData;
     private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShoot;
+    public bool isTriggerSkill = false;
+    CoroutineHandle handle;
+    private bool isRunHandle = false;
     public void SetData(WeaponBaseData _data)
     {
         if (_data is MachineGunData _weaponData)
         {
             weaponData = _weaponData;
+            skillData = _weaponData.SkillData;
         }
     }
 
@@ -31,6 +37,12 @@ public class MachineGun : MonoBehaviour, IWeapon
         gameObject.SetActive(true);
         while (gameObject.activeSelf)
         {
+            if (isTriggerSkill && !isRunHandle)
+            {
+                handle = Timing.RunCoroutine(ActivateSkill());
+                isRunHandle = true;
+                Debug.Log($"active skill {weaponId} at{weaponData.Uid}");
+            }
             Vector2 _target = onGetNearestEnemy();
             float angle = Mathf.Atan2(_target.y, _target.x) * Mathf.Rad2Deg;
 
@@ -39,7 +51,30 @@ public class MachineGun : MonoBehaviour, IWeapon
             yield return Timing.WaitForSeconds(weaponData.Cooldown);
         }
     }
+    private IEnumerator<float> ActivateSkill()
+    {
+        float originalCooldown = weaponData.Cooldown;
+        int originalDamageAmount = weaponData.DamageAmount;
 
+        // Use skill data
+        weaponData.Cooldown = skillData.Cooldown;
+        weaponData.DamageAmount = skillData.DamageAmount;
+
+        float skillDuration = skillData.SkillDuration;
+        float elapsed = 0;
+
+        while (elapsed < skillDuration)
+        {
+            elapsed += Time.deltaTime;
+            yield return Timing.WaitForOneFrame;
+        }
+
+        // Revert to original data
+        weaponData.Cooldown = originalCooldown;
+        weaponData.DamageAmount = originalDamageAmount;
+        isTriggerSkill = false;
+        isRunHandle = false;
+    }
     public void Fire(Vector2 _target)
     {
         if (weaponData == null) return;
@@ -72,12 +107,13 @@ public class MachineGun : MonoBehaviour, IWeapon
 
     public void DisableWeapon()
     {
+        Timing.KillCoroutines(handle);
         gameObject.SetActive(false);
     }
 
     public void TriggerWeaponSkill()
     {
-
+        isTriggerSkill = true;
     }
 }
 [Serializable]
@@ -87,4 +123,13 @@ public class MachineGunData : WeaponBaseData
     //public float FireSpreadOffset;
     public string ProjectileId;
     public float ShootSpeed;
+    public MachineGunSkillData SkillData;
+}
+
+[Serializable]
+public class MachineGunSkillData : WeaponSkillData
+{
+    public int DamageAmount;
+    public float Cooldown;
+
 }

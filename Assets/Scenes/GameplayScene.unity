@@ -3050,7 +3050,7 @@ MonoBehaviour:
   - Uid: 
     WeaponId: MachineGun
     Level: 1
-    DamageAmount: 10
+    DamageAmount: 5
     Cooldown: 1
     TargetTag: Enemy
     priceData:
@@ -3060,6 +3060,10 @@ MonoBehaviour:
     NumberPerRound: 1
     ProjectileId: MachineGunBullet
     ShootSpeed: 30
+    SkillData:
+      SkillDuration: 5
+      DamageAmount: 100
+      Cooldown: 0.3
   - Uid: 
     WeaponId: MachineGun
     Level: 2
@@ -3073,6 +3077,10 @@ MonoBehaviour:
     NumberPerRound: 1
     ProjectileId: MachineGunBullet
     ShootSpeed: 30
+    SkillData:
+      SkillDuration: 5
+      DamageAmount: 10
+      Cooldown: 0.3
   flameThrowerLevelDatas:
   - Uid: 
     WeaponId: FlameThrower
