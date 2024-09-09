@@ -97,12 +97,17 @@ public class UiManager : MonoBehaviour
         List<WeaponSkillButtonData> _weaponSkillButtonDatas = new();
         foreach (var _weaponBaseData in weaponBaseDataList)
         {
+            if (_weaponBaseData == null) continue;
             if (_weaponSkillButtonDatas.Any(x => x.weaponId.Equals(_weaponBaseData.WeaponId))) continue;
             _weaponSkillButtonDatas.Add( ConvertWeaponBaseDataToWeaponSkillData(_weaponBaseData));
         }
+        var _weaponKeyData = SaveGameManager.GetPlayerWeaponTriggerSkillData();
+
         return new GameplayUiData
         {
             WeaponSkillButtonDatas = _weaponSkillButtonDatas,
+            PlayerWeaponSkillButtonData=ConvertWeaponBaseDataToWeaponSkillData(
+                DataHolder.instance.GetWeaponData(_weaponKeyData._weaponId, _weaponKeyData._level))
         };
     }
     private WeaponSkillButtonData ConvertWeaponBaseDataToWeaponSkillData (WeaponBaseData _weaponBaseData)

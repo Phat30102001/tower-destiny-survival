@@ -13,6 +13,7 @@ public class DataHolder : MonoBehaviour
     [SerializeField] private List<MachineGunData> machineGunLevelDatas = new List<MachineGunData>();
     [SerializeField] private List<FlameThrowerData> flameThrowerLevelDatas = new List<FlameThrowerData>();
     [SerializeField] private List<ChainSawData> chainSawLevelDatas = new List<ChainSawData>();
+    [SerializeField] private List<GrenadeData> grenadeDatas = new List<GrenadeData>();
 
     [SerializeField] private List<TurretData> turretLevelDatas = new List<TurretData>();
 
@@ -28,6 +29,7 @@ public class DataHolder : MonoBehaviour
         weaponDataHolder.Add(WeaponIdConstant.MACHINE_GUN, machineGunLevelDatas.ConvertAll(x => x as WeaponBaseData));
         weaponDataHolder.Add(WeaponIdConstant.FLAME_THROWER, flameThrowerLevelDatas.ConvertAll(x => x as WeaponBaseData));
         weaponDataHolder.Add(WeaponIdConstant.CHAINSAW, chainSawLevelDatas.ConvertAll(x => x as WeaponBaseData));
+        weaponDataHolder.Add(WeaponIdConstant.GRENADE, grenadeDatas.ConvertAll(x => x as WeaponBaseData));
     }
     public TurretData GetTurretDataAtLevel(int _level)
     {

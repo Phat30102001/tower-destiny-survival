@@ -44,7 +44,7 @@ public class ChainSaw : MonoBehaviour, IWeapon
     }
 
 
-    public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShoot, Func<Vector2> _onGetNearestTarget)
+    public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShoot, Func<bool, Vector2> _onGetNearestTarget)
     {
         onShoot = _onShoot;
     }

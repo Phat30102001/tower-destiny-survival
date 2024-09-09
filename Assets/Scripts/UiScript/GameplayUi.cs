@@ -13,6 +13,11 @@ public class GameplayUi : UiBase
     private List<WeaponSkillButton> weaponButtons=new() ;
     [SerializeField] private WeaponSkillButton weaponButtonPrefab;
     [SerializeField] private Transform weaponButtonGroup;
+    [SerializeField] private WeaponSkillButton playerSkillButton;
+    private void Start()
+    {
+        playerSkillButton.AssignEvent(onUseEnergy);
+    }
     public override string GetUiId()
     {
         return uid;
@@ -29,6 +34,7 @@ public class GameplayUi : UiBase
         {
             GameplayUiData gameplayUiData = _gameplayUiData;
             GenerateWeaponSkillButtons(gameplayUiData.WeaponSkillButtonDatas);
+            playerSkillButton.SetData(gameplayUiData.PlayerWeaponSkillButtonData);
 
         }
     }
@@ -71,4 +77,5 @@ public class GameplayUi : UiBase
 public class GameplayUiData : UiBaseData
 {
     public List<WeaponSkillButtonData> WeaponSkillButtonDatas;
+    public WeaponSkillButtonData PlayerWeaponSkillButtonData;
 }

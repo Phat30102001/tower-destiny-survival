@@ -9,7 +9,7 @@ public class Shotgun : MonoBehaviour, IWeapon
 {
     [SerializeField] private Projectile projectile;
     [SerializeField] private string weaponId;
-    private Func<Vector2> onGetNearestEnemy;
+    private Func<bool, Vector2> onGetNearestEnemy;
 
     private ShotgunData shotgunData;
     private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShoot;
@@ -31,7 +31,7 @@ public class Shotgun : MonoBehaviour, IWeapon
         gameObject.SetActive(true);
         while (gameObject.activeSelf)
         {
-            Vector2 _target = onGetNearestEnemy();
+            Vector2 _target = onGetNearestEnemy(true);
             Debug.Log($"target: {_target}");
             float angle = Mathf.Atan2(_target.y, _target.x) * Mathf.Rad2Deg;
 
@@ -60,7 +60,7 @@ public class Shotgun : MonoBehaviour, IWeapon
     }
 
 
-    public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShoot, Func<Vector2> _onGetNearestTarget)
+    public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShoot, Func<bool, Vector2> _onGetNearestTarget)
     {
         onShoot = _onShoot;
         onGetNearestEnemy = _onGetNearestTarget;

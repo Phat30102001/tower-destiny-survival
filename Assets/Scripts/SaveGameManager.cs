@@ -5,6 +5,8 @@ using UnityEngine;
 public static class SaveGameManager
 {
     private static Dictionary<string, TurretData> saveTurretData = new();
+    private static WeaponBaseData playerWeaponData;
+    private static WeaponBaseData playerWeaponSkillData;
     private static EnergyData saveEnergyData;
 
     public static void SaveTurretData(TurretData _data)
@@ -46,5 +48,31 @@ public static class SaveGameManager
             saveEnergyData = DataHolder.instance.GetEnergyData(1);
         }
         return saveEnergyData;
+    }
+    public static (string _weaponId,int _level) GetPlayerWeaponData()
+    {
+        if(playerWeaponData == null)
+        {
+            return ("", 0);
+        }
+        return (playerWeaponData.WeaponId, playerWeaponData.Level);
+    }  
+    public static WeaponBaseData SavePlayerWeaponData(string _weaponId, int _level)
+    {
+        playerWeaponData=DataHolder.instance.GetWeaponData(_weaponId, _level);
+        return playerWeaponData;
+    }  
+    public static (string _weaponId,int _level) GetPlayerWeaponTriggerSkillData()
+    {
+        if(playerWeaponSkillData == null)
+        {
+            return ("", 0);
+        }
+        return (playerWeaponSkillData.WeaponId, playerWeaponSkillData.Level);
+    }  
+    public static WeaponBaseData SavePlayerWeaponTriggerSkillData(string _weaponId, int _level)
+    {
+        playerWeaponSkillData = DataHolder.instance.GetWeaponData(_weaponId, _level);
+        return playerWeaponSkillData;
     }
 }

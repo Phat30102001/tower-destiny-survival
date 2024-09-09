@@ -27,6 +27,7 @@ public class GameplayManager : MonoBehaviour
     CoroutineHandle handleCheckTarget;
     CoroutineHandle handleGenEnergy;
     private WeaponBaseData weaponBaseData;
+    private WeaponBaseData weaponTriggerSkillData;
 
 
     public void ActiveGameplay(ResourceManager _resourceManager)
@@ -79,21 +80,41 @@ public class GameplayManager : MonoBehaviour
             health = 100
         });
         weaponController.SetData(player.GetWeaponCointainer());
-        weaponBaseData = new ShotgunData
-        {
-            Uid=TargetConstant.PLAYER,
-            Cooldown = 0.8f,
-            WeaponId = WeaponIdConstant.SHOTGUN,
-            DamageAmount = 10,
-            ShootSpeed = 30,
-            NumberPerRound = 3,
-            FireSpreadOffset = 100,
-            TargetTag = TargetConstant.ENEMY,
-            ProjectileId = "ShotgunBullet",
+        //weaponBaseData = new ShotgunData
+        //{
+        //    Uid=TargetConstant.PLAYER,
+        //    Cooldown = 0.8f,
+        //    WeaponId = WeaponIdConstant.SHOTGUN,
+        //    DamageAmount = 10,
+        //    ShootSpeed = 30,
+        //    NumberPerRound = 3,
+        //    FireSpreadOffset = 100,
+        //    TargetTag = TargetConstant.ENEMY,
+        //    ProjectileId = "ShotgunBullet",
 
-        };
+        //};
+        var _weaponKeyData = SaveGameManager.GetPlayerWeaponData();
+        if (_weaponKeyData._weaponId == "")
+        {
+            weaponBaseData = SaveGameManager.SavePlayerWeaponData(WeaponIdConstant.SHOTGUN,1); 
+        }
+        else
+        {
+            weaponBaseData=dataHolder.GetWeaponData(_weaponKeyData._weaponId, _weaponKeyData._level);
+        } 
+        
+        var _weaponSkillKeyData = SaveGameManager.GetPlayerWeaponTriggerSkillData();
+        if (_weaponSkillKeyData._weaponId == "")
+        {
+            weaponTriggerSkillData = SaveGameManager.SavePlayerWeaponTriggerSkillData(WeaponIdConstant.GRENADE,1); 
+        }
+        else
+        {
+            weaponTriggerSkillData = dataHolder.GetWeaponData(_weaponSkillKeyData._weaponId, _weaponSkillKeyData._level);
+        }
 
         weaponController.SpawnWeapon( weaponBaseData);
+        weaponController.SpawnWeaponSkill(weaponTriggerSkillData);
         gameplayProgression.GetMilestone(waveController.GetWaveMilestones());
         turretManager.RefreshManager();
         
@@ -177,6 +198,7 @@ public static class TargetConstant
 public static class WeaponIdConstant
 {
     public static string SHOTGUN = "Shotgun";
+    public static string GRENADE = "Grenade";
     public static string MACHINE_GUN = "MachineGun";
     public static string CHAINSAW = "ChainSaw";
     public static string FLAME_THROWER = "FlameThrower";

@@ -10,7 +10,7 @@ public class MachineGun : MonoBehaviour, IWeapon
 {
     [SerializeField] private Projectile projectile;
     [SerializeField] private string weaponId;
-    private Func<Vector2> onGetNearestEnemy;
+    private Func<bool,Vector2> onGetNearestEnemy;
 
     private MachineGunData weaponData;
     private MachineGunSkillData skillData;
@@ -43,7 +43,7 @@ public class MachineGun : MonoBehaviour, IWeapon
                 isRunHandle = true;
                 Debug.Log($"active skill {weaponId} at{weaponData.Uid}");
             }
-            Vector2 _target = onGetNearestEnemy();
+            Vector2 _target = onGetNearestEnemy(false);
             float angle = Mathf.Atan2(_target.y, _target.x) * Mathf.Rad2Deg;
 
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
@@ -94,7 +94,7 @@ public class MachineGun : MonoBehaviour, IWeapon
     }
 
 
-    public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShoot, Func<Vector2> _onGetNearestTarget)
+    public void AssignEvent(Action<string, Vector2, Vector2, int, float, float, ProjectileData> _onShoot, Func<bool, Vector2> _onGetNearestTarget)
     {
         onShoot = _onShoot;
         onGetNearestEnemy = _onGetNearestTarget;

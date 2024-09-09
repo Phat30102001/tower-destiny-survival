@@ -15,7 +15,7 @@ public interface IWeapon
     public void SetData(WeaponBaseData _data);
     public void Fire(Vector2 _target);
     public void AssignEvent(Action<string, Vector2, Vector2, int
-        , float, float, ProjectileData> _onShoot, Func<Vector2> onGetNearestTarget);
+        , float, float, ProjectileData> _onShoot, Func<bool,Vector2> onGetNearestTarget);
 }
 public class WeaponBaseData
 {
