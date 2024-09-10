@@ -9,9 +9,11 @@ public class TurretManager : MonoBehaviour
     [SerializeField] private Turret turretPrefab;
     [SerializeField] private Transform turretTransform;
     Action onZeroTurret;
+    private Canvas canvas;
 
-    public void RefreshManager()
+    public void RefreshManager(Canvas _canvas)
     {
+        canvas = _canvas;
         var _cacheTurretData = SaveGameManager.LoadSaveTurretData();
         foreach (var _slot in turretSlots)
         {
@@ -30,7 +32,7 @@ public class TurretManager : MonoBehaviour
 
 
                 _slot.gameObject.SetActive(true);
-                _slot.SetDataForTurret(_turretData, _weaponBaseDatas);
+                _slot.SetDataForTurret(_turretData, _weaponBaseDatas,canvas);
             }
             
         }
@@ -62,7 +64,7 @@ public class TurretManager : MonoBehaviour
             }
         }
         if (!_isHaveSlot) return false;
-        _turretSlot.SetDataForTurret(turretData, _weaponDatas);
+        _turretSlot.SetDataForTurret(turretData, _weaponDatas,canvas);
         return true;
     }
     public void UpgradeTurret(TurretData turretData, List<WeaponBaseData> _weaponDatas)
@@ -70,7 +72,7 @@ public class TurretManager : MonoBehaviour
         TurretSlot _turretSlot = turretSlots.
             Find(x => x.GetTurretid().Equals(turretData.TurretId));
 
-        _turretSlot?.SetDataForTurret(turretData, _weaponDatas);
+        _turretSlot?.SetDataForTurret(turretData, _weaponDatas, canvas);
         
     }
     public string GetWeaponIdTurretAtId(string _id)
@@ -118,7 +120,7 @@ public class TurretManager : MonoBehaviour
     {
         foreach (var _slot in turretSlots)
         {
-            _slot.AssignEvent(CheckAnyTurretAlive, _onDisableTurretWeapon, onUpgradeTurret, onBuyWeapon);
+            _slot.AssignEvent(CheckAnyTurretAlive,SaveGameManager.DeleteTurretData, _onDisableTurretWeapon, onUpgradeTurret, onBuyWeapon);
         }
         onZeroTurret = _onZeroTurret;
     }

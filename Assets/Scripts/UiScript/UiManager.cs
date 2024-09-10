@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class UiManager : MonoBehaviour
 {
+    [SerializeField] private Canvas canvas;
+
     // Dictionary to store different UIs by their name
     private Dictionary<string, UiBase> uiDictionary = new Dictionary<string, UiBase>();
 
@@ -17,6 +19,10 @@ public class UiManager : MonoBehaviour
     Action<string> onUseEnergy;
     Func<EnergyData> onUpgradeEnergy;
 
+    public Canvas GetCanvas()
+    {
+        return canvas;
+    }
     // Called when the script instance is being loaded
     public void Init()
     {

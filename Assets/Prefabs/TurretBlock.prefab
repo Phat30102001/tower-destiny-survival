@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -4081952992555064377}
   - component: {fileID: 8766920759464096659}
   - component: {fileID: 8372731777456855967}
+  - component: {fileID: 8958625615581044633}
   - component: {fileID: 5309235682822456692}
   - component: {fileID: 3198977134595737329}
   m_Layer: 0
@@ -64,6 +65,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageReceiver: {fileID: 8766920759464096659}
   weaponContainer: {fileID: 1372250259613392969}
+  rectTransform: {fileID: 7568597956723406167}
+  canvasGroup: {fileID: 8958625615581044633}
 --- !u!114 &8766920759464096659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,6 +109,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &8958625615581044633
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5450943233378756045}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!50 &5309235682822456692
 Rigidbody2D:
   serializedVersion: 4

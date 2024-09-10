@@ -12,16 +12,18 @@ public class TurretSlot : MonoBehaviour
     TurretData data;
     private Action onTurretDestroy;
     private Action<string> onDisableWeaponTurret;
+    private Canvas canvas;
 
 
     public bool CheckIsOccupied() => isOccupied;
     public Transform GetSlotTransform()=> slotTransform;
 
-    public void SetDataForTurret(TurretData _data,List<WeaponBaseData> _weaponData)
+    public void SetDataForTurret(TurretData _data,List<WeaponBaseData> _weaponData,Canvas _canvas)
     {
+        canvas = _canvas;
         if (turret == null) return;
         data = _data;
-        turret.SetData(data);
+        turret.SetData(data, canvas);
         gameObject.SetActive(true);
         isOccupied=true;
         SetTurretDataUi(_data.Level, _data.priceData.ResourceValue, _weaponData);
@@ -50,14 +52,20 @@ public class TurretSlot : MonoBehaviour
         return weaponButtonDataList;
     }
 
-    public void AssignEvent(Action _onTurretDestroy, Action<string> _onDisableWeaponTurret,
+    public void AssignEvent(Action _onTurretDestroy,Action<string> _onDeleteTurretData, Action<string> _onDisableWeaponTurret,
         Action<string,int> onUpgradeTurret, Action<string,string,int> onBuyWeapon)
     {
         turret.AssignEvent(()=> 
         {
             onTurretDestroy?.Invoke();
             gameObject.SetActive(false);
-        }, onDisableWeaponTurret);
+        },()=>
+        {
+            onTurretDestroy?.Invoke();
+            gameObject.SetActive(false);
+            isOccupied = false;
+        },
+            _onDisableWeaponTurret, _onDeleteTurretData);
         onTurretDestroy= _onTurretDestroy;
         onDisableWeaponTurret= _onDisableWeaponTurret;
         turretUi.AssignEvent(()=>onUpgradeTurret?.Invoke(data.TurretId, data.Level),(_weaponId, _level)=> {
@@ -81,10 +89,12 @@ public class TurretSlot : MonoBehaviour
     public void DisablePrepareUi()
     {
         turretUi.ResetUi();
+        turret.SetDragable(false);
     }
     public void ActivePrepareUi()
     {
         turretUi.UpdateGameState(GameState.Prepare);
+        turret.SetDragable(true);
     }
 
 }

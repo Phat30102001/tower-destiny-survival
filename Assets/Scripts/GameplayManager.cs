@@ -28,12 +28,12 @@ public class GameplayManager : MonoBehaviour
     CoroutineHandle handleGenEnergy;
     private WeaponBaseData weaponBaseData;
     private WeaponBaseData weaponTriggerSkillData;
+    private Canvas canvas;
 
-
-    public void ActiveGameplay(ResourceManager _resourceManager)
+    public void ActiveGameplay(ResourceManager _resourceManager, Canvas _canvas)
     {
         resourceManager = _resourceManager;
-
+        canvas= _canvas;    
         Init();
 
         setData();
@@ -116,7 +116,7 @@ public class GameplayManager : MonoBehaviour
         weaponController.SpawnWeapon( weaponBaseData);
         weaponController.SpawnWeaponSkill(weaponTriggerSkillData);
         gameplayProgression.GetMilestone(waveController.GetWaveMilestones());
-        turretManager.RefreshManager();
+        turretManager.RefreshManager(canvas);
         
 
     }

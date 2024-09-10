@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
     }
     private void InitStartPoint()
     {
-        gameplayManager.ActiveGameplay(resourceManager);
+        gameplayManager.ActiveGameplay(resourceManager,uiManager.GetCanvas());
 
         uiManager.ShowUI(UiConstant.MAIN_MENU_UI, new MainMenuUiData()
         {

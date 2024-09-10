@@ -1,19 +1,28 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Turret: MonoBehaviour
+public class Turret: MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     private TurretData turretData;
     [SerializeField] DamageReceiver damageReceiver;
     [SerializeField] Transform weaponContainer;
+    [SerializeField] private RectTransform rectTransform;
     private int healthPoint;
     private Action onZeroHealthCallback;
+    private Action onDestroyTurret;
     Action<string> onDisableWeapon;
+    Action<string> onDeleteTurretData;
     private string weaponId="";
     private int weaponLevel;
-    public void SetData(TurretData _data)
+    private Canvas canvas;
+    private bool isDraggable = false;
+    [SerializeField] private CanvasGroup canvasGroup;
+
+    public void SetData(TurretData _data, Canvas _canvas)
     {
         turretData = _data;
+        canvas = _canvas;
         healthPoint =turretData.HealthPoint;
         damageReceiver.AssignEvent(onReceiveDamage);
     }
@@ -32,10 +41,12 @@ public class Turret: MonoBehaviour
             onDisableWeapon?.Invoke(turretData.TurretId);
         }
     }
-    public void AssignEvent(Action _onZeroHealthCallback, Action<string> _onDisableWeapon)
+    public void AssignEvent(Action _onZeroHealthCallback,Action _onDestroyTurret
+        , Action<string> _onDisableWeapon,Action<string> _onDeleteTurretData)
     {
         onDisableWeapon = _onDisableWeapon;
         onZeroHealthCallback = _onZeroHealthCallback;
+        onDestroyTurret = _onDestroyTurret;
     }
     public Transform GetWeaponCointainer()
     {
@@ -48,6 +59,48 @@ public class Turret: MonoBehaviour
     public int CurrentEquipWeaponLevel()
     {
         return weaponLevel;
+    }
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        canvasGroup.alpha = 0.5f;
+        canvasGroup.blocksRaycasts = false;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if(!isDraggable)return;
+        // Update the object's position as the mouse is dragged
+        if (canvas != null)
+        {
+            // Convert the mouse position to local position in the canvas
+            Vector2 position;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                rectTransform.parent as RectTransform,
+                eventData.position,
+                canvas.worldCamera,
+                out position
+            );
+            rectTransform.localPosition = position;
+        }
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        canvasGroup.alpha= 1;
+        canvasGroup.blocksRaycasts = true;
+        transform.localPosition = Vector3.zero;
+    }
+    public void SetDragable(bool _isDraggable)
+    {
+        isDraggable = _isDraggable;
+    }
+    public void OnDestroyTurret()
+    {
+        onDestroyTurret?.Invoke();
+        onDisableWeapon?.Invoke(turretData.TurretId);
+        onDeleteTurretData?.Invoke(turretData.TurretId);
+        weaponId = "";
+        weaponLevel = 0;
     }
 }
 [Serializable]

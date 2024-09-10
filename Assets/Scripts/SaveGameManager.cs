@@ -21,6 +21,13 @@ public static class SaveGameManager
             saveTurretData.Add(_data.TurretId, _data);
         }
     }
+    public static void DeleteTurretData(string _uid)
+    {
+        if (saveTurretData.ContainsKey(_uid))
+        {
+            saveTurretData.Remove(_uid);
+        }
+    }
     public static void SaveWeaponTurretData(string _uid, string _weaponId, int _level)
     {
         if (saveTurretData.ContainsKey(_uid))
