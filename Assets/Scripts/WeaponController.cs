@@ -142,8 +142,8 @@ public class WeaponController : MonoBehaviour
     }
     public void RemoveWeapon(string _uid)
     {
-        turretWeapons.TryGetValue(_uid, out IWeapon _weapon);
-        _weapon.DisableWeapon();
+        if( turretWeapons.TryGetValue(_uid, out IWeapon _weapon))
+            _weapon.DisableWeapon();
     }
 
     public IEnumerator<float> AutoAimEnemy()
