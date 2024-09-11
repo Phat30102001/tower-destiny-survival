@@ -13,6 +13,7 @@ public class Turret: MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerU
     private Action onDestroyTurret;
     Action<string> onDisableWeapon;
     Action<string> onDeleteTurretData;
+    Action<RectTransform> onSetItemBeingDrag;
     private string weaponId="";
     private int weaponLevel;
     private Canvas canvas;
@@ -42,11 +43,12 @@ public class Turret: MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerU
         }
     }
     public void AssignEvent(Action _onZeroHealthCallback,Action _onDestroyTurret
-        , Action<string> _onDisableWeapon,Action<string> _onDeleteTurretData)
+        , Action<string> _onDisableWeapon,Action<string> _onDeleteTurretData, Action<RectTransform> _onSetItemBeingDrag)
     {
         onDisableWeapon = _onDisableWeapon;
         onZeroHealthCallback = _onZeroHealthCallback;
         onDestroyTurret = _onDestroyTurret;
+        onSetItemBeingDrag=_onSetItemBeingDrag;
     }
     public Transform GetWeaponCointainer()
     {
@@ -62,8 +64,10 @@ public class Turret: MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerU
     }
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (!isDraggable) return;
         canvasGroup.alpha = 0.5f;
         canvasGroup.blocksRaycasts = false;
+        onSetItemBeingDrag?.Invoke(rectTransform);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -86,9 +90,11 @@ public class Turret: MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerU
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        if (!isDraggable) return;
         canvasGroup.alpha= 1;
         canvasGroup.blocksRaycasts = true;
         transform.localPosition = Vector3.zero;
+        onSetItemBeingDrag?.Invoke(null);
     }
     public void SetDragable(bool _isDraggable)
     {

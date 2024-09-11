@@ -53,7 +53,7 @@ public class TurretSlot : MonoBehaviour
     }
 
     public void AssignEvent(Action _onTurretDestroy,Action<string> _onDeleteTurretData, Action<string> _onDisableWeaponTurret,
-        Action<string,int> onUpgradeTurret, Action<string,string,int> onBuyWeapon)
+        Action<string,int> onUpgradeTurret, Action<string,string,int> onBuyWeapon, Action<RectTransform> _onSetItemBeingDrag)
     {
         turret.AssignEvent(()=> 
         {
@@ -65,7 +65,7 @@ public class TurretSlot : MonoBehaviour
             gameObject.SetActive(false);
             isOccupied = false;
         },
-            _onDisableWeaponTurret, _onDeleteTurretData);
+            _onDisableWeaponTurret, _onDeleteTurretData, _onSetItemBeingDrag);
         onTurretDestroy= _onTurretDestroy;
         onDisableWeaponTurret= _onDisableWeaponTurret;
         turretUi.AssignEvent(()=>onUpgradeTurret?.Invoke(data.TurretId, data.Level),(_weaponId, _level)=> {

@@ -8,12 +8,14 @@ public class TurretManager : MonoBehaviour
     [SerializeField] private List<TurretSlot> turretSlots;
     [SerializeField] private Turret turretPrefab;
     [SerializeField] private Transform turretTransform;
+    [SerializeField] private TurretSwaper turretSwaper;
     Action onZeroTurret;
     private Canvas canvas;
 
     public void RefreshManager(Canvas _canvas)
     {
         canvas = _canvas;
+        turretSwaper.AssignEvent(swapTurretPostion);
         var _cacheTurretData = SaveGameManager.LoadSaveTurretData();
         foreach (var _slot in turretSlots)
         {
@@ -38,6 +40,25 @@ public class TurretManager : MonoBehaviour
         }
         ActivePrepareState();
     }
+    private void swapTurretPostion(int _swapTurretIndex,int _turretBeingSwapIndex)
+    {
+        if (_swapTurretIndex < 0 || _swapTurretIndex >= turretSlots.Count ||
+    _turretBeingSwapIndex < 0 || _turretBeingSwapIndex >= turretSlots.Count)
+        {
+            Debug.LogError("Invalid turret indices for swapping.");
+            return;
+        }
+
+        // Swap the turrets in the list
+        TurretSlot temp = turretSlots[_swapTurretIndex];
+        turretSlots[_swapTurretIndex] = turretSlots[_turretBeingSwapIndex];
+        turretSlots[_turretBeingSwapIndex] = temp;
+
+        // Update the sibling indices in the hierarchy
+        turretSlots[_swapTurretIndex].transform.SetSiblingIndex(_swapTurretIndex);
+        turretSlots[_turretBeingSwapIndex].transform.SetSiblingIndex(_turretBeingSwapIndex);
+    }
+
     public void CheckAnyTurretAlive()
     {
         foreach (var _slot in turretSlots)
@@ -120,7 +141,8 @@ public class TurretManager : MonoBehaviour
     {
         foreach (var _slot in turretSlots)
         {
-            _slot.AssignEvent(CheckAnyTurretAlive,SaveGameManager.DeleteTurretData, _onDisableTurretWeapon, onUpgradeTurret, onBuyWeapon);
+            _slot.AssignEvent(CheckAnyTurretAlive,SaveGameManager.DeleteTurretData, _onDisableTurretWeapon
+                , onUpgradeTurret, onBuyWeapon, turretSwaper.SetCurrentTurretBeingDrag);
         }
         onZeroTurret = _onZeroTurret;
     }
@@ -142,6 +164,7 @@ public class TurretManager : MonoBehaviour
         {
             _turretSlot.DisablePrepareUi();
         }
+        turretSwaper.SetDragable(false);
     }
     public void ActivePrepareState()
     {
@@ -149,5 +172,6 @@ public class TurretManager : MonoBehaviour
         {
             _turretSlot.ActivePrepareUi();
         }
+        turretSwaper.SetDragable(true);
     }
 }
