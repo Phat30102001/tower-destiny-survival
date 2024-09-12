@@ -32,7 +32,7 @@ public class FlameThrower : MonoBehaviour, IWeapon
             rotationSpeed = weaponData.RrotationSpeed;
             maxRotation = weaponData.MaxRotateAngle;
             skillData = weaponData.SkillData;
-            damageSender.SetData(weaponData.Cooldown, weaponData.DamageAmount, weaponData.TargetTag, false);
+            damageSender.SetData(weaponData.BreakTimeBetweenSendDamage, weaponData.DamageAmount, weaponData.TargetTag, false);
         }
     }
 
