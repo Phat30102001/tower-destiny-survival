@@ -11,10 +11,21 @@ public class EnemyWaveController : MonoBehaviour
     [SerializeField] EnemySpawner enemySpawner;
     [SerializeField] EnemyBaseController enemyBaseController;
     [SerializeField] private Transform inSceneTransform;
+    private bool isEnemyBaseAlive=false;
     CoroutineHandle handle;
     public void Init()
     {
         enemySpawner.Init();
+        enemyBaseController.Init();
+        enemyBaseController.AssignEvent(OnEnemyBaseDestroyed);
+    }
+    public bool GetEnemyBaseIsAlive()
+    {
+        return isEnemyBaseAlive;
+    }
+    public void OnEnemyBaseDestroyed()
+    {
+        isEnemyBaseAlive = false;
     }
     public void SetData(Transform _attackPoint, Transform _playerTransform)
     {
@@ -53,6 +64,7 @@ public class EnemyWaveController : MonoBehaviour
         {
             enemyBaseController.SetData(waveDatas[_index].BaseData);
             enemyBaseController.RunToScene(inSceneTransform.position);
+            isEnemyBaseAlive = true;
         }
     }
    

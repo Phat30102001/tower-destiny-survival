@@ -66,8 +66,9 @@ public class GameplayManager : MonoBehaviour
 
         waveController.AssignEvent(projectilePoolingManager.GenerateProjectilePool,(_resource)=> resourceManager.AddResource(ResourceConstant.COIN, _resource));
         turretManager.AssignEvent(waveController.SwitchEnemyTarget,weaponController.RemoveWeapon, onUpgradeTurret, onBuyWeapon);
-        gameplayProgression.AssignEvent(enemyTracker.IsEnemyInArea,waveController.ActiveEnemies);
-        player.AssignEvent(activeGameOver);
+        gameplayProgression.AssignEvent(enemyTracker.IsEnemyInArea, waveController.GetEnemyBaseIsAlive
+            , waveController.ActiveEnemies,()=>activeGameOver(ResultType.Win));
+        player.AssignEvent(()=>activeGameOver(ResultType.Lose));
     }
 
     private void setData()
@@ -163,12 +164,12 @@ public class GameplayManager : MonoBehaviour
         handleCheckTarget = Timing.RunCoroutine(gameplayProgression.OnCheckEnemyInRange());
         handleGenEnergy=Timing.RunCoroutine(energyController.GenerateEnergy());
     }
-    private void endGame()
+    private void endGame(ResultType _type)
     {
         Timing.KillCoroutines(handleCheckTarget);
         Timing.KillCoroutines(handleGenEnergy);
         waveController.onEndGame();
-        onEndGame?.Invoke(ResultType.Lose);
+        onEndGame?.Invoke(_type);
         gameplayProgression.ResetData();
         weaponController.DisableWeapon();
     }
@@ -177,9 +178,9 @@ public class GameplayManager : MonoBehaviour
 
 
 
-    private void activeGameOver()
+    private void activeGameOver(ResultType _type)
     {
-        endGame();
+        endGame(_type);
     }
 
     private void OnDestroy()

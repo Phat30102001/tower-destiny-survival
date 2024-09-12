@@ -6,6 +6,8 @@ public class EnemyBaseController: MonoBehaviour
     private EnemyBaseData enemyData;
     private float cacheDefaultPosX;
     [SerializeField] private DamageReceiver damageReceiver;
+    private int healthPoint=0;
+    private Action onBaseDestroyed;
     public void Init()
     {
         cacheDefaultPosX = transform.position.x;
@@ -15,12 +17,13 @@ public class EnemyBaseController: MonoBehaviour
     public void SetData(EnemyBaseData _data)
     { 
         enemyData = _data;
+        healthPoint = enemyData.HealthPoint;
         gameObject.SetActive(true);
     }
     private void onHit(int _damage)
     {
-        enemyData.HealthPoint -= _damage;
-        if (enemyData.HealthPoint <= 0)
+        healthPoint -= _damage;
+        if (healthPoint <= 0)
         {
             OnBaseDestroyed();
         }
@@ -41,8 +44,13 @@ public class EnemyBaseController: MonoBehaviour
     public void OnBaseDestroyed()
     {
         gameObject.SetActive(false);
+        onBaseDestroyed?.Invoke();
         // move object to the cacheDefaultPosX
         transform.position = new Vector2(cacheDefaultPosX, transform.position.y);
+    }
+    public void AssignEvent(Action _onBaseDestroyed)
+    {
+        onBaseDestroyed = _onBaseDestroyed;
     }
 
 }
