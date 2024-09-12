@@ -91,7 +91,7 @@ MonoBehaviour:
       ResourceId: Coin
       ResourceValue: 0
     EnergyRequire: 0
-    NumberPerRound: 0
+    NumberPerRound: 3
     FireSpreadOffset: 100
     ProjectileId: ShotgunBullet
     ShootSpeed: 30
