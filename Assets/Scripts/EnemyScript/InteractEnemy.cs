@@ -31,7 +31,7 @@ public class InteractEnemy : Enemybase
     {
         if(!objectTransform) objectTransform = transform;
         objectTransform.position = _spawnPos;
-        Debug.Log($"state: {state}");
+        //Debug.Log($"state: {state}");
 
         Timing.KillCoroutines(handle);
         switch (state)

@@ -11,7 +11,7 @@ public class EnemyTracker : MonoBehaviour
         {
             // Add the enemy to the set
             enemiesInArea.Add(collision.gameObject);
-            Debug.Log($"{collision.gameObject.name} has entered the area.");
+            //Debug.Log($"{collision.gameObject.name} has entered the area.");
         }
     }
 

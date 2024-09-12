@@ -32,7 +32,7 @@ public class Shotgun : MonoBehaviour, IWeapon
         while (gameObject.activeSelf)
         {
             Vector2 _target = onGetNearestEnemy(true);
-            Debug.Log($"target: {_target}");
+            //Debug.Log($"target: {_target}");
             float angle = Mathf.Atan2(_target.y, _target.x) * Mathf.Rad2Deg;
 
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
