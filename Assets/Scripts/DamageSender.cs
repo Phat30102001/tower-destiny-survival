@@ -7,7 +7,7 @@ public class DamageSender : MonoBehaviour
 {
     public int damageAmount = 0;
     private float attackCooldown = 0;
-    private DamageReceiver receiver;
+    private List<DamageReceiver> receivers = new List<DamageReceiver>(); // Sử dụng danh sách để lưu tất cả các DamageReceiver
     public bool isInTrigger = false;
     CoroutineHandle handle;
     private string targetTag;
@@ -15,7 +15,7 @@ public class DamageSender : MonoBehaviour
     private Action onHit;
     private bool isActive = true;
 
-    private string receiverTag;
+    private HashSet<string> receiverTags = new HashSet<string>(); // Sử dụng HashSet để theo dõi các tag của các đối tượng
 
     public void AssignEvent(Action _onHit)
     {
@@ -36,32 +36,34 @@ public class DamageSender : MonoBehaviour
     }
 
     public IEnumerator<float> ApplyDamage()
+{
+    while (gameObject.activeSelf)
     {
-        while (gameObject.activeSelf)
+        if (isActive && receivers.Count > 0)
         {
-            if ((isInTrigger && receiver != null)&& isActive)
+            // Sao chép danh sách receivers sang một danh sách tạm thời
+            var receiversCopy = new List<DamageReceiver>(receivers);
+
+            foreach (var receiver in receiversCopy)
             {
-                if (receiverTag.Equals(targetTag))
+                if (receiver != null && receiverTags.Contains(targetTag))
                 {
                     SendDamage(receiver);
                     onHit?.Invoke();
                     if (hideOnHit)
                     {
-                        resetData();
+                        yield break; // Dừng Coroutine sau khi áp dụng damage nếu hideOnHit là true
                     }
-                    yield return Timing.WaitForSeconds(attackCooldown);
-                }
-                else
-                {
-                    resetData();
                 }
             }
-            else
-            {
-                yield return Timing.WaitForOneFrame;
-            }
+            yield return Timing.WaitForSeconds(attackCooldown);
+        }
+        else
+        {
+            yield return Timing.WaitForOneFrame;
         }
     }
+}
 
     public void SendDamage(DamageReceiver receiver)
     {
@@ -74,21 +76,33 @@ public class DamageSender : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (targetTag == null || targetTag == "") return;
-        receiver = collision.gameObject.GetComponent<DamageReceiver>();
-        if (receiver != null && collision.gameObject.CompareTag(targetTag))
+
+        var damageReceiver = collision.gameObject.GetComponent<DamageReceiver>();
+        if (damageReceiver != null && collision.gameObject.CompareTag(targetTag))
         {
-            receiverTag = collision.gameObject.tag;
+            if (!receivers.Contains(damageReceiver))
+            {
+                receivers.Add(damageReceiver);
+                receiverTags.Add(collision.gameObject.tag);
+                //Debug.Log($"{gameObject.name} add target {collision.gameObject.name}");
+            }
             isInTrigger = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<DamageReceiver>() == receiver)
+        var damageReceiver = collision.gameObject.GetComponent<DamageReceiver>();
+        if (damageReceiver != null && receivers.Contains(damageReceiver))
+        {
+            receivers.Remove(damageReceiver);
+            //receiverTags.Remove(collision.gameObject.tag);
+        }
+        if (receivers.Count == 0)
         {
             isInTrigger = false;
-            receiver = null;
-            receiverTag = null;
+            receivers.Clear(); // Xóa danh sách receivers
+            //receiverTags.Clear(); // Xóa danh sách receiverTags
         }
     }
 
@@ -101,13 +115,15 @@ public class DamageSender : MonoBehaviour
     private void resetData()
     {
         isInTrigger = false;
-        receiver = null;
-        receiverTag = null;
+        receivers.Clear(); // Xóa danh sách receivers
+        //receiverTags.Clear(); // Xóa danh sách receiverTags
         Timing.KillCoroutines(handle);
     }
+
     public void SetDamageSenderStatus(bool _isActive)
     {
-        isActive=_isActive;
+        isActive = _isActive;
     }
+
     public bool CheckDamageSenderStatus() => isActive;
 }
