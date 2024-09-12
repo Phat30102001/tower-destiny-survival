@@ -1,0 +1,262 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3365679907499126785
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6715990779487672357}
+  - component: {fileID: 8248492248926295561}
+  m_Layer: 0
+  m_Name: DataHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6715990779487672357
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3365679907499126785}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8248492248926295561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3365679907499126785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3522bff3139fea545a5db5daae776fdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  energyData:
+  - Level: 1
+    Price:
+      ResourceId: Coin
+      ResourceValue: 10
+    EnergyGenerateValuePerSecond: 0.2
+  - Level: 2
+    Price:
+      ResourceId: Coin
+      ResourceValue: 20
+    EnergyGenerateValuePerSecond: 0.4
+  - Level: 3
+    Price:
+      ResourceId: Coin
+      ResourceValue: 30
+    EnergyGenerateValuePerSecond: 0.55
+  - Level: 4
+    Price:
+      ResourceId: Coin
+      ResourceValue: 40
+    EnergyGenerateValuePerSecond: 0.7
+  - Level: 5
+    Price:
+      ResourceId: Coin
+      ResourceValue: 50
+    EnergyGenerateValuePerSecond: 0.8
+  - Level: 6
+    Price:
+      ResourceId: Coin
+      ResourceValue: 60
+    EnergyGenerateValuePerSecond: 0.9
+  - Level: 7
+    Price:
+      ResourceId: Coin
+      ResourceValue: 60
+    EnergyGenerateValuePerSecond: 6
+  shotgunLevelData:
+  - Uid: Player
+    WeaponId: Shotgun
+    Level: 1
+    DamageAmount: 10
+    Cooldown: 0.8
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 0
+    EnergyRequire: 0
+    NumberPerRound: 0
+    FireSpreadOffset: 100
+    ProjectileId: ShotgunBullet
+    ShootSpeed: 30
+  - Uid: Player
+    WeaponId: Shotgun
+    Level: 2
+    DamageAmount: 10
+    Cooldown: 0.5
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 0
+    EnergyRequire: 0
+    NumberPerRound: 5
+    FireSpreadOffset: 100
+    ProjectileId: ShotgunBullet
+    ShootSpeed: 30
+  machineGunLevelDatas:
+  - Uid: 
+    WeaponId: MachineGun
+    Level: 1
+    DamageAmount: 5
+    Cooldown: 1
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 20
+    EnergyRequire: 8
+    NumberPerRound: 1
+    ProjectileId: MachineGunBullet
+    ShootSpeed: 30
+    SkillData:
+      SkillDuration: 5
+      DamageAmount: 100
+      Cooldown: 0.3
+  - Uid: 
+    WeaponId: MachineGun
+    Level: 2
+    DamageAmount: 30
+    Cooldown: 1
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 20
+    EnergyRequire: 8
+    NumberPerRound: 1
+    ProjectileId: MachineGunBullet
+    ShootSpeed: 30
+    SkillData:
+      SkillDuration: 5
+      DamageAmount: 10
+      Cooldown: 0.3
+  flameThrowerLevelDatas:
+  - Uid: 
+    WeaponId: FlameThrower
+    Level: 1
+    DamageAmount: 10
+    Cooldown: 5
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 30
+    EnergyRequire: 6
+    BreakTimeBetweenSendDamage: 0.5
+    MaxRotateAngle: 45
+    RrotationSpeed: 20
+    SkillData:
+      SkillDuration: 5
+      DamageAmount: 5
+      BreakTimeBetweenSendDamage: 0.3
+  - Uid: 
+    WeaponId: FlameThrower
+    Level: 2
+    DamageAmount: 10
+    Cooldown: 5
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 30
+    EnergyRequire: 6
+    BreakTimeBetweenSendDamage: 0.3
+    MaxRotateAngle: 45
+    RrotationSpeed: 20
+    SkillData:
+      SkillDuration: 5
+      DamageAmount: 5
+      BreakTimeBetweenSendDamage: 0.3
+  chainSawLevelDatas:
+  - Uid: 
+    WeaponId: ChainSaw
+    Level: 1
+    DamageAmount: 10
+    Cooldown: 0
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 10
+    EnergyRequire: 2
+    BreakTimeBetweenSendDamage: 0.5
+    SkillData:
+      SkillDuration: 5
+      DamageAmount: 10
+      Cooldown: 0.3
+      ShootSpeed: 30
+      ProjectileId: ChainsawBullet
+      NumberPerRound: 1
+  - Uid: 
+    WeaponId: ChainSaw
+    Level: 2
+    DamageAmount: 10
+    Cooldown: 0
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 10
+    EnergyRequire: 2
+    BreakTimeBetweenSendDamage: 0.3
+    SkillData:
+      SkillDuration: 5
+      DamageAmount: 10
+      Cooldown: 0.3
+      ShootSpeed: 30
+      ProjectileId: ChainsawBullet
+      NumberPerRound: 1
+  grenadeDatas:
+  - Uid: Player
+    WeaponId: Grenade
+    Level: 1
+    DamageAmount: 200
+    Cooldown: 0
+    TargetTag: Enemy
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 0
+    EnergyRequire: 2
+  turretLevelDatas:
+  - TurretId: 
+    Level: 1
+    HealthPoint: 100
+    WeaponId: 
+    WeaponLevel: 0
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 10
+  - TurretId: 
+    Level: 2
+    HealthPoint: 200
+    WeaponId: 
+    WeaponLevel: 0
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 50
+  - TurretId: 
+    Level: 3
+    HealthPoint: 300
+    WeaponId: 
+    WeaponLevel: 0
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 100
+  - TurretId: 
+    Level: 4
+    HealthPoint: 400
+    WeaponId: 
+    WeaponLevel: 0
+    priceData:
+      ResourceId: Coin
+      ResourceValue: 150
