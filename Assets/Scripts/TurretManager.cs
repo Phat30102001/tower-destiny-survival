@@ -68,6 +68,10 @@ public class TurretManager : MonoBehaviour
         }
         onZeroTurret?.Invoke();
     }
+    public Vector2 GetTurretPositionAtIndex(int _index)
+    {
+        return turretSwaper.GetTurretPositionAtIndex(_index);
+    }
 
     public bool GenerateTurret(TurretData turretData, List<WeaponBaseData> _weaponDatas)
     {

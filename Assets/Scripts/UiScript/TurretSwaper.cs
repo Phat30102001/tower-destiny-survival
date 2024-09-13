@@ -70,6 +70,13 @@ public class TurretSwaper:MonoBehaviour
             }
         }
     }
+    public Vector2 GetTurretPositionAtIndex(int _index)
+    {
+        if(_index >= 0 && _index < turretRect.Count)
+            return turretRect[_index].position;
+        else
+            return Vector2.zero;
+    }
     public void SetDragable(bool _isDragable)
     {
         dragable = _isDragable;

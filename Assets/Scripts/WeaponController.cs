@@ -9,6 +9,7 @@ public class WeaponController : MonoBehaviour
     private Transform weaponContainer;
     [SerializeField] private List<GameObject> weapons = new List<GameObject>();
     private IWeapon weapon;
+    [SerializeField] private Transform weaponTriggerSkillCotainerTransform;
     private IWeapon weaponTriggerSkill;
     private Dictionary<string,IWeapon> turretWeapons = new Dictionary<string, IWeapon>();
     private Action<string, Vector2, Vector2, int, float, float, ProjectileData> onShoot;
@@ -20,6 +21,7 @@ public class WeaponController : MonoBehaviour
     public void SetData(Transform _weaponContainer)
     {
         weaponContainer = _weaponContainer;
+        //weaponTriggerSkillCotainerTransform.position = weaponContainer.position;
     }
 
     public void SpawnWeapon(WeaponBaseData _data)
@@ -59,7 +61,8 @@ public class WeaponController : MonoBehaviour
             GameObject _weaponPrefab = weapons.Find(x => x.GetComponent<IWeapon>().GetWeaponId().Equals(_data.WeaponId));
             if (_weaponPrefab == null) return;
 
-            GameObject _weaponObject = Instantiate(_weaponPrefab, weaponContainer);
+            GameObject _weaponObject = Instantiate(_weaponPrefab, weaponTriggerSkillCotainerTransform);
+            //_weaponObject.transform.position = weaponContainer.position;
             IWeapon _weapon = _weaponObject.GetComponent<IWeapon>();
             weaponTriggerSkill = _weapon;
 

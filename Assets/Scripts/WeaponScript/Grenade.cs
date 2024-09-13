@@ -56,7 +56,7 @@ public class Grenade : MonoBehaviour, IWeapon
 
     public void TriggerWeaponSkill()
     {
-        damageSender.transform.position = onGetNearestTarget(false);
+        //damageSender.transform.position = onGetNearestTarget(false);
         damageSender.gameObject.SetActive(true);
         Timing.CallDelayed(0.1f, () => damageSender.gameObject.SetActive(false));
         //damageSender.gameObject.SetActive(false);
